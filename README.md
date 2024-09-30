@@ -6,7 +6,7 @@ Welcome to the PowerBI-Hub! This repository serves as a centralized hub for all 
 
 \`
 PowerBI-Hub/
-¦
+
 +-- Data/
 +-- Scripts/
 +-- Queries/
