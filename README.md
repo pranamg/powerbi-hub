@@ -2,7 +2,7 @@
 
 Welcome to the PowerBI-Hub! This repository serves as a centralized hub for all Power BI-related resources, including data sources, scripts, visuals, templates, documentation, and reference materials.
 
-## ?? Repository Structure
+## 📁 Repository Structure
 
 \`
 PowerBI-Hub/
@@ -36,24 +36,24 @@ PowerBI-Hub/
 +-- .github/
 \`
 
-## ?? Getting Started
+## 📚 Getting Started
 
 - **Documentation:** [Documentation](./Documentation/README.md)
 - **Setup Instructions:** [Environment Setup](./Documentation/Setup/EnvironmentSetup.md)
 - **User Guides:** [User Guides](./Documentation/UserGuides/README.md)
 
-## ?? Reference Materials
+## 🔗 Reference Materials
 
 Find valuable resources in the [References](./References/) folder to enhance your Power BI skills.
 
-## ??? Contribution Guidelines
+## 🛠️ Contribution Guidelines
 
 We welcome contributions! Please read our [Contribution Guidelines](./Contributions/README.md) before submitting a pull request.
 
-## ?? License
+## 📄 License
 
 This project is licensed under the [MIT License](./LICENSE).
 
-## ?? Contact
+## 📞 Contact
 
 For any questions or suggestions, feel free to open an issue or contact the repository maintainer.
