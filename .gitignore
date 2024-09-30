@@ -1,0 +1,21 @@
+# PowerBI-Repository .gitignore
+
+# Ignore Power BI cache files
+*.pbix~
+
+# Ignore environment files
+.env
+
+# Ignore compiled scripts
+*.exe
+*.dll
+
+# Ignore log files
+*.log
+
+# Ignore node_modules
+node_modules/
+
+# Ignore other system files
+Thumbs.db
+.DS_Store
