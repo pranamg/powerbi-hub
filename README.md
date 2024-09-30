@@ -4,37 +4,37 @@ Welcome to the PowerBI-Hub! This repository serves as a centralized hub for all 
 
 ## 📁 Repository Structure
 
-\`
-PowerBI-Hub/
-|
-+-- Data/
-+-- Scripts/
-+-- Queries/
-+-- Visuals/
-+-- Design/
-+-- Templates/
-+-- Reports/
-+-- Dashboards/
-+-- Deployment/
-+-- Integrations/
-+-- Monitoring/
-+-- Optimization/
-+-- Collaboration/
-+-- Governance/
-+-- Security/
-+-- Testing/
-+-- Performance/
-+-- DataGovernance/
-+-- Documentation/
-+-- References/
-+-- TipsAndTricks/
-+-- PromptLibrary/
-+-- Training/
-+-- Contributions/
-+-- Backup/
-+-- VersionHistory/
-+-- .github/
-\`
+\```
+PowerBI-Repository/
+│
+├── Data/
+├── Scripts/
+├── Queries/
+├── Visuals/
+├── Design/
+├── Templates/
+├── Reports/
+├── Dashboards/
+├── Deployment/
+├── Integrations/
+├── Monitoring/
+├── Optimization/
+├── Collaboration/
+├── Governance/
+├── Security/
+├── Testing/
+├── Performance/
+├── DataGovernance/
+├── Documentation/
+├── References/
+├── TipsAndTricks/
+├── PromptLibrary/
+├── Training/
+├── Contributions/
+├── Backup/
+├── VersionHistory/
+└── .github/
+\```
 
 ## 📚 Getting Started
 
