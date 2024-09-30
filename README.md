@@ -53,6 +53,14 @@ We welcome contributions! Please read our [Contribution Guidelines](./Contributi
 
 This project is licensed under the [Creative Commons Zero (CC0)](./LICENSE).
 
+### Attribution
+
+- **Original Content**: Free for use without attribution.
+- **Referenced Content**: Must be attributed according to the original licensing terms.
+
+For more details, see the LICENSE file.
+
+
 ## 📞 Contact
 
 For any questions or suggestions, feel free to open an issue or contact the repository maintainer.

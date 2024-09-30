@@ -16,6 +16,8 @@ First off, thank you for considering contributing to the **PowerBI-Hub**! Your c
   - [Power BI Best Practices](#power-bi-best-practices)
 - [Commit Guidelines](#commit-guidelines)
 - [License](#license)
+- [Contribution Guidelines](#contribution-guidelines)
+
 
 ---
 
@@ -149,6 +151,18 @@ Adhering to consistent commit messages improves the readability and traceability
 ## License
 
 By contributing, you agree that your contributions will be licensed under the [Creative Commons Zero (CC0)](https://github.com/pranamg/powerbi-hub/blob/main/LICENSE).
+
+## Contribution Guidelines
+
+By contributing to this project, you agree that your contributions will be licensed under the Creative Commons Zero (CC0) license. Please ensure that any referenced content from other sources is properly attributed according to its original licensing terms.
+
+### Example Code Snippet
+
+```python
+# This code snippet is from Original Repository and is licensed under [Original License].
+def example_function():
+    pass
+```
 
 * * *
 
