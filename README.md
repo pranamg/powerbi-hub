@@ -3,8 +3,9 @@
 Welcome to the PowerBI-Hub! This repository serves as a centralized hub for all Power BI-related resources, including data sources, scripts, visuals, templates, documentation, and reference materials.
 
 ## 📁 Repository Structure
-\```
+```
 PowerBI-Repository/
+│
 ├── Data/
 ├── Scripts/
 ├── Queries/
@@ -32,7 +33,7 @@ PowerBI-Repository/
 ├── Backup/
 ├── VersionHistory/
 └── .github/
-\```
+```
 
 ## 📚 Getting Started
 
