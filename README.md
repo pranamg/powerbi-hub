@@ -51,7 +51,7 @@ We welcome contributions! Please read our [Contribution Guidelines](./Contributi
 
 ## 📄 License
 
-This project is licensed under the [UnLicense](./LICENSE).
+This project is licensed under the [Creative Commons Zero (CC0)](./LICENSE).
 
 ## 📞 Contact
 
