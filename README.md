@@ -51,7 +51,7 @@ We welcome contributions! Please read our [Contribution Guidelines](./Contributi
 
 ## 📄 License
 
-This project is licensed under the [MIT License](./LICENSE).
+This project is licensed under the [UnLicense](./LICENSE).
 
 ## 📞 Contact
 

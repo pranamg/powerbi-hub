@@ -148,7 +148,7 @@ Adhering to consistent commit messages improves the readability and traceability
 
 ## License
 
-By contributing, you agree that your contributions will be licensed under the [MIT License](https://github.com/pranamg/powerbi-hub/blob/main/LICENSE).
+By contributing, you agree that your contributions will be licensed under the [UnLicense](https://github.com/pranamg/powerbi-hub/blob/main/LICENSE).
 
 * * *
 
