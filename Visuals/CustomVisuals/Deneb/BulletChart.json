@@ -1,0 +1,136 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Bullet Chart - Compare actual vs target with qualitative ranges",
+  "usermeta": {
+    "deneb": {
+      "build": "1.6.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "5.14.1"
+    },
+    "interactivity": {
+      "tooltip": true,
+      "contextMenu": true,
+      "selection": true,
+      "highlight": true,
+      "dataPointLimit": 50
+    },
+    "information": {
+      "name": "Bullet Chart",
+      "description": "Shows actual value as bar, target as line, with qualitative background ranges",
+      "author": "PowerBI-Hub",
+      "uuid": "bullet-chart-001",
+      "generated": "2024-12-21"
+    },
+    "dataset": [
+      { "key": "__0__", "name": "Category", "description": "Category or metric name", "type": "text", "kind": "column" },
+      { "key": "__1__", "name": "Actual", "description": "Actual/current value", "type": "numeric", "kind": "measure" },
+      { "key": "__2__", "name": "Target", "description": "Target value", "type": "numeric", "kind": "measure" }
+    ]
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": { "step": 50 },
+  "config": {
+    "view": { "stroke": "transparent" },
+    "axis": {
+      "labelFontSize": 11,
+      "titleFontSize": 12
+    }
+  },
+  "layer": [
+    {
+      "description": "Poor range (0-50%)",
+      "mark": { "type": "bar", "color": "#e8e8e8" },
+      "encoding": {
+        "x": {
+          "datum": 0
+        },
+        "x2": {
+          "field": "__2__",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "__0__",
+          "type": "nominal",
+          "title": null
+        }
+      }
+    },
+    {
+      "description": "Satisfactory range (50-75%)",
+      "mark": { "type": "bar", "color": "#d0d0d0" },
+      "encoding": {
+        "x": {
+          "datum": 0
+        },
+        "x2": {
+          "expr": "datum['__2__'] * 0.75"
+        },
+        "y": {
+          "field": "__0__",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "description": "Good range (75-100%)",
+      "mark": { "type": "bar", "color": "#b0b0b0" },
+      "encoding": {
+        "x": {
+          "datum": 0
+        },
+        "x2": {
+          "expr": "datum['__2__'] * 0.5"
+        },
+        "y": {
+          "field": "__0__",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "description": "Actual value bar",
+      "mark": {
+        "type": "bar",
+        "color": "#118DFF",
+        "height": 20
+      },
+      "encoding": {
+        "x": {
+          "field": "__1__",
+          "type": "quantitative",
+          "title": "Value"
+        },
+        "y": {
+          "field": "__0__",
+          "type": "nominal"
+        },
+        "tooltip": [
+          { "field": "__0__", "title": "Category" },
+          { "field": "__1__", "title": "Actual", "format": ",.0f" },
+          { "field": "__2__", "title": "Target", "format": ",.0f" }
+        ]
+      }
+    },
+    {
+      "description": "Target marker",
+      "mark": {
+        "type": "tick",
+        "color": "#333333",
+        "thickness": 3,
+        "size": 35
+      },
+      "encoding": {
+        "x": {
+          "field": "__2__",
+          "type": "quantitative"
+        },
+        "y": {
+          "field": "__0__",
+          "type": "nominal"
+        }
+      }
+    }
+  ]
+}

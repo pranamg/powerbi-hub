@@ -1,0 +1,208 @@
+{
+  "name": "Power BI Best Practice Analyzer Rules",
+  "description": "Custom BPA rules for Power BI semantic model validation",
+  "version": "1.0.0",
+  "rules": [
+    {
+      "id": "DAX_NO_DIVIDE_BY_ZERO",
+      "name": "Use DIVIDE function for division",
+      "category": "DAX Expressions",
+      "description": "Division operations should use DIVIDE() to handle division by zero gracefully.",
+      "severity": 2,
+      "scope": "Measure, CalculatedColumn, CalculatedTable",
+      "expression": "Expression.Contains(\"/\") && !Expression.Contains(\"DIVIDE\")",
+      "fixExpression": "// Replace A/B with DIVIDE(A, B)",
+      "recommendation": "Replace division operator (/) with DIVIDE function to avoid errors."
+    },
+    {
+      "id": "DAX_NO_HARDCODED_DATES",
+      "name": "Avoid hardcoded dates in measures",
+      "category": "DAX Expressions",
+      "description": "Hardcoded dates make measures brittle and hard to maintain.",
+      "severity": 2,
+      "scope": "Measure",
+      "expression": "RegEx.IsMatch(Expression, @\"\\d{4}-\\d{2}-\\d{2}\")",
+      "recommendation": "Use date table relationships or dynamic date references instead of hardcoded dates."
+    },
+    {
+      "id": "DAX_AVOID_COUNTROWS_VALUES",
+      "name": "Use DISTINCTCOUNT instead of COUNTROWS(VALUES())",
+      "category": "Performance",
+      "description": "DISTINCTCOUNT is more efficient than COUNTROWS(VALUES()).",
+      "severity": 1,
+      "scope": "Measure",
+      "expression": "Expression.Contains(\"COUNTROWS\") && Expression.Contains(\"VALUES\")",
+      "recommendation": "Replace COUNTROWS(VALUES(Column)) with DISTINCTCOUNT(Column)."
+    },
+    {
+      "id": "DAX_AVOID_FILTER_ALL",
+      "name": "Avoid FILTER(ALL()) pattern",
+      "category": "Performance",
+      "description": "FILTER(ALL()) can be inefficient. Consider alternatives.",
+      "severity": 2,
+      "scope": "Measure",
+      "expression": "Expression.Contains(\"FILTER\") && Expression.Contains(\"ALL(\")",
+      "recommendation": "Consider using CALCULATE with filter modifiers or KEEPFILTERS."
+    },
+    {
+      "id": "MEASURE_REQUIRES_DESCRIPTION",
+      "name": "Measures should have descriptions",
+      "category": "Documentation",
+      "description": "All measures should have descriptions for documentation.",
+      "severity": 1,
+      "scope": "Measure",
+      "expression": "string.IsNullOrWhiteSpace(Description)",
+      "recommendation": "Add a description explaining what the measure calculates."
+    },
+    {
+      "id": "MEASURE_IN_DISPLAY_FOLDER",
+      "name": "Measures should be in display folders",
+      "category": "Organization",
+      "description": "Group measures in display folders for better organization.",
+      "severity": 1,
+      "scope": "Measure",
+      "expression": "string.IsNullOrWhiteSpace(DisplayFolder)",
+      "recommendation": "Assign measure to a display folder (e.g., 'Sales Metrics', 'Time Intelligence')."
+    },
+    {
+      "id": "COLUMN_NO_SORT_BY_COLUMN",
+      "name": "Text columns should have sort-by column",
+      "category": "User Experience",
+      "description": "Month names and similar text should sort correctly.",
+      "severity": 1,
+      "scope": "Column",
+      "expression": "Name.Contains(\"Month\") && DataType == DataType.String && SortByColumn == null",
+      "recommendation": "Set SortByColumn to a numeric column for proper sorting."
+    },
+    {
+      "id": "TABLE_NO_AUTO_DATE",
+      "name": "Disable auto date/time",
+      "category": "Performance",
+      "description": "Auto date/time creates hidden tables and impacts performance.",
+      "severity": 3,
+      "scope": "Model",
+      "expression": "Model.Tables.Any(t => t.Columns.Any(c => c.DataType == DataType.DateTime)) && Model.Database.CompatibilityLevel >= 1400",
+      "recommendation": "Disable auto date/time in Power BI options and use explicit date tables."
+    },
+    {
+      "id": "RELATIONSHIP_SINGLE_DIRECTION",
+      "name": "Avoid bidirectional relationships",
+      "category": "Performance",
+      "description": "Bidirectional relationships can cause ambiguity and performance issues.",
+      "severity": 2,
+      "scope": "Relationship",
+      "expression": "CrossFilteringBehavior == CrossFilteringBehavior.BothDirections",
+      "recommendation": "Use single-direction filtering unless bidirectional is specifically required."
+    },
+    {
+      "id": "TABLE_HAS_DATE_TABLE",
+      "name": "Model should have a marked date table",
+      "category": "Data Model",
+      "description": "Time intelligence functions require a properly marked date table.",
+      "severity": 3,
+      "scope": "Model",
+      "expression": "!Model.Tables.Any(t => t.DataCategory == \"Time\")",
+      "recommendation": "Create a date table and mark it as a date table in Power BI."
+    },
+    {
+      "id": "COLUMN_NAMING_CONSISTENCY",
+      "name": "Use consistent column naming",
+      "category": "Naming Conventions",
+      "description": "Column names should follow naming conventions.",
+      "severity": 1,
+      "scope": "Column",
+      "expression": "Name.Contains(\"_\") || Name.StartsWith(\" \") || Name.EndsWith(\" \")",
+      "recommendation": "Use spaces in column names, not underscores. Remove leading/trailing spaces."
+    },
+    {
+      "id": "MEASURE_FORMAT_STRING",
+      "name": "Measures should have format strings",
+      "category": "User Experience",
+      "description": "Measures should be formatted appropriately for their data type.",
+      "severity": 1,
+      "scope": "Measure",
+      "expression": "string.IsNullOrWhiteSpace(FormatString) && !Name.Contains(\"Count\") && !Name.Contains(\"ID\")",
+      "recommendation": "Add appropriate format string (currency, percentage, number)."
+    },
+    {
+      "id": "CALC_COLUMN_AVOID_IF_POSSIBLE",
+      "name": "Consider measures over calculated columns",
+      "category": "Performance",
+      "description": "Calculated columns increase model size. Consider measures.",
+      "severity": 1,
+      "scope": "CalculatedColumn",
+      "expression": "true",
+      "recommendation": "Evaluate if this calculation could be a measure instead of a calculated column."
+    },
+    {
+      "id": "HIDDEN_UNUSED_COLUMNS",
+      "name": "Hide columns not used in reports",
+      "category": "Organization",
+      "description": "Key columns and technical columns should be hidden.",
+      "severity": 1,
+      "scope": "Column",
+      "expression": "(Name.EndsWith(\"ID\") || Name.EndsWith(\"Key\") || Name.EndsWith(\"SK\")) && !IsHidden",
+      "recommendation": "Hide key columns that are only used for relationships."
+    },
+    {
+      "id": "TABLE_NAMING_NO_SPACES",
+      "name": "Table names - no leading/trailing spaces",
+      "category": "Naming Conventions",
+      "description": "Table names should not have leading or trailing spaces.",
+      "severity": 2,
+      "scope": "Table",
+      "expression": "Name.StartsWith(\" \") || Name.EndsWith(\" \")",
+      "recommendation": "Remove leading/trailing spaces from table name."
+    },
+    {
+      "id": "DAX_USE_VARIABLES",
+      "name": "Complex measures should use variables",
+      "category": "DAX Expressions",
+      "description": "Variables improve readability and can improve performance.",
+      "severity": 1,
+      "scope": "Measure",
+      "expression": "Expression.Length > 200 && !Expression.Contains(\"VAR \")",
+      "recommendation": "Consider using VAR statements to improve readability and performance."
+    },
+    {
+      "id": "RELATIONSHIP_NO_INACTIVE_WITHOUT_REASON",
+      "name": "Document inactive relationships",
+      "category": "Documentation",
+      "description": "Inactive relationships should have a documented purpose.",
+      "severity": 1,
+      "scope": "Relationship",
+      "expression": "!IsActive && string.IsNullOrWhiteSpace(Name)",
+      "recommendation": "Add a name or annotation explaining why this relationship is inactive."
+    },
+    {
+      "id": "DAX_AVOID_SUMX_FILTER",
+      "name": "Avoid SUMX with FILTER",
+      "category": "Performance",
+      "description": "SUMX(FILTER()) can be replaced with CALCULATE for better performance.",
+      "severity": 2,
+      "scope": "Measure",
+      "expression": "Expression.Contains(\"SUMX\") && Expression.Contains(\"FILTER\")",
+      "recommendation": "Consider rewriting using CALCULATE with filters instead of SUMX(FILTER())."
+    },
+    {
+      "id": "MODEL_HAS_DESCRIPTION",
+      "name": "Model should have description",
+      "category": "Documentation",
+      "description": "The model should have a description for documentation.",
+      "severity": 1,
+      "scope": "Model",
+      "expression": "string.IsNullOrWhiteSpace(Model.Description)",
+      "recommendation": "Add a description to the model explaining its purpose."
+    },
+    {
+      "id": "MEASURE_AVOID_BLANK",
+      "name": "Consider BLANK handling in measures",
+      "category": "DAX Expressions",
+      "description": "Measures that could return BLANK should handle it explicitly.",
+      "severity": 1,
+      "scope": "Measure",
+      "expression": "Expression.Contains(\"CALCULATE\") && !Expression.Contains(\"BLANK\") && !Expression.Contains(\"COALESCE\") && !Expression.Contains(\"IF\")",
+      "recommendation": "Consider adding explicit BLANK handling with IF(ISBLANK()) or COALESCE."
+    }
+  ]
+}

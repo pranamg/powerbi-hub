@@ -1,0 +1,214 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// CONDITIONAL FORMATTING HELPER MEASURES
+// Use these measures with conditional formatting rules in Power BI
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────────────────────────
+// RAG STATUS (Red/Amber/Green)
+// ───────────────────────────────────────────────────────────────────────────────
+
+// RAG based on target achievement
+RAG Status = 
+VAR Actual = [Sales Amount]
+VAR Target = [Sales Target]
+VAR Achievement = DIVIDE(Actual, Target)
+RETURN
+    SWITCH(TRUE(),
+        Achievement >= 1, "Green",      // At or above target
+        Achievement >= 0.8, "Amber",    // 80-99% of target
+        "Red"                           // Below 80%
+    )
+
+// RAG Color Code (for use in conditional formatting)
+RAG Color = 
+SWITCH([RAG Status],
+    "Green", "#00A36C",
+    "Amber", "#FFB900",
+    "Red", "#E74C3C",
+    "#808080"  // Default gray
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// VARIANCE INDICATORS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Variance from Target
+Variance = [Sales Amount] - [Sales Target]
+
+// Variance Percentage
+Variance % = 
+DIVIDE([Sales Amount] - [Sales Target], [Sales Target])
+
+// Variance Color (Green for positive, Red for negative)
+Variance Color = 
+IF([Variance] >= 0, "#00A36C", "#E74C3C")
+
+// Variance Icon
+Variance Icon = 
+VAR Var = [Variance %]
+RETURN
+    SWITCH(TRUE(),
+        Var >= 0.1, "⬆⬆",      // Strong up
+        Var >= 0, "⬆",         // Up
+        Var >= -0.1, "⬇",      // Down
+        "⬇⬇"                   // Strong down
+    )
+
+// ───────────────────────────────────────────────────────────────────────────────
+// TREND INDICATORS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Month over Month Trend
+MoM Trend = 
+VAR Current = [Sales Amount]
+VAR Previous = [Sales PM]
+VAR Change = DIVIDE(Current - Previous, Previous)
+RETURN
+    SWITCH(TRUE(),
+        Change > 0.05, "Strong Up",
+        Change > 0, "Up",
+        Change = 0, "Flat",
+        Change > -0.05, "Down",
+        "Strong Down"
+    )
+
+// Trend Arrow Unicode
+Trend Arrow = 
+VAR Change = [Sales MoM %]
+RETURN
+    SWITCH(TRUE(),
+        Change > 0.05, "↑↑",
+        Change > 0, "↑",
+        Change = 0, "→",
+        Change > -0.05, "↓",
+        "↓↓"
+    )
+
+// Trend Color
+Trend Color = 
+VAR Change = [Sales MoM %]
+RETURN
+    SWITCH(TRUE(),
+        Change > 0, "#00A36C",
+        Change = 0, "#808080",
+        "#E74C3C"
+    )
+
+// ───────────────────────────────────────────────────────────────────────────────
+// THRESHOLD-BASED FORMATTING
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Performance Band
+Performance Band = 
+VAR Value = [Sales Amount]
+VAR Avg = CALCULATE([Sales Amount], ALL('Product'))
+VAR StdDev = STDEV.P(ALL('Product'), [Sales Amount])
+RETURN
+    SWITCH(TRUE(),
+        Value >= Avg + 2 * StdDev, "Exceptional",
+        Value >= Avg + StdDev, "Above Average",
+        Value >= Avg - StdDev, "Average",
+        Value >= Avg - 2 * StdDev, "Below Average",
+        "Needs Attention"
+    )
+
+// Performance Band Color
+Performance Band Color = 
+SWITCH([Performance Band],
+    "Exceptional", "#00A36C",
+    "Above Average", "#7ED321",
+    "Average", "#FFB900",
+    "Below Average", "#FF9500",
+    "Needs Attention", "#E74C3C",
+    "#808080"
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// DATA BARS HELPER (Percentage for scaling)
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Percentage of Maximum (useful for data bars)
+Pct of Max = 
+VAR CurrentValue = [Sales Amount]
+VAR MaxValue = MAXX(ALL('Product'[Product Name]), [Sales Amount])
+RETURN
+    DIVIDE(CurrentValue, MaxValue)
+
+// Percentage of Total
+Pct of Total = 
+VAR CurrentValue = [Sales Amount]
+VAR TotalValue = CALCULATE([Sales Amount], ALL('Product'))
+RETURN
+    DIVIDE(CurrentValue, TotalValue)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// SPARKLINE DATA PREPARATION
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Sparkline Series (Returns comma-separated values for last 12 months)
+Sparkline Data = 
+VAR Last12Months = 
+    TOPN(12, ALL('Date'[YearMonth]), 'Date'[YearMonth], DESC)
+VAR DataPoints = 
+    CONCATENATEX(
+        Last12Months,
+        FORMAT(CALCULATE([Sales Amount]), "0"),
+        ",",
+        'Date'[YearMonth], ASC
+    )
+RETURN
+    DataPoints
+
+// ───────────────────────────────────────────────────────────────────────────────
+// ICON SETS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Status Circle Icons (copy-paste these unicode chars)
+Status Circle = 
+VAR Achievement = DIVIDE([Sales Amount], [Sales Target])
+RETURN
+    SWITCH(TRUE(),
+        Achievement >= 1, "🟢",
+        Achievement >= 0.8, "🟡",
+        "🔴"
+    )
+
+// Progress Stars
+Progress Stars = 
+VAR Pct = DIVIDE([Sales Amount], [Sales Target])
+RETURN
+    SWITCH(TRUE(),
+        Pct >= 1, "★★★★★",
+        Pct >= 0.8, "★★★★☆",
+        Pct >= 0.6, "★★★☆☆",
+        Pct >= 0.4, "★★☆☆☆",
+        Pct >= 0.2, "★☆☆☆☆",
+        "☆☆☆☆☆"
+    )
+
+// Signal Bars (like phone signal)
+Signal Bars = 
+VAR Pct = DIVIDE([Sales Amount], [Sales Target])
+RETURN
+    SWITCH(TRUE(),
+        Pct >= 1, "▁▃▅▇",
+        Pct >= 0.75, "▁▃▅░",
+        Pct >= 0.5, "▁▃░░",
+        Pct >= 0.25, "▁░░░",
+        "░░░░"
+    )
+
+// ───────────────────────────────────────────────────────────────────────────────
+// BACKGROUND COLOR GRADIENTS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Heat Map Color (Blue to Red gradient)
+Heat Map Color = 
+VAR MinVal = MINX(ALL('Product'), [Sales Amount])
+VAR MaxVal = MAXX(ALL('Product'), [Sales Amount])
+VAR CurrentVal = [Sales Amount]
+VAR Normalized = DIVIDE(CurrentVal - MinVal, MaxVal - MinVal)
+VAR Red = INT(255 * Normalized)
+VAR Blue = INT(255 * (1 - Normalized))
+RETURN
+    "#" & FORMAT(Red, "00") & "40" & FORMAT(Blue, "00")

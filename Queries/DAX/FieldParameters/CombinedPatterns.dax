@@ -1,0 +1,322 @@
+// ============================================================================
+// COMBINED FIELD PARAMETER PATTERNS
+// ============================================================================
+// Purpose: Advanced field parameter patterns combining multiple use cases
+// ============================================================================
+
+// ---------------------------------------------------------------------------
+// PATTERN 1: DIMENSION AND MEASURE SWITCHER COMBO
+// ---------------------------------------------------------------------------
+// Allow users to select both which dimension and which measure to analyze
+
+// Step 1: Create Dimension Parameter
+DimensionSelector = {
+    ("Product Category", NAMEOF('Product'[Category]), 0),
+    ("Customer Segment", NAMEOF('Customer'[Segment]), 1),
+    ("Region", NAMEOF('Geography'[Region]), 2),
+    ("Sales Rep", NAMEOF('Sales'[SalesRep]), 3),
+    ("Channel", NAMEOF('Sales'[Channel]), 4)
+}
+
+// Step 2: Create Measure Parameter  
+MeasureSelector = {
+    ("Revenue", NAMEOF([Total Revenue]), 0),
+    ("Quantity", NAMEOF([Total Quantity]), 1),
+    ("Profit", NAMEOF([Total Profit]), 2),
+    ("Margin %", NAMEOF([Margin Pct]), 3),
+    ("Customer Count", NAMEOF([Customer Count]), 4)
+}
+
+// Usage: 
+// - Add DimensionSelector to Axis/Rows
+// - Add MeasureSelector to Values
+// Result: Fully dynamic chart that changes both dimension and measure
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 2: HIERARCHICAL DIMENSION SELECTOR
+// ---------------------------------------------------------------------------
+// Switch between different hierarchy levels
+
+GeographyLevel = {
+    ("Country", NAMEOF('Geography'[Country]), 0),
+    ("State/Province", NAMEOF('Geography'[State]), 1),
+    ("City", NAMEOF('Geography'[City]), 2),
+    ("Postal Code", NAMEOF('Geography'[PostalCode]), 3)
+}
+
+ProductHierarchy = {
+    ("Division", NAMEOF('Product'[Division]), 0),
+    ("Category", NAMEOF('Product'[Category]), 1),
+    ("Subcategory", NAMEOF('Product'[Subcategory]), 2),
+    ("Product", NAMEOF('Product'[ProductName]), 3)
+}
+
+TimeGranularity = {
+    ("Year", NAMEOF('Date'[Year]), 0),
+    ("Quarter", NAMEOF('Date'[YearQuarter]), 1),
+    ("Month", NAMEOF('Date'[YearMonth]), 2),
+    ("Week", NAMEOF('Date'[YearWeek]), 3),
+    ("Day", NAMEOF('Date'[Date]), 4)
+}
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 3: CALCULATED MEASURE VARIANTS
+// ---------------------------------------------------------------------------
+// Include calculated variations of the same base measure
+
+RevenueVariants = {
+    ("Actual Revenue", NAMEOF([Total Revenue]), 0),
+    ("Revenue YTD", NAMEOF([Revenue YTD]), 1),
+    ("Revenue vs LY", NAMEOF([Revenue vs LY]), 2),
+    ("Revenue % Change", NAMEOF([Revenue YoY Pct]), 3),
+    ("Revenue Rolling 12M", NAMEOF([Revenue R12M]), 4),
+    ("Revenue per Customer", NAMEOF([Revenue per Customer]), 5)
+}
+
+// Supporting measures (create these first):
+/*
+Revenue YTD = 
+    TOTALYTD([Total Revenue], 'Date'[Date])
+
+Revenue vs LY = 
+    [Total Revenue] - CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('Date'[Date]))
+
+Revenue YoY Pct = 
+    DIVIDE(
+        [Total Revenue] - CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('Date'[Date])),
+        CALCULATE([Total Revenue], SAMEPERIODLASTYEAR('Date'[Date]))
+    )
+
+Revenue R12M = 
+    CALCULATE(
+        [Total Revenue],
+        DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -12, MONTH)
+    )
+
+Revenue per Customer = 
+    DIVIDE([Total Revenue], [Customer Count])
+*/
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 4: METRIC FAMILY WITH CONTEXT
+// ---------------------------------------------------------------------------
+// Group related metrics that make sense together
+
+SalesMetrics = {
+    ("Revenue", NAMEOF([Total Revenue]), 0),
+    ("COGS", NAMEOF([Total COGS]), 1),
+    ("Gross Profit", NAMEOF([Gross Profit]), 2),
+    ("Gross Margin %", NAMEOF([Gross Margin Pct]), 3)
+}
+
+CustomerMetrics = {
+    ("Customer Count", NAMEOF([Customer Count]), 0),
+    ("New Customers", NAMEOF([New Customers]), 1),
+    ("Churned Customers", NAMEOF([Churned Customers]), 2),
+    ("Customer Retention %", NAMEOF([Retention Rate]), 3),
+    ("Customer Lifetime Value", NAMEOF([CLV]), 4)
+}
+
+OperationalMetrics = {
+    ("Order Count", NAMEOF([Order Count]), 0),
+    ("Average Order Value", NAMEOF([AOV]), 1),
+    ("Units Sold", NAMEOF([Total Quantity]), 2),
+    ("Units per Order", NAMEOF([Units per Order]), 3),
+    ("Return Rate %", NAMEOF([Return Rate Pct]), 4)
+}
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 5: COMPARISON DIMENSION SELECTOR
+// ---------------------------------------------------------------------------
+// For side-by-side comparisons
+
+ComparisonDimension = {
+    ("This Year vs Last Year", NAMEOF([Year Comparison]), 0),
+    ("Actual vs Budget", NAMEOF([Budget Comparison]), 1),
+    ("Actual vs Forecast", NAMEOF([Forecast Comparison]), 2),
+    ("Current vs Prior Period", NAMEOF([Period Comparison]), 3)
+}
+
+// Use with matrix: Dimension on rows, ComparisonDimension on columns
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 6: DYNAMIC TOP N ANALYSIS
+// ---------------------------------------------------------------------------
+// Combine field parameter with Top N filter
+
+TopNCategory = {
+    ("Top Products by Revenue", NAMEOF([Top Products Revenue]), 0),
+    ("Top Products by Profit", NAMEOF([Top Products Profit]), 1),
+    ("Top Customers by Revenue", NAMEOF([Top Customers Revenue]), 2),
+    ("Bottom Products by Margin", NAMEOF([Bottom Products Margin]), 3)
+}
+
+// Supporting measures using TOPN:
+/*
+Top Products Revenue = 
+VAR TopProducts = 
+    TOPN(10, ALL('Product'[ProductName]), [Total Revenue], DESC)
+RETURN
+    CALCULATE([Total Revenue], KEEPFILTERS(TopProducts))
+
+Top Products Profit = 
+VAR TopProducts = 
+    TOPN(10, ALL('Product'[ProductName]), [Total Profit], DESC)
+RETURN
+    CALCULATE([Total Profit], KEEPFILTERS(TopProducts))
+*/
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 7: DYNAMIC SORT ORDER
+// ---------------------------------------------------------------------------
+// Allow users to change how data is sorted
+
+SortOrder = {
+    ("By Name (A-Z)", NAMEOF('Product'[ProductName]), 0),
+    ("By Revenue (High-Low)", NAMEOF([SortByRevenue]), 1),
+    ("By Margin (High-Low)", NAMEOF([SortByMargin]), 2),
+    ("By Growth (High-Low)", NAMEOF([SortByGrowth]), 3)
+}
+
+// Create sort measures:
+/*
+SortByRevenue = [Total Revenue] * -1  // Negative for DESC sort
+SortByMargin = [Margin Pct] * -1
+SortByGrowth = [YoY Growth Pct] * -1
+*/
+
+// Use SortOrder in "Sort by column" for the visual
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 8: DATE RANGE SELECTOR
+// ---------------------------------------------------------------------------
+// Pre-defined date ranges as selectable options
+
+DateRangeSelector = {
+    ("Current Month", NAMEOF([Current Month Sales]), 0),
+    ("Last 30 Days", NAMEOF([Last 30 Days Sales]), 1),
+    ("Current Quarter", NAMEOF([Current Quarter Sales]), 2),
+    ("Year to Date", NAMEOF([YTD Sales]), 3),
+    ("Last 12 Months", NAMEOF([R12M Sales]), 4),
+    ("Same Period Last Year", NAMEOF([SPLY Sales]), 5)
+}
+
+// Supporting measures:
+/*
+Current Month Sales = 
+    CALCULATE(
+        [Total Revenue],
+        DATESMTD('Date'[Date])
+    )
+
+Last 30 Days Sales = 
+    CALCULATE(
+        [Total Revenue],
+        DATESINPERIOD('Date'[Date], TODAY(), -30, DAY)
+    )
+
+Current Quarter Sales = 
+    CALCULATE(
+        [Total Revenue],
+        DATESQTD('Date'[Date])
+    )
+*/
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 9: MULTI-SCENARIO ANALYSIS
+// ---------------------------------------------------------------------------
+// Compare different business scenarios
+
+ScenarioSelector = {
+    ("Baseline", NAMEOF([Baseline Revenue]), 0),
+    ("Conservative (-10%)", NAMEOF([Conservative Revenue]), 1),
+    ("Moderate (+5%)", NAMEOF([Moderate Revenue]), 2),
+    ("Optimistic (+15%)", NAMEOF([Optimistic Revenue]), 3),
+    ("Best Case (+25%)", NAMEOF([BestCase Revenue]), 4)
+}
+
+// Supporting measures:
+/*
+Baseline Revenue = [Total Revenue]
+Conservative Revenue = [Total Revenue] * 0.90
+Moderate Revenue = [Total Revenue] * 1.05
+Optimistic Revenue = [Total Revenue] * 1.15
+BestCase Revenue = [Total Revenue] * 1.25
+*/
+
+
+// ---------------------------------------------------------------------------
+// PATTERN 10: KPI DASHBOARD SELECTOR
+// ---------------------------------------------------------------------------
+// For executive dashboards with switchable KPIs
+
+ExecutiveKPIs = {
+    ("Revenue", NAMEOF([Total Revenue]), 0),
+    ("Profit", NAMEOF([Total Profit]), 1),
+    ("Customer Satisfaction", NAMEOF([CSAT Score]), 2),
+    ("NPS", NAMEOF([NPS Score]), 3),
+    ("Employee Satisfaction", NAMEOF([eNPS Score]), 4),
+    ("Market Share", NAMEOF([Market Share Pct]), 5)
+}
+
+
+// ---------------------------------------------------------------------------
+// COMBINING PATTERNS IN A VISUAL
+// ---------------------------------------------------------------------------
+
+/*
+Example: Dynamic Analysis Dashboard
+
+Components:
+1. Slicer 1: DimensionSelector (What to analyze by)
+2. Slicer 2: MeasureSelector (What metric to show)
+3. Slicer 3: TimeGranularity (Time level)
+4. Matrix: 
+   - Rows: DimensionSelector
+   - Columns: TimeGranularity
+   - Values: MeasureSelector
+
+This creates a fully dynamic matrix where users can:
+- Choose the analysis dimension (Product, Customer, Region, etc.)
+- Choose the metric (Revenue, Profit, Quantity, etc.)
+- Choose the time granularity (Year, Quarter, Month, etc.)
+
+All in one report page with no need for multiple tabs or reports.
+*/
+
+
+// ---------------------------------------------------------------------------
+// BEST PRACTICES
+// ---------------------------------------------------------------------------
+
+/*
+1. NAMING CONVENTIONS
+   - Use clear, business-friendly names in the first column
+   - Keep internal measure names consistent
+   
+2. ORDERING
+   - Use the ordinal column (third parameter) to control display order
+   - Most important/common selections first
+   
+3. GROUPING
+   - Consider using folders in Power BI to organize field parameters
+   - Group related parameters together
+   
+4. PERFORMANCE
+   - Field parameters are lightweight - no performance impact
+   - The underlying measures may impact performance
+   - Test with your largest expected selection combinations
+   
+5. DOCUMENTATION
+   - Add descriptions to field parameters
+   - Document supported measure combinations
+   - Note any limitations or known issues
+*/

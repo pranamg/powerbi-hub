@@ -1,0 +1,131 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Waterfall Chart showing variance breakdown",
+  "usermeta": {
+    "deneb": {
+      "build": "1.6.0",
+      "metaVersion": 1,
+      "provider": "vegaLite",
+      "providerVersion": "5.14.1"
+    },
+    "information": {
+      "name": "Variance Waterfall",
+      "description": "Shows cumulative effect of positive and negative variances",
+      "author": "PowerBI-Hub"
+    },
+    "dataset": [
+      { "key": "__0__", "name": "Category", "description": "Variance category", "type": "text", "kind": "column" },
+      { "key": "__1__", "name": "Value", "description": "Variance amount", "type": "numeric", "kind": "measure" },
+      { "key": "__2__", "name": "Type", "description": "Start/Change/End", "type": "text", "kind": "column" }
+    ]
+  },
+  "data": { "name": "dataset" },
+  "width": "container",
+  "height": 300,
+  "config": {
+    "view": { "stroke": "transparent" }
+  },
+  "transform": [
+    {
+      "window": [{ "op": "sum", "field": "__1__", "as": "cumulative" }],
+      "frame": [null, 0]
+    },
+    {
+      "calculate": "datum['__2__'] === 'Start' || datum['__2__'] === 'End' ? 0 : datum.cumulative - datum['__1__']",
+      "as": "start"
+    },
+    {
+      "calculate": "datum['__2__'] === 'End' ? datum['__1__'] : datum.cumulative",
+      "as": "end"
+    },
+    {
+      "calculate": "datum['__1__'] >= 0 ? 'positive' : 'negative'",
+      "as": "direction"
+    }
+  ],
+  "layer": [
+    {
+      "mark": { "type": "bar", "width": 40 },
+      "encoding": {
+        "x": {
+          "field": "__0__",
+          "type": "ordinal",
+          "axis": { "title": null, "labelAngle": -45 },
+          "sort": null
+        },
+        "y": {
+          "field": "start",
+          "type": "quantitative",
+          "axis": { "title": "Value" }
+        },
+        "y2": {
+          "field": "end"
+        },
+        "color": {
+          "condition": [
+            { "test": "datum['__2__'] === 'Start' || datum['__2__'] === 'End'", "value": "#4C78A8" },
+            { "test": "datum.direction === 'positive'", "value": "#2CA02C" }
+          ],
+          "value": "#D62728"
+        },
+        "tooltip": [
+          { "field": "__0__", "title": "Category" },
+          { "field": "__1__", "title": "Value", "format": "+,.0f" },
+          { "field": "cumulative", "title": "Cumulative", "format": ",.0f" }
+        ]
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "#888888",
+        "strokeDash": [4, 4],
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "x": {
+          "field": "__0__",
+          "type": "ordinal",
+          "band": 1
+        },
+        "x2": {
+          "field": "__0__",
+          "band": 0
+        },
+        "y": {
+          "field": "end",
+          "type": "quantitative"
+        }
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "dy": -10,
+        "fontSize": 10
+      },
+      "encoding": {
+        "x": {
+          "field": "__0__",
+          "type": "ordinal"
+        },
+        "y": {
+          "field": "end",
+          "type": "quantitative"
+        },
+        "text": {
+          "field": "__1__",
+          "type": "quantitative",
+          "format": "+,.0f"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.direction === 'positive'",
+            "value": "#2CA02C"
+          },
+          "value": "#D62728"
+        }
+      }
+    }
+  ]
+}

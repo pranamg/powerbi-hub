@@ -1,0 +1,106 @@
+/// =============================================================================
+/// TMDL Table Template
+/// Description: Standard table definition pattern
+/// Usage: Copy and customize for your tables
+/// =============================================================================
+
+table '<TableName>'
+    lineageTag: <generate-new-guid>
+    
+    /// ===================
+    /// Columns
+    /// ===================
+    
+    column '<PrimaryKeyColumn>'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        summarizeBy: none
+        lineageTag: <generate-new-guid>
+        annotation SummarizationSetBy = Automatic
+
+    column '<TextColumn>'
+        dataType: string
+        isNullable: true
+        summarizeBy: none
+        lineageTag: <generate-new-guid>
+        annotation SummarizationSetBy = Automatic
+
+    column '<NumericColumn>'
+        dataType: decimal
+        formatString: #,##0.00
+        isNullable: true
+        summarizeBy: sum
+        lineageTag: <generate-new-guid>
+        annotation SummarizationSetBy = Automatic
+
+    column '<DateColumn>'
+        dataType: dateTime
+        formatString: Short Date
+        isNullable: true
+        summarizeBy: none
+        lineageTag: <generate-new-guid>
+        annotation SummarizationSetBy = Automatic
+
+    column '<BooleanColumn>'
+        dataType: boolean
+        isNullable: true
+        summarizeBy: none
+        lineageTag: <generate-new-guid>
+        annotation SummarizationSetBy = Automatic
+
+    /// ===================
+    /// Calculated Columns
+    /// ===================
+    
+    column '<CalculatedColumnName>' = 
+        /// DAX expression for calculated column
+        <TableName>[Column1] & " - " & <TableName>[Column2]
+        dataType: string
+        lineageTag: <generate-new-guid>
+
+    /// ===================
+    /// Measures
+    /// ===================
+    
+    measure '<MeasureName>' = 
+        /// Measure description here
+        SUM('<TableName>'[<NumericColumn>])
+        formatString: $#,##0.00
+        displayFolder: Totals
+        lineageTag: <generate-new-guid>
+
+    /// ===================
+    /// Hierarchies
+    /// ===================
+    
+    hierarchy '<HierarchyName>'
+        lineageTag: <generate-new-guid>
+
+        level '<Level1Name>'
+            lineageTag: <generate-new-guid>
+            column: '<ParentColumn>'
+
+        level '<Level2Name>'
+            lineageTag: <generate-new-guid>
+            column: '<ChildColumn>'
+
+    /// ===================
+    /// Partitions
+    /// ===================
+    
+    partition '<TableName>' = m
+        mode: import
+        source =
+            let
+                Source = <DataSourceReference>,
+                // Transformation steps
+                Result = Source
+            in
+                Result
+
+    /// ===================
+    /// Annotations
+    /// ===================
+    
+    annotation PBI_ResultType = Table

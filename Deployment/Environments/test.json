@@ -1,0 +1,66 @@
+{
+  "$schema": "./env-schema.json",
+  "environment": "test",
+  "description": "Test/QA environment configuration",
+  
+  "workspace": {
+    "id": "00000000-0000-0000-0000-000000000001",
+    "name": "Analytics - Test",
+    "capacityId": "00000000-0000-0000-0000-000000000010"
+  },
+  
+  "connections": {
+    "sqlServer": {
+      "server": "sql-test.database.windows.net",
+      "database": "AnalyticsDB_Test",
+      "authenticationType": "ServicePrincipal"
+    },
+    "azureStorage": {
+      "accountName": "stanalyticstest",
+      "containerName": "raw-data"
+    },
+    "sharePoint": {
+      "siteUrl": "https://contoso.sharepoint.com/sites/analytics-test"
+    },
+    "dataverse": {
+      "environmentUrl": "https://org-test.crm.dynamics.com"
+    }
+  },
+  
+  "parameters": {
+    "Environment": "Test",
+    "DataRefreshEnabled": true,
+    "DebugMode": false,
+    "SampleDataPercent": 50,
+    "DateRangeYears": 3,
+    "EnableIncrementalRefresh": true
+  },
+  
+  "features": {
+    "enableAdvancedAnalytics": true,
+    "enableAIFeatures": true,
+    "enableRLS": true,
+    "enableExport": true,
+    "enableSubscriptions": true
+  },
+  
+  "gateway": {
+    "clusterId": "00000000-0000-0000-0000-000000000020",
+    "usePersonalGateway": false
+  },
+  
+  "refresh": {
+    "schedule": {
+      "frequency": "Daily",
+      "times": ["06:00", "18:00"]
+    },
+    "timezone": "Eastern Standard Time",
+    "notifyOnFailure": ["qa-team@contoso.com", "dev-team@contoso.com"]
+  },
+  
+  "security": {
+    "rlsRoles": ["Tester", "QA", "UAT"],
+    "workspaceAdmins": ["qa-team@contoso.com"],
+    "allowExternalSharing": false
+  }
+}

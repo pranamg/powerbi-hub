@@ -1,0 +1,247 @@
+/// =============================================================================
+/// TMDL Date Table Template
+/// Description: Standard Date dimension table for Time Intelligence
+/// Usage: Customize date ranges and add fiscal periods as needed
+/// =============================================================================
+
+table 'Date'
+    lineageTag: date-table-001
+    dataCategory: Time
+    
+    /// Mark as date table
+    annotation __PBI_LocalDateTable = true
+    
+    /// ===================
+    /// Core Date Columns
+    /// ===================
+    
+    column Date
+        dataType: dateTime
+        isKey: true
+        isNullable: false
+        formatString: Short Date
+        lineageTag: date-col-001
+        summarizeBy: none
+        annotation SummarizationSetBy = Automatic
+
+    column Year
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        lineageTag: date-col-002
+        summarizeBy: none
+
+    column 'Year-Month'
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Year-Month Number'
+        lineageTag: date-col-003
+        summarizeBy: none
+
+    column 'Year-Month Number'
+        dataType: int64
+        isHidden: true
+        lineageTag: date-col-004
+        summarizeBy: none
+
+    column Quarter
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Quarter Number'
+        lineageTag: date-col-005
+        summarizeBy: none
+
+    column 'Quarter Number'
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        lineageTag: date-col-006
+        summarizeBy: none
+
+    column Month
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Month Number'
+        lineageTag: date-col-007
+        summarizeBy: none
+
+    column 'Month Number'
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        lineageTag: date-col-008
+        summarizeBy: none
+
+    column 'Month Short'
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Month Number'
+        lineageTag: date-col-009
+        summarizeBy: none
+
+    column Week
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        lineageTag: date-col-010
+        summarizeBy: none
+
+    column 'Day of Week'
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Day of Week Number'
+        lineageTag: date-col-011
+        summarizeBy: none
+
+    column 'Day of Week Number'
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        lineageTag: date-col-012
+        summarizeBy: none
+
+    column 'Day of Month'
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        lineageTag: date-col-013
+        summarizeBy: none
+
+    column 'Day of Year'
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        lineageTag: date-col-014
+        summarizeBy: none
+
+    /// ===================
+    /// Relative Date Flags
+    /// ===================
+    
+    column 'Is Current Year'
+        dataType: boolean
+        lineageTag: date-col-020
+        summarizeBy: none
+
+    column 'Is Current Quarter'
+        dataType: boolean
+        lineageTag: date-col-021
+        summarizeBy: none
+
+    column 'Is Current Month'
+        dataType: boolean
+        lineageTag: date-col-022
+        summarizeBy: none
+
+    column 'Is Current Week'
+        dataType: boolean
+        lineageTag: date-col-023
+        summarizeBy: none
+
+    column 'Is Weekday'
+        dataType: boolean
+        lineageTag: date-col-024
+        summarizeBy: none
+
+    /// ===================
+    /// Fiscal Calendar (Optional)
+    /// ===================
+    
+    column 'Fiscal Year'
+        dataType: int64
+        formatString: 0
+        lineageTag: date-col-030
+        summarizeBy: none
+
+    column 'Fiscal Quarter'
+        dataType: string
+        sortByColumn: 'Fiscal Quarter Number'
+        lineageTag: date-col-031
+        summarizeBy: none
+
+    column 'Fiscal Quarter Number'
+        dataType: int64
+        isHidden: true
+        lineageTag: date-col-032
+        summarizeBy: none
+
+    column 'Fiscal Month'
+        dataType: int64
+        formatString: 0
+        lineageTag: date-col-033
+        summarizeBy: none
+
+    /// ===================
+    /// Hierarchies
+    /// ===================
+    
+    hierarchy 'Calendar Hierarchy'
+        lineageTag: date-hier-001
+
+        level Year
+            lineageTag: date-hier-lvl-001
+            column: Year
+
+        level Quarter
+            lineageTag: date-hier-lvl-002
+            column: Quarter
+
+        level Month
+            lineageTag: date-hier-lvl-003
+            column: Month
+
+        level Date
+            lineageTag: date-hier-lvl-004
+            column: Date
+
+    hierarchy 'Fiscal Hierarchy'
+        lineageTag: date-hier-002
+
+        level 'Fiscal Year'
+            lineageTag: date-hier-lvl-010
+            column: 'Fiscal Year'
+
+        level 'Fiscal Quarter'
+            lineageTag: date-hier-lvl-011
+            column: 'Fiscal Quarter'
+
+        level Month
+            lineageTag: date-hier-lvl-012
+            column: Month
+
+    /// ===================
+    /// Calculated Table Definition
+    /// ===================
+    
+    partition 'Date' = calculated
+        mode: import
+        source =
+            VAR StartDate = DATE(2020, 1, 1)
+            VAR EndDate = DATE(2030, 12, 31)
+            VAR FiscalYearStartMonth = 7  -- July fiscal year start
+            RETURN
+            ADDCOLUMNS(
+                CALENDAR(StartDate, EndDate),
+                "Year", YEAR([Date]),
+                "Year-Month", FORMAT([Date], "YYYY-MM"),
+                "Year-Month Number", YEAR([Date]) * 100 + MONTH([Date]),
+                "Quarter", "Q" & QUARTER([Date]),
+                "Quarter Number", QUARTER([Date]),
+                "Month", FORMAT([Date], "MMMM"),
+                "Month Number", MONTH([Date]),
+                "Month Short", FORMAT([Date], "MMM"),
+                "Week", WEEKNUM([Date]),
+                "Day of Week", FORMAT([Date], "dddd"),
+                "Day of Week Number", WEEKDAY([Date], 2),
+                "Day of Month", DAY([Date]),
+                "Day of Year", DATEDIFF(DATE(YEAR([Date]), 1, 1), [Date], DAY) + 1,
+                "Is Current Year", YEAR([Date]) = YEAR(TODAY()),
+                "Is Current Quarter", YEAR([Date]) = YEAR(TODAY()) && QUARTER([Date]) = QUARTER(TODAY()),
+                "Is Current Month", YEAR([Date]) = YEAR(TODAY()) && MONTH([Date]) = MONTH(TODAY()),
+                "Is Current Week", WEEKNUM([Date]) = WEEKNUM(TODAY()) && YEAR([Date]) = YEAR(TODAY()),
+                "Is Weekday", WEEKDAY([Date], 2) <= 5,
+                "Fiscal Year", IF(MONTH([Date]) >= FiscalYearStartMonth, YEAR([Date]) + 1, YEAR([Date])),
+                "Fiscal Quarter", "FQ" & CEILING((MONTH([Date]) - FiscalYearStartMonth + 12) / 3, 1),
+                "Fiscal Quarter Number", CEILING((MONTH([Date]) - FiscalYearStartMonth + 12) / 3, 1),
+                "Fiscal Month", MOD(MONTH([Date]) - FiscalYearStartMonth + 12, 12) + 1
+            )

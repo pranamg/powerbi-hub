@@ -1,0 +1,63 @@
+{
+  "$schema": "./env-schema.json",
+  "environment": "dev",
+  "description": "Development environment configuration",
+  
+  "workspace": {
+    "id": "00000000-0000-0000-0000-000000000000",
+    "name": "Analytics - Development",
+    "capacityId": null
+  },
+  
+  "connections": {
+    "sqlServer": {
+      "server": "sql-dev.database.windows.net",
+      "database": "AnalyticsDB_Dev",
+      "authenticationType": "ServicePrincipal"
+    },
+    "azureStorage": {
+      "accountName": "stanalyticsdev",
+      "containerName": "raw-data"
+    },
+    "sharePoint": {
+      "siteUrl": "https://contoso.sharepoint.com/sites/analytics-dev"
+    },
+    "dataverse": {
+      "environmentUrl": "https://org-dev.crm.dynamics.com"
+    }
+  },
+  
+  "parameters": {
+    "Environment": "Development",
+    "DataRefreshEnabled": true,
+    "DebugMode": true,
+    "SampleDataPercent": 10,
+    "DateRangeYears": 2,
+    "EnableIncrementalRefresh": false
+  },
+  
+  "features": {
+    "enableAdvancedAnalytics": true,
+    "enableAIFeatures": true,
+    "enableRLS": true,
+    "enableExport": true,
+    "enableSubscriptions": false
+  },
+  
+  "gateway": {
+    "clusterId": null,
+    "usePersonalGateway": true
+  },
+  
+  "refresh": {
+    "schedule": null,
+    "timezone": "UTC",
+    "notifyOnFailure": ["dev-team@contoso.com"]
+  },
+  
+  "security": {
+    "rlsRoles": ["Developer", "Tester"],
+    "workspaceAdmins": ["dev-team@contoso.com"],
+    "allowExternalSharing": false
+  }
+}

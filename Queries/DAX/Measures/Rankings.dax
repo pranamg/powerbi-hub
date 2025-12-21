@@ -1,0 +1,219 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// RANKING & TOP N MEASURES
+// These measures help with dynamic rankings, Top N analysis, and percentile calcs
+// Replace [Sales Amount] with your actual measure
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────────────────────────
+// BASIC RANKINGS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Rank by Sales (Descending - highest = 1)
+Sales Rank = 
+RANKX(
+    ALL('Product'[Product Name]),
+    [Sales Amount],
+    ,
+    DESC,
+    DENSE
+)
+
+// Rank by Sales (Ascending - lowest = 1)
+Sales Rank Asc = 
+RANKX(
+    ALL('Product'[Product Name]),
+    [Sales Amount],
+    ,
+    ASC,
+    DENSE
+)
+
+// Rank within Category
+Sales Rank in Category = 
+RANKX(
+    ALLEXCEPT('Product', 'Product'[Category]),
+    [Sales Amount],
+    ,
+    DESC,
+    DENSE
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// DYNAMIC TOP N
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Top N Products (use with a parameter table or slicer)
+Top N Products = 
+VAR TopN = SELECTEDVALUE('Parameters'[TopN Value], 10)  // Default to 10
+VAR CurrentRank = [Sales Rank]
+RETURN
+    IF(CurrentRank <= TopN, [Sales Amount], BLANK())
+
+// Is Top N Flag (useful for conditional formatting)
+Is Top N = 
+VAR TopN = SELECTEDVALUE('Parameters'[TopN Value], 10)
+VAR CurrentRank = [Sales Rank]
+RETURN
+    IF(CurrentRank <= TopN, TRUE(), FALSE())
+
+// Top N Sales Total
+Top N Total = 
+VAR TopN = SELECTEDVALUE('Parameters'[TopN Value], 10)
+RETURN
+CALCULATE(
+    [Sales Amount],
+    TOPN(TopN, ALL('Product'[Product Name]), [Sales Amount], DESC)
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// BOTTOM N ANALYSIS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Bottom N Products
+Bottom N Products = 
+VAR BottomN = SELECTEDVALUE('Parameters'[BottomN Value], 10)
+VAR CurrentRankAsc = [Sales Rank Asc]
+RETURN
+    IF(CurrentRankAsc <= BottomN, [Sales Amount], BLANK())
+
+// Bottom N Total
+Bottom N Total = 
+VAR BottomN = SELECTEDVALUE('Parameters'[BottomN Value], 10)
+RETURN
+CALCULATE(
+    [Sales Amount],
+    TOPN(BottomN, ALL('Product'[Product Name]), [Sales Amount], ASC)
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// TOP N WITH "OTHERS" GROUPING
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Shows Top N items, groups rest as "Others"
+Sales with Others = 
+VAR TopN = SELECTEDVALUE('Parameters'[TopN Value], 5)
+VAR CurrentProduct = SELECTEDVALUE('Product'[Product Name])
+VAR CurrentRank = [Sales Rank]
+VAR TotalSales = CALCULATE([Sales Amount], ALL('Product'))
+VAR TopNSales = [Top N Total]
+RETURN
+    IF(
+        HASONEVALUE('Product'[Product Name]),
+        IF(CurrentRank <= TopN, [Sales Amount], BLANK()),
+        TotalSales - TopNSales  // "Others" bucket
+    )
+
+// ───────────────────────────────────────────────────────────────────────────────
+// PERCENTILE & QUARTILE RANKINGS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Percentile Rank (0-100%)
+Sales Percentile Rank = 
+VAR TotalProducts = COUNTROWS(ALL('Product'[Product Name]))
+VAR CurrentRank = [Sales Rank]
+RETURN
+    DIVIDE(TotalProducts - CurrentRank + 1, TotalProducts) * 100
+
+// Quartile Assignment
+Sales Quartile = 
+VAR Percentile = [Sales Percentile Rank]
+RETURN
+    SWITCH(TRUE(),
+        Percentile >= 75, "Top 25%",
+        Percentile >= 50, "Upper Middle",
+        Percentile >= 25, "Lower Middle",
+        "Bottom 25%"
+    )
+
+// Decile Assignment
+Sales Decile = 
+VAR Percentile = [Sales Percentile Rank]
+RETURN
+    SWITCH(TRUE(),
+        Percentile >= 90, "Top 10%",
+        Percentile >= 80, "80-90%",
+        Percentile >= 70, "70-80%",
+        Percentile >= 60, "60-70%",
+        Percentile >= 50, "50-60%",
+        Percentile >= 40, "40-50%",
+        Percentile >= 30, "30-40%",
+        Percentile >= 20, "20-30%",
+        Percentile >= 10, "10-20%",
+        "Bottom 10%"
+    )
+
+// ───────────────────────────────────────────────────────────────────────────────
+// CUMULATIVE PERCENTAGE (PARETO)
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Cumulative Sum for Pareto
+Sales Cumulative = 
+VAR CurrentProductSales = [Sales Amount]
+VAR AllProductsSorted = 
+    FILTER(
+        ALL('Product'[Product Name]),
+        [Sales Amount] >= CurrentProductSales
+    )
+RETURN
+    SUMX(AllProductsSorted, [Sales Amount])
+
+// Cumulative Percentage for Pareto
+Sales Cumulative % = 
+VAR CumulativeSum = [Sales Cumulative]
+VAR TotalSum = CALCULATE([Sales Amount], ALL('Product'))
+RETURN
+    DIVIDE(CumulativeSum, TotalSum)
+
+// Pareto Classification (80/20 rule)
+Pareto Class = 
+VAR CumPct = [Sales Cumulative %]
+RETURN
+    IF(CumPct <= 0.8, "Vital Few (80%)", "Trivial Many (20%)")
+
+// ───────────────────────────────────────────────────────────────────────────────
+// RANK CHANGE (Period over Period)
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Current Period Rank
+Current Rank = [Sales Rank]
+
+// Previous Period Rank
+Previous Rank = 
+CALCULATE(
+    [Sales Rank],
+    PREVIOUSMONTH('Date'[Date])
+)
+
+// Rank Change (positive = improved ranking)
+Rank Change = 
+VAR PrevRank = [Previous Rank]
+VAR CurrRank = [Current Rank]
+RETURN
+    IF(
+        NOT ISBLANK(PrevRank) && NOT ISBLANK(CurrRank),
+        PrevRank - CurrRank,
+        BLANK()
+    )
+
+// Rank Change Icon (for conditional formatting)
+Rank Change Icon = 
+VAR Change = [Rank Change]
+RETURN
+    SWITCH(TRUE(),
+        Change > 0, "▲",
+        Change < 0, "▼",
+        "●"
+    )
+
+// ───────────────────────────────────────────────────────────────────────────────
+// ABC ANALYSIS
+// ───────────────────────────────────────────────────────────────────────────────
+
+ABC Classification = 
+VAR CumPct = [Sales Cumulative %]
+RETURN
+    SWITCH(TRUE(),
+        CumPct <= 0.7, "A - High Value",
+        CumPct <= 0.9, "B - Medium Value",
+        "C - Low Value"
+    )

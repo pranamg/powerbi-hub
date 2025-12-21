@@ -1,0 +1,73 @@
+{
+  "$schema": "./env-schema.json",
+  "environment": "prod",
+  "description": "Production environment configuration",
+  
+  "workspace": {
+    "id": "00000000-0000-0000-0000-000000000002",
+    "name": "Analytics - Production",
+    "capacityId": "00000000-0000-0000-0000-000000000011"
+  },
+  
+  "connections": {
+    "sqlServer": {
+      "server": "sql-prod.database.windows.net",
+      "database": "AnalyticsDB",
+      "authenticationType": "ServicePrincipal"
+    },
+    "azureStorage": {
+      "accountName": "stanalyticsprod",
+      "containerName": "raw-data"
+    },
+    "sharePoint": {
+      "siteUrl": "https://contoso.sharepoint.com/sites/analytics"
+    },
+    "dataverse": {
+      "environmentUrl": "https://org.crm.dynamics.com"
+    }
+  },
+  
+  "parameters": {
+    "Environment": "Production",
+    "DataRefreshEnabled": true,
+    "DebugMode": false,
+    "SampleDataPercent": 100,
+    "DateRangeYears": 5,
+    "EnableIncrementalRefresh": true
+  },
+  
+  "features": {
+    "enableAdvancedAnalytics": true,
+    "enableAIFeatures": true,
+    "enableRLS": true,
+    "enableExport": true,
+    "enableSubscriptions": true
+  },
+  
+  "gateway": {
+    "clusterId": "00000000-0000-0000-0000-000000000021",
+    "usePersonalGateway": false
+  },
+  
+  "refresh": {
+    "schedule": {
+      "frequency": "Daily",
+      "times": ["04:00", "08:00", "12:00", "16:00", "20:00"]
+    },
+    "timezone": "Eastern Standard Time",
+    "notifyOnFailure": ["bi-ops@contoso.com", "on-call@contoso.com"]
+  },
+  
+  "security": {
+    "rlsRoles": ["Sales", "Marketing", "Finance", "Executive"],
+    "workspaceAdmins": ["bi-admins@contoso.com"],
+    "allowExternalSharing": false
+  },
+  
+  "monitoring": {
+    "enableUsageMetrics": true,
+    "auditLogRetentionDays": 90,
+    "alertOnRefreshFailure": true,
+    "alertOnCapacityThreshold": 80
+  }
+}

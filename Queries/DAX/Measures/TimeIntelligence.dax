@@ -1,0 +1,234 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// TIME INTELLIGENCE MEASURES
+// Prerequisites: A proper Date table marked as Date table in the model
+// Replace [Sales Amount] with your actual measure
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────────────────────────
+// YEAR-TO-DATE (YTD)
+// ───────────────────────────────────────────────────────────────────────────────
+
+Sales YTD = 
+CALCULATE(
+    [Sales Amount],
+    DATESYTD('Date'[Date])
+)
+
+// With custom fiscal year end (e.g., June 30)
+Sales YTD Fiscal = 
+CALCULATE(
+    [Sales Amount],
+    DATESYTD('Date'[Date], "6/30")
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// QUARTER-TO-DATE (QTD)
+// ───────────────────────────────────────────────────────────────────────────────
+
+Sales QTD = 
+CALCULATE(
+    [Sales Amount],
+    DATESQTD('Date'[Date])
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// MONTH-TO-DATE (MTD)
+// ───────────────────────────────────────────────────────────────────────────────
+
+Sales MTD = 
+CALCULATE(
+    [Sales Amount],
+    DATESMTD('Date'[Date])
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// PREVIOUS PERIOD COMPARISONS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Previous Year
+Sales PY = 
+CALCULATE(
+    [Sales Amount],
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+// Previous Year YTD
+Sales PYTD = 
+CALCULATE(
+    [Sales Amount],
+    DATESYTD(SAMEPERIODLASTYEAR('Date'[Date]))
+)
+
+// Previous Quarter
+Sales PQ = 
+CALCULATE(
+    [Sales Amount],
+    PREVIOUSQUARTER('Date'[Date])
+)
+
+// Previous Month
+Sales PM = 
+CALCULATE(
+    [Sales Amount],
+    PREVIOUSMONTH('Date'[Date])
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// YEAR-OVER-YEAR (YoY) GROWTH
+// ───────────────────────────────────────────────────────────────────────────────
+
+// YoY Absolute Change
+Sales YoY Change = 
+VAR CurrentValue = [Sales Amount]
+VAR PriorYearValue = [Sales PY]
+RETURN
+    CurrentValue - PriorYearValue
+
+// YoY Percentage Change
+Sales YoY % = 
+VAR CurrentValue = [Sales Amount]
+VAR PriorYearValue = [Sales PY]
+RETURN
+    DIVIDE(CurrentValue - PriorYearValue, PriorYearValue)
+
+// YoY YTD Percentage Change
+Sales YTD YoY % = 
+VAR CurrentYTD = [Sales YTD]
+VAR PriorYTD = [Sales PYTD]
+RETURN
+    DIVIDE(CurrentYTD - PriorYTD, PriorYTD)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// MONTH-OVER-MONTH (MoM) GROWTH
+// ───────────────────────────────────────────────────────────────────────────────
+
+Sales MoM Change = 
+VAR CurrentValue = [Sales Amount]
+VAR PriorMonthValue = [Sales PM]
+RETURN
+    CurrentValue - PriorMonthValue
+
+Sales MoM % = 
+VAR CurrentValue = [Sales Amount]
+VAR PriorMonthValue = [Sales PM]
+RETURN
+    DIVIDE(CurrentValue - PriorMonthValue, PriorMonthValue)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// ROLLING PERIODS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Rolling 3 Months
+Sales Rolling 3M = 
+CALCULATE(
+    [Sales Amount],
+    DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -3, MONTH)
+)
+
+// Rolling 12 Months
+Sales Rolling 12M = 
+CALCULATE(
+    [Sales Amount],
+    DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -12, MONTH)
+)
+
+// Rolling 52 Weeks
+Sales Rolling 52W = 
+CALCULATE(
+    [Sales Amount],
+    DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -52, WEEK)
+)
+
+// Last 30 Days
+Sales Last 30 Days = 
+CALCULATE(
+    [Sales Amount],
+    DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -30, DAY)
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// MOVING AVERAGES
+// ───────────────────────────────────────────────────────────────────────────────
+
+// 3-Month Moving Average
+Sales 3M Moving Avg = 
+AVERAGEX(
+    DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -3, MONTH),
+    CALCULATE([Sales Amount])
+)
+
+// 12-Month Moving Average
+Sales 12M Moving Avg = 
+AVERAGEX(
+    DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -12, MONTH),
+    CALCULATE([Sales Amount])
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// PERIOD OVER PERIOD (Dynamic)
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Parallel Period (flexible offset)
+Sales Parallel Period = 
+VAR OffsetYears = -1  // Change this value or use a parameter
+RETURN
+CALCULATE(
+    [Sales Amount],
+    PARALLELPERIOD('Date'[Date], OffsetYears, YEAR)
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// RUNNING TOTAL
+// ───────────────────────────────────────────────────────────────────────────────
+
+Sales Running Total = 
+CALCULATE(
+    [Sales Amount],
+    FILTER(
+        ALL('Date'),
+        'Date'[Date] <= MAX('Date'[Date])
+    )
+)
+
+// Running Total within Year (resets each year)
+Sales Running Total YTD = 
+CALCULATE(
+    [Sales Amount],
+    FILTER(
+        ALL('Date'),
+        'Date'[Date] <= MAX('Date'[Date]) &&
+        'Date'[Year] = MAX('Date'[Year])
+    )
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// FIRST/LAST VALUES IN PERIOD
+// ───────────────────────────────────────────────────────────────────────────────
+
+// First Day of Month Value
+Sales First Day of Month = 
+CALCULATE(
+    [Sales Amount],
+    FIRSTDATE('Date'[Date])
+)
+
+// Last Day of Month Value
+Sales Last Day of Month = 
+CALCULATE(
+    [Sales Amount],
+    LASTDATE('Date'[Date])
+)
+
+// Opening Balance (first day with data)
+Opening Balance = 
+CALCULATE(
+    [Sales Amount],
+    OPENINGBALANCEMONTH('Date'[Date])
+)
+
+// Closing Balance (last day with data)
+Closing Balance = 
+CALCULATE(
+    [Sales Amount],
+    CLOSINGBALANCEMONTH('Date'[Date])
+)

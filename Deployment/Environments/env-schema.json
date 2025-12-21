@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Power BI Environment Configuration",
+  "description": "Schema for Power BI deployment environment configuration files",
+  "type": "object",
+  "required": ["environment", "workspace", "connections", "parameters"],
+  
+  "properties": {
+    "environment": {
+      "type": "string",
+      "enum": ["local", "dev", "test", "prod"],
+      "description": "Environment identifier"
+    },
+    "description": {
+      "type": "string",
+      "description": "Human-readable description of this environment"
+    },
+    "workspace": {
+      "type": "object",
+      "required": ["id", "name"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$|^<.*>$",
+          "description": "Power BI workspace GUID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Workspace display name"
+        },
+        "capacityId": {
+          "type": ["string", "null"],
+          "description": "Premium/Fabric capacity GUID"
+        }
+      }
+    },
+    "connections": {
+      "type": "object",
+      "description": "Data source connection settings",
+      "additionalProperties": {
+        "type": "object"
+      }
+    },
+    "parameters": {
+      "type": "object",
+      "description": "Dataset parameters to configure",
+      "additionalProperties": true
+    },
+    "features": {
+      "type": "object",
+      "description": "Feature flags for this environment",
+      "additionalProperties": {
+        "type": "boolean"
+      }
+    },
+    "gateway": {
+      "type": "object",
+      "properties": {
+        "clusterId": {
+          "type": ["string", "null"],
+          "description": "On-premises gateway cluster ID"
+        },
+        "usePersonalGateway": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "refresh": {
+      "type": "object",
+      "properties": {
+        "schedule": {
+          "type": ["object", "null"],
+          "properties": {
+            "frequency": {
+              "type": "string",
+              "enum": ["Daily", "Weekly"]
+            },
+            "times": {
+              "type": "array",
+              "items": { "type": "string" }
+            },
+            "days": {
+              "type": "array",
+              "items": { "type": "string" }
+            }
+          }
+        },
+        "timezone": {
+          "type": "string"
+        },
+        "notifyOnFailure": {
+          "type": "array",
+          "items": { "type": "string", "format": "email" }
+        }
+      }
+    },
+    "security": {
+      "type": "object",
+      "properties": {
+        "rlsRoles": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "workspaceAdmins": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "allowExternalSharing": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    },
+    "monitoring": {
+      "type": "object",
+      "properties": {
+        "enableUsageMetrics": { "type": "boolean" },
+        "auditLogRetentionDays": { "type": "integer" },
+        "alertOnRefreshFailure": { "type": "boolean" },
+        "alertOnCapacityThreshold": { "type": "integer", "minimum": 0, "maximum": 100 }
+      }
+    }
+  }
+}

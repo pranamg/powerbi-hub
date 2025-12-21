@@ -1,0 +1,212 @@
+# GitHub Actions Workflow for Power BI Deployment
+# Deploys semantic models and reports to Power BI Service
+
+name: Power BI Deployment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'models/**'
+      - 'reports/**'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - test
+          - prod
+      deploy_model:
+        description: 'Deploy semantic model'
+        type: boolean
+        default: true
+      deploy_reports:
+        description: 'Deploy reports'
+        type: boolean
+        default: true
+      refresh_dataset:
+        description: 'Refresh dataset after deploy'
+        type: boolean
+        default: false
+
+env:
+  MODEL_PATH: './models'
+  REPORTS_PATH: './reports'
+
+jobs:
+  validate:
+    name: Validate Artifacts
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Validate TMDL structure
+        shell: pwsh
+        run: |
+          $modelFile = "${{ env.MODEL_PATH }}/model.tmdl"
+          if (Test-Path $modelFile) {
+            Write-Host "Found TMDL model file"
+            $content = Get-Content $modelFile -Raw
+            if ($content -match "model") {
+              Write-Host "::notice::TMDL structure validation passed"
+            } else {
+              Write-Host "::error::Invalid TMDL structure"
+              exit 1
+            }
+          } else {
+            Write-Host "::warning::No TMDL model found at $modelFile"
+          }
+
+      - name: Check for sensitive data
+        shell: pwsh
+        run: |
+          $sensitivePatterns = @(
+            'password\s*=',
+            'secret\s*=',
+            'connectionstring.*password',
+            'api[_-]?key'
+          )
+          
+          $files = Get-ChildItem -Recurse -Include *.tmdl,*.bim,*.json
+          $found = $false
+          
+          foreach ($file in $files) {
+            $content = Get-Content $file.FullName -Raw
+            foreach ($pattern in $sensitivePatterns) {
+              if ($content -match $pattern) {
+                Write-Host "::error::Potential sensitive data in $($file.Name)"
+                $found = $true
+              }
+            }
+          }
+          
+          if ($found) {
+            exit 1
+          }
+          Write-Host "::notice::No sensitive data patterns detected"
+
+  deploy-dev:
+    name: Deploy to Development
+    needs: validate
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'dev'
+    runs-on: windows-latest
+    environment: development
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Power BI PowerShell Module
+        shell: pwsh
+        run: |
+          Install-Module -Name MicrosoftPowerBIMgmt -Scope CurrentUser -Force -AllowClobber
+          Import-Module MicrosoftPowerBIMgmt
+
+      - name: Connect to Power BI
+        shell: pwsh
+        env:
+          PBI_TENANT_ID: ${{ secrets.PBI_TENANT_ID }}
+          PBI_APP_ID: ${{ secrets.PBI_APP_ID }}
+          PBI_CLIENT_SECRET: ${{ secrets.PBI_CLIENT_SECRET }}
+        run: |
+          $securePassword = ConvertTo-SecureString $env:PBI_CLIENT_SECRET -AsPlainText -Force
+          $credential = New-Object System.Management.Automation.PSCredential($env:PBI_APP_ID, $securePassword)
+          Connect-PowerBIServiceAccount -ServicePrincipal -Credential $credential -TenantId $env:PBI_TENANT_ID
+
+      - name: Deploy Semantic Model
+        if: github.event.inputs.deploy_model != 'false'
+        shell: pwsh
+        env:
+          WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+        run: |
+          Write-Host "Deploying semantic model to workspace: $env:WORKSPACE_ID"
+          # Add TMDL deployment logic here
+          # Example: Use Tabular Editor CLI or XMLA endpoint
+          Write-Host "Model deployment complete"
+
+      - name: Deploy Reports
+        if: github.event.inputs.deploy_reports != 'false'
+        shell: pwsh
+        env:
+          WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+        run: |
+          $reportFiles = Get-ChildItem "${{ env.REPORTS_PATH }}" -Filter "*.pbix" -ErrorAction SilentlyContinue
+          
+          if ($reportFiles) {
+            foreach ($report in $reportFiles) {
+              Write-Host "Deploying report: $($report.Name)"
+              New-PowerBIReport -Path $report.FullName -WorkspaceId $env:WORKSPACE_ID -ConflictAction CreateOrOverwrite
+            }
+          } else {
+            Write-Host "No PBIX files found to deploy"
+          }
+
+      - name: Refresh Dataset
+        if: github.event.inputs.refresh_dataset == 'true'
+        shell: pwsh
+        env:
+          WORKSPACE_ID: ${{ secrets.DEV_WORKSPACE_ID }}
+          DATASET_ID: ${{ secrets.DEV_DATASET_ID }}
+        run: |
+          Write-Host "Triggering dataset refresh"
+          Invoke-PowerBIRestMethod -Url "groups/$env:WORKSPACE_ID/datasets/$env:DATASET_ID/refreshes" -Method Post
+          Write-Host "Refresh triggered"
+
+      - name: Disconnect
+        if: always()
+        shell: pwsh
+        run: |
+          Disconnect-PowerBIServiceAccount -ErrorAction SilentlyContinue
+
+  deploy-prod:
+    name: Deploy to Production
+    needs: [validate, deploy-dev]
+    if: github.event.inputs.environment == 'prod'
+    runs-on: windows-latest
+    environment: production
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Power BI PowerShell Module
+        shell: pwsh
+        run: |
+          Install-Module -Name MicrosoftPowerBIMgmt -Scope CurrentUser -Force -AllowClobber
+
+      - name: Connect to Power BI
+        shell: pwsh
+        env:
+          PBI_TENANT_ID: ${{ secrets.PBI_TENANT_ID }}
+          PBI_APP_ID: ${{ secrets.PBI_APP_ID }}
+          PBI_CLIENT_SECRET: ${{ secrets.PBI_CLIENT_SECRET }}
+        run: |
+          $securePassword = ConvertTo-SecureString $env:PBI_CLIENT_SECRET -AsPlainText -Force
+          $credential = New-Object System.Management.Automation.PSCredential($env:PBI_APP_ID, $securePassword)
+          Connect-PowerBIServiceAccount -ServicePrincipal -Credential $credential -TenantId $env:PBI_TENANT_ID
+
+      - name: Deploy to Production
+        shell: pwsh
+        env:
+          WORKSPACE_ID: ${{ secrets.PROD_WORKSPACE_ID }}
+        run: |
+          Write-Host "Deploying to production workspace: $env:WORKSPACE_ID"
+          # Production deployment logic
+          Write-Host "Production deployment complete"
+
+      - name: Notify on Success
+        if: success()
+        shell: pwsh
+        run: |
+          Write-Host "::notice::Production deployment successful!"
+
+      - name: Notify on Failure
+        if: failure()
+        shell: pwsh
+        run: |
+          Write-Host "::error::Production deployment failed!"

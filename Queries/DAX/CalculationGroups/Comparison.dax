@@ -1,0 +1,383 @@
+// ============================================================================
+// COMPARISON CALCULATION GROUP
+// ============================================================================
+// Purpose: Dynamic variance and comparison calculations for any measure
+// Use cases: Budget vs Actual, Period comparisons, Target analysis
+// ============================================================================
+
+// ---------------------------------------------------------------------------
+// TMDL DEFINITION
+// ---------------------------------------------------------------------------
+/*
+calculationGroup Comparison
+    description: "Dynamic variance and comparison calculations"
+    precedence: 20
+    
+    calculationItem 'Actual'
+        ordinal: 0
+        description: "Current/Actual values"
+        expression: SELECTEDMEASURE()
+        formatStringExpression: SELECTEDMEASUREFORMATSTRING()
+    
+    calculationItem 'Budget'
+        ordinal: 1
+        description: "Budget values"
+        expression: ```
+            CALCULATE(
+                SELECTEDMEASURE(),
+                USERELATIONSHIP(Budget[Date], 'Date'[Date])
+            )
+            ```
+        formatStringExpression: SELECTEDMEASUREFORMATSTRING()
+    
+    calculationItem 'Variance'
+        ordinal: 2
+        description: "Actual minus Budget"
+        expression: ```
+            VAR Actual = SELECTEDMEASURE()
+            VAR BudgetVal = CALCULATE(
+                SELECTEDMEASURE(),
+                USERELATIONSHIP(Budget[Date], 'Date'[Date])
+            )
+            RETURN Actual - BudgetVal
+            ```
+        formatStringExpression: SELECTEDMEASUREFORMATSTRING()
+    
+    calculationItem 'Variance %'
+        ordinal: 3
+        description: "Percentage variance from budget"
+        expression: ```
+            VAR Actual = SELECTEDMEASURE()
+            VAR BudgetVal = CALCULATE(
+                SELECTEDMEASURE(),
+                USERELATIONSHIP(Budget[Date], 'Date'[Date])
+            )
+            RETURN DIVIDE(Actual - BudgetVal, BudgetVal)
+            ```
+        formatStringExpression: "0.0%;-0.0%;0.0%"
+*/
+
+// ---------------------------------------------------------------------------
+// CALCULATION ITEM IMPLEMENTATIONS
+// ---------------------------------------------------------------------------
+
+// 1. Actual (Base Value)
+// ---------------------------------------------------------------------------
+SELECTEDMEASURE()
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 2. Budget
+// ---------------------------------------------------------------------------
+// Option A: Using relationship to Budget table
+CALCULATE(
+    SELECTEDMEASURE(),
+    USERELATIONSHIP(Budget[Date], 'Date'[Date])
+)
+
+// Option B: Using separate Budget measure naming convention
+// Assumes budget measures follow pattern: [Measure Name] Budget
+VAR MeasureName = SELECTEDMEASURENAME()
+VAR BudgetMeasureName = MeasureName & " Budget"
+RETURN
+    -- This requires reflection which isn't available
+    -- Use Option A or create explicit budget measures
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 3. Variance (Actual - Budget)
+// ---------------------------------------------------------------------------
+VAR ActualValue = SELECTEDMEASURE()
+VAR BudgetValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        USERELATIONSHIP(Budget[Date], 'Date'[Date])
+    )
+RETURN
+    ActualValue - BudgetValue
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 4. Variance % (Percentage Difference)
+// ---------------------------------------------------------------------------
+VAR ActualValue = SELECTEDMEASURE()
+VAR BudgetValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        USERELATIONSHIP(Budget[Date], 'Date'[Date])
+    )
+RETURN
+    DIVIDE(ActualValue - BudgetValue, BudgetValue)
+
+// Format: "0.0%;-0.0%;0.0%"
+
+
+// 5. Target
+// ---------------------------------------------------------------------------
+// Uses a Target table with targets by measure and dimension
+CALCULATE(
+    SELECTEDMEASURE(),
+    USERELATIONSHIP(Target[Date], 'Date'[Date])
+)
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 6. Target Achievement %
+// ---------------------------------------------------------------------------
+VAR ActualValue = SELECTEDMEASURE()
+VAR TargetValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        USERELATIONSHIP(Target[Date], 'Date'[Date])
+    )
+RETURN
+    DIVIDE(ActualValue, TargetValue)
+
+// Format: "0.0%"
+
+
+// 7. Prior Year
+// ---------------------------------------------------------------------------
+CALCULATE(
+    SELECTEDMEASURE(),
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 8. YoY Change
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR PriorYearValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        SAMEPERIODLASTYEAR('Date'[Date])
+    )
+RETURN
+    CurrentValue - PriorYearValue
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 9. YoY Change %
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR PriorYearValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        SAMEPERIODLASTYEAR('Date'[Date])
+    )
+RETURN
+    DIVIDE(CurrentValue - PriorYearValue, PriorYearValue)
+
+// Format: "0.0%;-0.0%;0.0%"
+
+
+// 10. Prior Period
+// ---------------------------------------------------------------------------
+// Dynamic - works with whatever period is selected
+VAR CurrentValue = SELECTEDMEASURE()
+VAR MinDate = MIN('Date'[Date])
+VAR MaxDate = MAX('Date'[Date])
+VAR DaysDiff = DATEDIFF(MinDate, MaxDate, DAY) + 1
+RETURN
+    CALCULATE(
+        SELECTEDMEASURE(),
+        DATEADD('Date'[Date], -DaysDiff, DAY)
+    )
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 11. Period over Period Change %
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR MinDate = MIN('Date'[Date])
+VAR MaxDate = MAX('Date'[Date])
+VAR DaysDiff = DATEDIFF(MinDate, MaxDate, DAY) + 1
+VAR PriorValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        DATEADD('Date'[Date], -DaysDiff, DAY)
+    )
+RETURN
+    DIVIDE(CurrentValue - PriorValue, PriorValue)
+
+// Format: "0.0%;-0.0%;0.0%"
+
+
+// 12. Forecast
+// ---------------------------------------------------------------------------
+// Uses forecast table or calculated forecast
+VAR ActualValue = SELECTEDMEASURE()
+VAR ForecastValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        USERELATIONSHIP(Forecast[Date], 'Date'[Date])
+    )
+-- Return actual if available, otherwise forecast
+RETURN
+    IF(
+        NOT ISBLANK(ActualValue) && ActualValue <> 0,
+        ActualValue,
+        ForecastValue
+    )
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 13. Forecast Variance
+// ---------------------------------------------------------------------------
+VAR ActualValue = SELECTEDMEASURE()
+VAR ForecastValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        USERELATIONSHIP(Forecast[Date], 'Date'[Date])
+    )
+RETURN
+    ActualValue - ForecastValue
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// ---------------------------------------------------------------------------
+// ADVANCED COMPARISON PATTERNS
+// ---------------------------------------------------------------------------
+
+// 14. Rolling Average Comparison
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR RollingAvg = 
+    CALCULATE(
+        AVERAGEX(
+            DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -3, MONTH),
+            CALCULATE(SELECTEDMEASURE())
+        )
+    )
+RETURN
+    CurrentValue - RollingAvg
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 15. Percentile Rank
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR AllValues = 
+    ADDCOLUMNS(
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        "@Value", CALCULATE(SELECTEDMEASURE())
+    )
+VAR Rank = 
+    COUNTROWS(
+        FILTER(AllValues, [@Value] <= CurrentValue)
+    )
+VAR Total = COUNTROWS(AllValues)
+RETURN
+    DIVIDE(Rank, Total)
+
+// Format: "0.0%"
+
+
+// 16. Contribution to Total
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR TotalValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        REMOVEFILTERS()
+    )
+RETURN
+    DIVIDE(CurrentValue, TotalValue)
+
+// Format: "0.0%"
+
+
+// 17. Contribution to Parent
+// ---------------------------------------------------------------------------
+// Shows contribution to the parent level in a hierarchy
+VAR CurrentValue = SELECTEDMEASURE()
+VAR ParentValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        ALLEXCEPT('Product', 'Product'[Category])
+    )
+RETURN
+    DIVIDE(CurrentValue, ParentValue)
+
+// Format: "0.0%"
+
+
+// 18. Index (Normalized to 100)
+// ---------------------------------------------------------------------------
+// First period = 100, subsequent periods relative
+VAR CurrentValue = SELECTEDMEASURE()
+VAR FirstValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        FIRSTNONBLANK('Date'[Date], 1)
+    )
+RETURN
+    DIVIDE(CurrentValue, FirstValue) * 100
+
+// Format: "0.0"
+
+
+// ---------------------------------------------------------------------------
+// CONDITIONAL FORMATTING SUPPORT
+// ---------------------------------------------------------------------------
+
+// 19. Variance with Conditional Logic
+// ---------------------------------------------------------------------------
+VAR ActualValue = SELECTEDMEASURE()
+VAR BudgetValue = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        USERELATIONSHIP(Budget[Date], 'Date'[Date])
+    )
+VAR Variance = ActualValue - BudgetValue
+VAR VariancePct = DIVIDE(Variance, BudgetValue)
+RETURN
+    Variance
+    -- Use this with conditional formatting rule:
+    -- Green if > 0, Red if < 0
+
+// Icon format based on threshold:
+VAR VariancePct = DIVIDE(ActualValue - BudgetValue, BudgetValue)
+RETURN
+    SWITCH(
+        TRUE(),
+        VariancePct >= 0.05, "▲",
+        VariancePct > -0.05, "●",
+        "▼"
+    )
+
+
+// ---------------------------------------------------------------------------
+// USAGE EXAMPLES
+// ---------------------------------------------------------------------------
+
+/*
+Matrix Visual Setup:
+- Rows: Product Category
+- Columns: Comparison[Comparison Type]
+- Values: [Revenue]
+
+Result shows Revenue by Category with columns:
+| Category | Actual | Budget | Variance | Variance % | Prior Year | YoY % |
+
+Combining with Time Intelligence:
+- Can be combined with TimeIntelligence calculation group
+- Set precedence appropriately (TimeIntelligence lower, Comparison higher)
+- Comparison applies to already-calculated time intelligence value
+
+Example with Both Groups:
+- TimeIntelligence[Time Calculation] = "YTD"
+- Comparison[Comparison Type] = "Variance %"
+- Result: YTD Variance % for the selected measure
+*/

@@ -1,0 +1,50 @@
+{
+  "$schema": "./env-schema.json",
+  "environment": "local",
+  "description": "Local development environment - COPY TO local.json AND CUSTOMIZE",
+  
+  "_instructions": "1. Copy this file to local.json  2. Update values for your local setup  3. Never commit local.json to source control",
+  
+  "workspace": {
+    "id": "<your-personal-workspace-id>",
+    "name": "My Workspace",
+    "capacityId": null
+  },
+  
+  "connections": {
+    "sqlServer": {
+      "server": "localhost",
+      "database": "AnalyticsDB_Local",
+      "authenticationType": "Windows"
+    },
+    "azureStorage": {
+      "accountName": "<your-storage-account>",
+      "containerName": "dev-data"
+    },
+    "sharePoint": {
+      "siteUrl": "<your-sharepoint-site>"
+    }
+  },
+  
+  "parameters": {
+    "Environment": "Local",
+    "DataRefreshEnabled": false,
+    "DebugMode": true,
+    "SampleDataPercent": 1,
+    "DateRangeYears": 1,
+    "EnableIncrementalRefresh": false
+  },
+  
+  "features": {
+    "enableAdvancedAnalytics": true,
+    "enableAIFeatures": false,
+    "enableRLS": false,
+    "enableExport": true,
+    "enableSubscriptions": false
+  },
+  
+  "gateway": {
+    "clusterId": null,
+    "usePersonalGateway": true
+  }
+}

@@ -1,0 +1,184 @@
+/// =============================================================================
+/// TMDL Row-Level Security (RLS) Templates
+/// Description: Common RLS patterns for securing data access
+/// Usage: Copy and customize roles for your security requirements
+/// =============================================================================
+
+/// ===================
+/// BASIC USER FILTER
+/// ===================
+/// Filter data based on user's email address
+
+role SalesRepAccess
+    modelPermission: read
+    description: "Sales representatives can only see their own data"
+    
+    tablePermission Sales = 
+        Sales[SalesRepEmail] = USERPRINCIPALNAME()
+
+/// ===================
+/// DYNAMIC MANAGER HIERARCHY
+/// ===================
+/// Managers can see their team's data
+
+role ManagerAccess
+    modelPermission: read
+    description: "Managers can see data for their direct reports"
+    
+    tablePermission Sales = 
+        VAR CurrentUser = USERPRINCIPALNAME()
+        VAR UserEmployeeID = LOOKUPVALUE(Employees[EmployeeID], Employees[Email], CurrentUser)
+        VAR DirectReports = 
+            FILTER(
+                Employees,
+                Employees[ManagerID] = UserEmployeeID
+            )
+        RETURN
+        Sales[EmployeeID] IN SELECTCOLUMNS(DirectReports, "ID", Employees[EmployeeID])
+            || Sales[EmployeeID] = UserEmployeeID
+
+/// ===================
+/// REGION-BASED ACCESS
+/// ===================
+/// Users can only see data for their assigned regions
+
+role RegionAccess
+    modelPermission: read
+    description: "Users see data for their assigned regions only"
+    
+    tablePermission Sales = 
+        VAR CurrentUser = USERPRINCIPALNAME()
+        VAR UserRegions = 
+            FILTER(
+                UserRegionMapping,
+                UserRegionMapping[UserEmail] = CurrentUser
+            )
+        RETURN
+        Sales[Region] IN SELECTCOLUMNS(UserRegions, "Region", UserRegionMapping[Region])
+
+/// ===================
+/// MULTI-TABLE RLS
+/// ===================
+/// Apply filters across multiple tables
+
+role SecuredAccess
+    modelPermission: read
+    description: "Comprehensive security across multiple tables"
+    
+    tablePermission Sales = 
+        PATHCONTAINS(
+            LOOKUPVALUE(
+                Geography[HierarchyPath],
+                Geography[Region],
+                Sales[Region]
+            ),
+            LOOKUPVALUE(
+                Users[AssignedRegion],
+                Users[Email],
+                USERPRINCIPALNAME()
+            )
+        )
+    
+    tablePermission Customers = 
+        Customers[Region] IN 
+            SELECTCOLUMNS(
+                FILTER(
+                    UserAccess,
+                    UserAccess[UserEmail] = USERPRINCIPALNAME()
+                ),
+                "Region",
+                UserAccess[Region]
+            )
+
+/// ===================
+/// TIME-BASED ACCESS
+/// ===================
+/// Restrict access to data within a time window
+
+role RecentDataOnly
+    modelPermission: read
+    description: "Users can only see data from the last 12 months"
+    
+    tablePermission Sales = 
+        Sales[OrderDate] >= DATE(YEAR(TODAY()) - 1, MONTH(TODAY()), 1)
+
+/// ===================
+/// DEPARTMENT FILTER
+/// ===================
+/// Filter based on user's department from Azure AD
+
+role DepartmentAccess
+    modelPermission: read
+    description: "Users see data for their department"
+    
+    tablePermission Sales = 
+        VAR UserDept = LOOKUPVALUE(
+            Employees[Department],
+            Employees[Email],
+            USERPRINCIPALNAME()
+        )
+        RETURN
+        Sales[Department] = UserDept
+
+/// ===================
+/// ADMIN ROLE (NO FILTER)
+/// ===================
+/// Full access for administrators
+
+role AdminAccess
+    modelPermission: read
+    description: "Administrators have full data access"
+    
+    /// No tablePermission entries = full access
+
+/// ===================
+/// CONFIDENTIAL DATA FILTER
+/// ===================
+/// Hide sensitive columns/tables for certain users
+
+role StandardUser
+    modelPermission: read
+    description: "Standard users cannot see salary data"
+    
+    tablePermission Employees = 
+        TRUE()  /// Can see all rows
+        
+    /// Note: Use OLS (Object Level Security) in the model
+    /// to hide the Salary column from this role
+
+/// ===================
+/// COMBINATION PATTERN
+/// ===================
+/// Multiple conditions combined
+
+role ComplexAccess
+    modelPermission: read
+    description: "Combined region and time-based security"
+    
+    tablePermission Sales = 
+        VAR UserEmail = USERPRINCIPALNAME()
+        VAR AllowedRegions = 
+            VALUES(
+                FILTER(
+                    UserAccess,
+                    UserAccess[Email] = UserEmail
+                )[Region]
+            )
+        VAR DateLimit = TODAY() - 365
+        RETURN
+        Sales[Region] IN AllowedRegions
+            && Sales[OrderDate] >= DateLimit
+
+/// =============================================================================
+/// NOTES ON RLS IMPLEMENTATION
+/// =============================================================================
+/// 
+/// 1. Test roles using "View as Role" in Power BI Desktop
+/// 2. USERPRINCIPALNAME() returns the email in Power BI Service
+/// 3. Use USERNAME() for on-premises scenarios
+/// 4. Performance: Minimize complex DAX in RLS filters
+/// 5. Security mapping tables should be in Import mode
+/// 6. Consider DirectQuery RLS limitations
+/// 7. Document all roles and their intended access patterns
+/// 
+/// =============================================================================

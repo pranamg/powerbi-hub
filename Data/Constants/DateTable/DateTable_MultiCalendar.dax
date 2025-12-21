@@ -1,0 +1,126 @@
+// Multi-Calendar Date Table
+// Usage: Create a calculated table supporting multiple fiscal calendars
+// Includes: Standard calendar, US Fiscal (Oct), UK Fiscal (Apr), 4-4-5 Retail Calendar
+
+DateTable_MultiCalendar = 
+VAR MinDate = MIN('YourFactTable'[DateColumn])
+VAR MaxDate = MAX('YourFactTable'[DateColumn])
+VAR Today = TODAY()
+VAR BaseCalendar = CALENDAR(DATE(YEAR(MinDate), 1, 1), DATE(YEAR(MaxDate), 12, 31))
+
+// Fiscal Year Start Months
+VAR USFiscalStart = 10   // October
+VAR UKFiscalStart = 4    // April
+VAR StandardFiscalStart = 7  // July
+
+RETURN
+ADDCOLUMNS(
+    BaseCalendar,
+    
+    // ═══════════════════════════════════════════════════════════════
+    // STANDARD CALENDAR
+    // ═══════════════════════════════════════════════════════════════
+    "Year", YEAR([Date]),
+    "Quarter", QUARTER([Date]),
+    "QuarterName", "Q" & QUARTER([Date]) & " " & YEAR([Date]),
+    "Month", MONTH([Date]),
+    "MonthName", FORMAT([Date], "MMMM"),
+    "MonthShort", FORMAT([Date], "MMM"),
+    "Week", WEEKNUM([Date]),
+    "DayOfWeek", WEEKDAY([Date]),
+    "DayOfWeekName", FORMAT([Date], "dddd"),
+    "DayOfMonth", DAY([Date]),
+    "DateKey", YEAR([Date]) * 10000 + MONTH([Date]) * 100 + DAY([Date]),
+    
+    // ═══════════════════════════════════════════════════════════════
+    // US FISCAL YEAR (October Start)
+    // ═══════════════════════════════════════════════════════════════
+    "US_FiscalYear", 
+        IF(MONTH([Date]) >= USFiscalStart, YEAR([Date]) + 1, YEAR([Date])),
+    "US_FiscalYearLabel",
+        "FY" & IF(MONTH([Date]) >= USFiscalStart, YEAR([Date]) + 1, YEAR([Date])),
+    "US_FiscalQuarter",
+        VAR FM = MOD(MONTH([Date]) - USFiscalStart + 12, 12) + 1
+        RETURN CEILING(FM / 3, 1),
+    "US_FiscalMonth",
+        MOD(MONTH([Date]) - USFiscalStart + 12, 12) + 1,
+    
+    // ═══════════════════════════════════════════════════════════════
+    // UK FISCAL YEAR (April Start)
+    // ═══════════════════════════════════════════════════════════════
+    "UK_FiscalYear", 
+        IF(MONTH([Date]) >= UKFiscalStart, YEAR([Date]), YEAR([Date]) - 1),
+    "UK_FiscalYearLabel",
+        VAR FY = IF(MONTH([Date]) >= UKFiscalStart, YEAR([Date]), YEAR([Date]) - 1)
+        RETURN FY & "/" & (FY + 1),
+    "UK_FiscalQuarter",
+        VAR FM = MOD(MONTH([Date]) - UKFiscalStart + 12, 12) + 1
+        RETURN CEILING(FM / 3, 1),
+    "UK_FiscalMonth",
+        MOD(MONTH([Date]) - UKFiscalStart + 12, 12) + 1,
+    
+    // ═══════════════════════════════════════════════════════════════
+    // 4-4-5 RETAIL CALENDAR (Common for Retail/CPG)
+    // Week starts Sunday, Year starts on Sunday closest to Feb 1
+    // ═══════════════════════════════════════════════════════════════
+    "Retail_445_Period",
+        VAR WeekInYear = WEEKNUM([Date], 1)
+        VAR PeriodWeeks = {4, 4, 5, 4, 4, 5, 4, 4, 5, 4, 4, 5}
+        VAR RunningWeeks = {4, 8, 13, 17, 21, 26, 30, 34, 39, 43, 47, 52}
+        RETURN
+            SWITCH(TRUE(),
+                WeekInYear <= 4, 1,
+                WeekInYear <= 8, 2,
+                WeekInYear <= 13, 3,
+                WeekInYear <= 17, 4,
+                WeekInYear <= 21, 5,
+                WeekInYear <= 26, 6,
+                WeekInYear <= 30, 7,
+                WeekInYear <= 34, 8,
+                WeekInYear <= 39, 9,
+                WeekInYear <= 43, 10,
+                WeekInYear <= 47, 11,
+                12
+            ),
+    "Retail_445_Quarter",
+        VAR WeekInYear = WEEKNUM([Date], 1)
+        RETURN
+            SWITCH(TRUE(),
+                WeekInYear <= 13, 1,
+                WeekInYear <= 26, 2,
+                WeekInYear <= 39, 3,
+                4
+            ),
+    
+    // ═══════════════════════════════════════════════════════════════
+    // ISO 8601 CALENDAR
+    // ═══════════════════════════════════════════════════════════════
+    "ISO_Week", WEEKNUM([Date], 21),
+    "ISO_Year", 
+        VAR ISOWeek = WEEKNUM([Date], 21)
+        VAR CalYear = YEAR([Date])
+        RETURN IF(ISOWeek > 50 && MONTH([Date]) = 1, CalYear - 1,
+               IF(ISOWeek = 1 && MONTH([Date]) = 12, CalYear + 1, CalYear)),
+    "ISO_YearWeek",
+        VAR ISOWeek = WEEKNUM([Date], 21)
+        VAR ISOYear = IF(ISOWeek > 50 && MONTH([Date]) = 1, YEAR([Date]) - 1,
+                      IF(ISOWeek = 1 && MONTH([Date]) = 12, YEAR([Date]) + 1, YEAR([Date])))
+        RETURN ISOYear * 100 + ISOWeek,
+    
+    // ═══════════════════════════════════════════════════════════════
+    // RELATIVE FLAGS (for Dynamic Filtering)
+    // ═══════════════════════════════════════════════════════════════
+    "IsToday", [Date] = Today,
+    "IsYTD", [Date] <= Today && YEAR([Date]) = YEAR(Today),
+    "IsMTD", [Date] <= Today && MONTH([Date]) = MONTH(Today) && YEAR([Date]) = YEAR(Today),
+    "IsQTD", [Date] <= Today && QUARTER([Date]) = QUARTER(Today) && YEAR([Date]) = YEAR(Today),
+    "IsLast30Days", [Date] > Today - 30 && [Date] <= Today,
+    "IsLast90Days", [Date] > Today - 90 && [Date] <= Today,
+    "IsLast365Days", [Date] > Today - 365 && [Date] <= Today,
+    "IsPriorYear", YEAR([Date]) = YEAR(Today) - 1,
+    "IsPriorYearYTD", [Date] <= TODAY() - 365 && YEAR([Date]) = YEAR(Today) - 1,
+    
+    // Weekday/Weekend
+    "IsWeekend", WEEKDAY([Date]) IN {1, 7},
+    "IsWeekday", WEEKDAY([Date]) IN {2, 3, 4, 5, 6}
+)

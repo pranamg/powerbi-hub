@@ -1,0 +1,87 @@
+// Extended Date Table with Fiscal Year Support
+// Usage: Create a calculated table in Power BI with this DAX expression
+// Includes: Fiscal year, ISO weeks, relative date flags, and more
+
+DateTable_Extended = 
+VAR FiscalYearStartMonth = 7  -- Change to your fiscal year start month (e.g., 7 = July)
+VAR MinDate = MIN('YourFactTable'[DateColumn])
+VAR MaxDate = MAX('YourFactTable'[DateColumn])
+VAR Today = TODAY()
+VAR BaseCalendar = CALENDAR(DATE(YEAR(MinDate), 1, 1), DATE(YEAR(MaxDate), 12, 31))
+
+RETURN
+ADDCOLUMNS(
+    BaseCalendar,
+    
+    // Standard Calendar Attributes
+    "Year", YEAR([Date]),
+    "Quarter", QUARTER([Date]),
+    "QuarterName", "Q" & QUARTER([Date]),
+    "Month", MONTH([Date]),
+    "MonthName", FORMAT([Date], "MMMM"),
+    "MonthShort", FORMAT([Date], "MMM"),
+    "MonthYear", FORMAT([Date], "MMM YYYY"),
+    "Week", WEEKNUM([Date]),
+    "DayOfWeek", WEEKDAY([Date]),
+    "DayOfWeekName", FORMAT([Date], "dddd"),
+    "DayOfWeekShort", FORMAT([Date], "ddd"),
+    "DayOfMonth", DAY([Date]),
+    "DayOfYear", DATEDIFF(DATE(YEAR([Date]), 1, 1), [Date], DAY) + 1,
+    
+    // ISO Week (Weeks start on Monday, Week 1 contains first Thursday)
+    "ISOWeek", WEEKNUM([Date], 21),
+    "ISOYear", 
+        VAR ISOWeek = WEEKNUM([Date], 21)
+        VAR CalendarYear = YEAR([Date])
+        RETURN IF(ISOWeek > 50 && MONTH([Date]) = 1, CalendarYear - 1,
+               IF(ISOWeek = 1 && MONTH([Date]) = 12, CalendarYear + 1, CalendarYear)),
+    
+    // Fiscal Year Attributes
+    "FiscalYear", 
+        IF(MONTH([Date]) >= FiscalYearStartMonth, YEAR([Date]) + 1, YEAR([Date])),
+    "FiscalYearLabel",
+        VAR FY = IF(MONTH([Date]) >= FiscalYearStartMonth, YEAR([Date]) + 1, YEAR([Date]))
+        RETURN "FY" & FY,
+    "FiscalQuarter",
+        VAR FiscalMonth = MOD(MONTH([Date]) - FiscalYearStartMonth + 12, 12) + 1
+        RETURN CEILING(FiscalMonth / 3, 1),
+    "FiscalMonth",
+        MOD(MONTH([Date]) - FiscalYearStartMonth + 12, 12) + 1,
+    "FiscalWeek",
+        VAR FYStart = IF(MONTH([Date]) >= FiscalYearStartMonth, 
+                        DATE(YEAR([Date]), FiscalYearStartMonth, 1),
+                        DATE(YEAR([Date]) - 1, FiscalYearStartMonth, 1))
+        RETURN INT(([Date] - FYStart) / 7) + 1,
+    
+    // Relative Date Flags
+    "IsToday", IF([Date] = Today, TRUE, FALSE),
+    "IsPastDate", IF([Date] < Today, TRUE, FALSE),
+    "IsFutureDate", IF([Date] > Today, TRUE, FALSE),
+    "IsCurrentWeek", 
+        IF(WEEKNUM([Date]) = WEEKNUM(Today) && YEAR([Date]) = YEAR(Today), TRUE, FALSE),
+    "IsCurrentMonth",
+        IF(MONTH([Date]) = MONTH(Today) && YEAR([Date]) = YEAR(Today), TRUE, FALSE),
+    "IsCurrentQuarter",
+        IF(QUARTER([Date]) = QUARTER(Today) && YEAR([Date]) = YEAR(Today), TRUE, FALSE),
+    "IsCurrentYear",
+        IF(YEAR([Date]) = YEAR(Today), TRUE, FALSE),
+    "IsPreviousMonth",
+        IF(EOMONTH([Date], 0) = EOMONTH(Today, -1), TRUE, FALSE),
+    "IsPreviousYear",
+        IF(YEAR([Date]) = YEAR(Today) - 1, TRUE, FALSE),
+    
+    // Weekend/Holiday Flags
+    "IsWeekend", IF(WEEKDAY([Date]) IN {1, 7}, TRUE, FALSE),
+    "IsWeekday", IF(WEEKDAY([Date]) IN {2, 3, 4, 5, 6}, TRUE, FALSE),
+    
+    // Sorting Keys
+    "YearMonth", YEAR([Date]) * 100 + MONTH([Date]),
+    "YearQuarter", YEAR([Date]) * 10 + QUARTER([Date]),
+    "DateKey", YEAR([Date]) * 10000 + MONTH([Date]) * 100 + DAY([Date]),
+    "MonthSort", MONTH([Date]),
+    "DayOfWeekSort", WEEKDAY([Date], 2),  -- Monday = 1
+    
+    // Display Formats
+    "DateDisplay", FORMAT([Date], "dd MMM yyyy"),
+    "MonthYearSort", YEAR([Date]) * 100 + MONTH([Date])
+)

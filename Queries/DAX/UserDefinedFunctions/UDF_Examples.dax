@@ -1,0 +1,278 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// DAX USER DEFINED FUNCTIONS (UDFs) - September 2025+
+// 
+// UDFs allow creating reusable, parameterized DAX logic
+// Requires: Power BI Desktop September 2025 or later
+// Enable: File > Options > Preview Features > DAX user-defined functions
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/*
+UDF SYNTAX:
+    DEFINE
+        FUNCTION FunctionName(param1 AS DataType, param2 AS DataType) AS ReturnType =
+            <expression>
+
+PARAMETER MODES:
+    - VAL (default): Evaluated once before function call
+    - EXPR: Evaluated in context of function body (can vary per row)
+
+DATA TYPES:
+    - CURRENCY, DOUBLE, INTEGER, STRING, BOOLEAN, DATETIME
+    - TABLE, VARIANT (any type)
+
+NAMING CONVENTION:
+    - Use PascalCase for UDF names (to distinguish from built-in UPPERCASE functions)
+*/
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FINANCIAL FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Calculate amount with tax
+DEFINE
+    FUNCTION AddTax(Amount AS CURRENCY, TaxRate AS DOUBLE) AS CURRENCY =
+        Amount * (1 + TaxRate)
+
+// Usage: AddTax([Net Price], 0.10)  -- Adds 10% tax
+
+
+// Calculate discount
+DEFINE
+    FUNCTION ApplyDiscount(Amount AS CURRENCY, DiscountPercent AS DOUBLE) AS CURRENCY =
+        Amount * (1 - DiscountPercent)
+
+// Usage: ApplyDiscount([List Price], 0.15)  -- 15% discount
+
+
+// Compound interest calculation
+DEFINE
+    FUNCTION CompoundInterest(
+        Principal AS CURRENCY, 
+        Rate AS DOUBLE, 
+        Periods AS INTEGER
+    ) AS CURRENCY =
+        Principal * POWER(1 + Rate, Periods)
+
+// Usage: CompoundInterest(1000, 0.05, 10)  -- $1000 at 5% for 10 periods
+
+
+// Present Value calculation
+DEFINE
+    FUNCTION PresentValue(
+        FutureValue AS CURRENCY,
+        Rate AS DOUBLE,
+        Periods AS INTEGER
+    ) AS CURRENCY =
+        FutureValue / POWER(1 + Rate, Periods)
+
+// Usage: PresentValue(10000, 0.08, 5)  -- PV of $10,000 in 5 years at 8%
+
+
+// Margin calculation
+DEFINE
+    FUNCTION CalculateMargin(Revenue AS CURRENCY, Cost AS CURRENCY) AS DOUBLE =
+        DIVIDE(Revenue - Cost, Revenue)
+
+// Usage: CalculateMargin([Sales Amount], [Cost Amount])
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// STATISTICAL FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Weighted average (using EXPR for context-dependent evaluation)
+DEFINE
+    FUNCTION WeightedAverage(
+        Value EXPR AS DOUBLE,
+        Weight EXPR AS DOUBLE
+    ) AS DOUBLE =
+        DIVIDE(SUMX(CURRENTGROUP(), Value * Weight), SUMX(CURRENTGROUP(), Weight))
+
+// Note: EXPR mode allows the parameters to be evaluated per row
+
+
+// Percentage of total
+DEFINE
+    FUNCTION PercentOfTotal(Value AS CURRENCY, Total AS CURRENCY) AS DOUBLE =
+        DIVIDE(Value, Total)
+
+// Usage: PercentOfTotal([Sales Amount], [Total Sales])
+
+
+// Z-Score calculation
+DEFINE
+    FUNCTION ZScore(Value AS DOUBLE, Mean AS DOUBLE, StdDev AS DOUBLE) AS DOUBLE =
+        DIVIDE(Value - Mean, StdDev)
+
+// Usage: ZScore([Metric], [Average Metric], [StdDev Metric])
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// DATE/TIME FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Calculate fiscal year (July start)
+DEFINE
+    FUNCTION GetFiscalYear(DateValue AS DATETIME, FiscalStartMonth AS INTEGER) AS INTEGER =
+        IF(
+            MONTH(DateValue) >= FiscalStartMonth,
+            YEAR(DateValue) + 1,
+            YEAR(DateValue)
+        )
+
+// Usage: GetFiscalYear([Order Date], 7)  -- July fiscal year start
+
+
+// Calculate fiscal quarter
+DEFINE
+    FUNCTION GetFiscalQuarter(DateValue AS DATETIME, FiscalStartMonth AS INTEGER) AS INTEGER =
+        VAR FiscalMonth = MOD(MONTH(DateValue) - FiscalStartMonth + 12, 12) + 1
+        RETURN CEILING(FiscalMonth / 3, 1)
+
+// Usage: GetFiscalQuarter([Order Date], 7)
+
+
+// Days between dates
+DEFINE
+    FUNCTION DaysBetween(StartDate AS DATETIME, EndDate AS DATETIME) AS INTEGER =
+        DATEDIFF(StartDate, EndDate, DAY)
+
+// Usage: DaysBetween([Order Date], [Ship Date])
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// TEXT FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Format as currency string
+DEFINE
+    FUNCTION FormatAsCurrency(Amount AS CURRENCY, Prefix AS STRING) AS STRING =
+        Prefix & FORMAT(Amount, "#,##0.00")
+
+// Usage: FormatAsCurrency([Sales Amount], "$")
+
+
+// Create initials from name
+DEFINE
+    FUNCTION GetInitials(FullName AS STRING) AS STRING =
+        VAR FirstLetter = LEFT(FullName, 1)
+        VAR SpacePos = SEARCH(" ", FullName, 1, 0)
+        VAR SecondLetter = IF(SpacePos > 0, MID(FullName, SpacePos + 1, 1), "")
+        RETURN FirstLetter & SecondLetter
+
+// Usage: GetInitials([Customer Name])
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// BUSINESS LOGIC FUNCTIONS
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// Tiered pricing/discount
+DEFINE
+    FUNCTION GetTierDiscount(Quantity AS INTEGER) AS DOUBLE =
+        SWITCH(
+            TRUE(),
+            Quantity >= 100, 0.20,    -- 20% for 100+
+            Quantity >= 50, 0.15,     -- 15% for 50-99
+            Quantity >= 25, 0.10,     -- 10% for 25-49
+            Quantity >= 10, 0.05,     -- 5% for 10-24
+            0                          -- No discount under 10
+        )
+
+// Usage: GetTierDiscount([Order Quantity])
+
+
+// Customer segment classification
+DEFINE
+    FUNCTION ClassifyCustomer(TotalPurchases AS CURRENCY) AS STRING =
+        SWITCH(
+            TRUE(),
+            TotalPurchases >= 100000, "Platinum",
+            TotalPurchases >= 50000, "Gold",
+            TotalPurchases >= 10000, "Silver",
+            "Bronze"
+        )
+
+// Usage: ClassifyCustomer([Total Customer Purchases])
+
+
+// RAG (Red/Amber/Green) status
+DEFINE
+    FUNCTION GetRAGStatus(Actual AS CURRENCY, Target AS CURRENCY) AS STRING =
+        VAR Achievement = DIVIDE(Actual, Target)
+        RETURN
+            SWITCH(
+                TRUE(),
+                Achievement >= 1, "Green",
+                Achievement >= 0.8, "Amber",
+                "Red"
+            )
+
+// Usage: GetRAGStatus([Actual Sales], [Target Sales])
+
+
+// Performance rating
+DEFINE
+    FUNCTION GetPerformanceRating(ActualValue AS DOUBLE, TargetValue AS DOUBLE) AS INTEGER =
+        VAR Ratio = DIVIDE(ActualValue, TargetValue)
+        RETURN
+            SWITCH(
+                TRUE(),
+                Ratio >= 1.2, 5,      -- Exceptional
+                Ratio >= 1.0, 4,      -- Meets expectations
+                Ratio >= 0.8, 3,      -- Needs improvement
+                Ratio >= 0.6, 2,      -- Below expectations
+                1                      -- Critical
+            )
+
+// Usage: GetPerformanceRating([Actual], [Target])
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// USING UDFs IN MEASURES
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/*
+Once defined, UDFs can be used in measures:
+
+Sales with Tax = AddTax([Sales Amount], 0.10)
+
+Discounted Price = ApplyDiscount([List Price], GetTierDiscount([Quantity]))
+
+Customer Segment = ClassifyCustomer([Total Customer Sales])
+
+Status = GetRAGStatus([YTD Sales], [YTD Target])
+*/
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CREATING UDFs IN POWER BI
+// ═══════════════════════════════════════════════════════════════════════════════
+
+/*
+METHOD 1: DAX Query View
+1. Open DAX Query View in Power BI Desktop
+2. Write DEFINE FUNCTION statement
+3. Test with EVALUATE statement
+4. Save to model
+
+METHOD 2: TMDL View
+1. Open TMDL View
+2. Navigate to model > expressions
+3. Add function definition
+4. Apply changes
+
+METHOD 3: Tabular Editor
+1. Connect to model
+2. Add new Expression
+3. Write function code
+4. Save changes
+
+BEST PRACTICES:
+- Use descriptive function names
+- Document parameters with comments
+- Test thoroughly before deploying
+- Consider performance impact
+- Use VAL mode for simple lookups, EXPR for row-by-row evaluation
+- Store UDFs in a central library for reuse (daxlib.org)
+*/

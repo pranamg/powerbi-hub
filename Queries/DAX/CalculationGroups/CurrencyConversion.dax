@@ -1,0 +1,365 @@
+// ============================================================================
+// CURRENCY CONVERSION CALCULATION GROUP
+// ============================================================================
+// Purpose: Dynamic currency conversion for multi-currency reporting
+// Requirements: ExchangeRates table with Date, FromCurrency, ToCurrency, Rate
+// 
+// Table Structure Required:
+// ExchangeRates[Date]         - Exchange rate date
+// ExchangeRates[FromCurrency] - Source currency code (e.g., "USD")
+// ExchangeRates[ToCurrency]   - Target currency code (e.g., "EUR")
+// ExchangeRates[Rate]         - Exchange rate value
+// ============================================================================
+
+// ---------------------------------------------------------------------------
+// TMDL DEFINITION
+// ---------------------------------------------------------------------------
+/*
+calculationGroup CurrencyConversion
+    description: "Dynamic currency conversion for multi-currency reporting"
+    precedence: 10
+    
+    calculationItem 'Original Currency'
+        description: "Display values in original transaction currency"
+        expression: ```
+            SELECTEDMEASURE()
+            ```
+        formatStringExpression: ```
+            SELECTEDMEASUREFORMATSTRING()
+            ```
+    
+    calculationItem 'USD'
+        description: "Convert to US Dollars"
+        expression: ```
+            VAR CurrentValue = SELECTEDMEASURE()
+            VAR ConversionRate = 
+                CALCULATE(
+                    AVERAGE(ExchangeRates[Rate]),
+                    ExchangeRates[ToCurrency] = "USD",
+                    USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+                )
+            RETURN
+                CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+            ```
+        formatStringExpression: "$#,##0.00"
+    
+    calculationItem 'EUR'
+        description: "Convert to Euros"
+        expression: ```
+            VAR CurrentValue = SELECTEDMEASURE()
+            VAR ConversionRate = 
+                CALCULATE(
+                    AVERAGE(ExchangeRates[Rate]),
+                    ExchangeRates[ToCurrency] = "EUR",
+                    USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+                )
+            RETURN
+                CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+            ```
+        formatStringExpression: "€#,##0.00"
+    
+    calculationItem 'GBP'
+        description: "Convert to British Pounds"
+        expression: ```
+            VAR CurrentValue = SELECTEDMEASURE()
+            VAR ConversionRate = 
+                CALCULATE(
+                    AVERAGE(ExchangeRates[Rate]),
+                    ExchangeRates[ToCurrency] = "GBP",
+                    USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+                )
+            RETURN
+                CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+            ```
+        formatStringExpression: "£#,##0.00"
+    
+    calculationItem 'JPY'
+        description: "Convert to Japanese Yen"
+        expression: ```
+            VAR CurrentValue = SELECTEDMEASURE()
+            VAR ConversionRate = 
+                CALCULATE(
+                    AVERAGE(ExchangeRates[Rate]),
+                    ExchangeRates[ToCurrency] = "JPY",
+                    USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+                )
+            RETURN
+                CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+            ```
+        formatStringExpression: "¥#,##0"
+    
+    calculationItem 'Dynamic Currency'
+        description: "Convert based on user-selected currency parameter"
+        expression: ```
+            VAR SelectedCurrency = SELECTEDVALUE(CurrencySelector[CurrencyCode], "USD")
+            VAR CurrentValue = SELECTEDMEASURE()
+            VAR ConversionRate = 
+                CALCULATE(
+                    AVERAGE(ExchangeRates[Rate]),
+                    ExchangeRates[ToCurrency] = SelectedCurrency,
+                    USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+                )
+            RETURN
+                CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+            ```
+        formatStringExpression: ```
+            VAR SelectedCurrency = SELECTEDVALUE(CurrencySelector[CurrencyCode], "USD")
+            RETURN
+                SWITCH(
+                    SelectedCurrency,
+                    "USD", "$#,##0.00",
+                    "EUR", "€#,##0.00",
+                    "GBP", "£#,##0.00",
+                    "JPY", "¥#,##0",
+                    "CHF", "CHF #,##0.00",
+                    "CAD", "C$#,##0.00",
+                    "AUD", "A$#,##0.00",
+                    "#,##0.00"
+                )
+            ```
+*/
+
+// ---------------------------------------------------------------------------
+// CALCULATION ITEM IMPLEMENTATIONS
+// ---------------------------------------------------------------------------
+
+// 1. Original Currency - No conversion
+// ---------------------------------------------------------------------------
+SELECTEDMEASURE()
+
+// Format: SELECTEDMEASUREFORMATSTRING()
+
+
+// 2. Convert to USD
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR SourceCurrency = SELECTEDVALUE(Transactions[Currency], "USD")
+VAR ConversionRate = 
+    CALCULATE(
+        AVERAGE(ExchangeRates[Rate]),
+        ExchangeRates[FromCurrency] = SourceCurrency,
+        ExchangeRates[ToCurrency] = "USD",
+        USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+    )
+RETURN
+    IF(
+        SourceCurrency = "USD",
+        CurrentValue,
+        CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+    )
+
+// Format: "$#,##0.00"
+
+
+// 3. Convert to EUR
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR SourceCurrency = SELECTEDVALUE(Transactions[Currency], "USD")
+VAR ConversionRate = 
+    CALCULATE(
+        AVERAGE(ExchangeRates[Rate]),
+        ExchangeRates[FromCurrency] = SourceCurrency,
+        ExchangeRates[ToCurrency] = "EUR",
+        USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+    )
+RETURN
+    IF(
+        SourceCurrency = "EUR",
+        CurrentValue,
+        CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+    )
+
+// Format: "€#,##0.00"
+
+
+// 4. Convert to GBP
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR SourceCurrency = SELECTEDVALUE(Transactions[Currency], "USD")
+VAR ConversionRate = 
+    CALCULATE(
+        AVERAGE(ExchangeRates[Rate]),
+        ExchangeRates[FromCurrency] = SourceCurrency,
+        ExchangeRates[ToCurrency] = "GBP",
+        USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+    )
+RETURN
+    IF(
+        SourceCurrency = "GBP",
+        CurrentValue,
+        CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+    )
+
+// Format: "£#,##0.00"
+
+
+// 5. Dynamic Currency Selection
+// ---------------------------------------------------------------------------
+// Use with a Currency Selector slicer/parameter
+VAR SelectedCurrency = SELECTEDVALUE(CurrencySelector[CurrencyCode], "USD")
+VAR CurrentValue = SELECTEDMEASURE()
+VAR SourceCurrency = SELECTEDVALUE(Transactions[Currency], "USD")
+VAR ConversionRate = 
+    CALCULATE(
+        AVERAGE(ExchangeRates[Rate]),
+        ExchangeRates[FromCurrency] = SourceCurrency,
+        ExchangeRates[ToCurrency] = SelectedCurrency,
+        USERELATIONSHIP(ExchangeRates[Date], 'Date'[Date])
+    )
+RETURN
+    IF(
+        SourceCurrency = SelectedCurrency,
+        CurrentValue,
+        CurrentValue * IF(ISBLANK(ConversionRate), 1, ConversionRate)
+    )
+
+// Dynamic Format String:
+VAR SelectedCurrency = SELECTEDVALUE(CurrencySelector[CurrencyCode], "USD")
+RETURN
+    SWITCH(
+        SelectedCurrency,
+        "USD", "$#,##0.00",
+        "EUR", "€#,##0.00",
+        "GBP", "£#,##0.00",
+        "JPY", "¥#,##0",
+        "CHF", "CHF #,##0.00",
+        "CAD", "C$#,##0.00",
+        "AUD", "A$#,##0.00",
+        "CNY", "¥#,##0.00",
+        "INR", "₹#,##0.00",
+        "BRL", "R$#,##0.00",
+        "#,##0.00"
+    )
+
+
+// ---------------------------------------------------------------------------
+// ADVANCED PATTERNS
+// ---------------------------------------------------------------------------
+
+// 6. Point-in-Time Rate (Spot Rate)
+// ---------------------------------------------------------------------------
+// Uses the exact rate for each transaction date
+VAR CurrentValue = SELECTEDMEASURE()
+VAR TargetCurrency = "USD"
+VAR ConversionRate = 
+    SUMX(
+        VALUES('Date'[Date]),
+        VAR CurrentDate = 'Date'[Date]
+        VAR DayRate = 
+            CALCULATE(
+                AVERAGE(ExchangeRates[Rate]),
+                ExchangeRates[ToCurrency] = TargetCurrency,
+                ExchangeRates[Date] = CurrentDate
+            )
+        VAR DayValue = 
+            CALCULATE(
+                SELECTEDMEASURE(),
+                'Date'[Date] = CurrentDate
+            )
+        RETURN
+            DayValue * IF(ISBLANK(DayRate), 1, DayRate)
+    )
+RETURN
+    ConversionRate
+
+
+// 7. Average Rate for Period
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR TargetCurrency = "USD"
+VAR AvgRate = 
+    CALCULATE(
+        AVERAGE(ExchangeRates[Rate]),
+        ExchangeRates[ToCurrency] = TargetCurrency,
+        ALLSELECTED('Date')
+    )
+RETURN
+    CurrentValue * IF(ISBLANK(AvgRate), 1, AvgRate)
+
+
+// 8. Month-End Rate
+// ---------------------------------------------------------------------------
+VAR CurrentValue = SELECTEDMEASURE()
+VAR TargetCurrency = "USD"
+VAR MonthEndRate = 
+    CALCULATE(
+        AVERAGE(ExchangeRates[Rate]),
+        ExchangeRates[ToCurrency] = TargetCurrency,
+        FILTER(
+            ALL(ExchangeRates[Date]),
+            ExchangeRates[Date] = EOMONTH(MAX('Date'[Date]), 0)
+        )
+    )
+RETURN
+    CurrentValue * IF(ISBLANK(MonthEndRate), 1, MonthEndRate)
+
+
+// 9. Budget Rate (Fixed)
+// ---------------------------------------------------------------------------
+// Uses a fixed budget exchange rate from configuration table
+VAR CurrentValue = SELECTEDMEASURE()
+VAR TargetCurrency = "USD"
+VAR BudgetRate = 
+    LOOKUPVALUE(
+        BudgetRates[Rate],
+        BudgetRates[ToCurrency], TargetCurrency,
+        BudgetRates[Year], YEAR(MAX('Date'[Date]))
+    )
+RETURN
+    CurrentValue * IF(ISBLANK(BudgetRate), 1, BudgetRate)
+
+
+// ---------------------------------------------------------------------------
+// SUPPORTING TABLES
+// ---------------------------------------------------------------------------
+
+/*
+-- Currency Selector Table (for slicer)
+CurrencySelector = 
+DATATABLE(
+    "CurrencyCode", STRING,
+    "CurrencyName", STRING,
+    "Symbol", STRING,
+    {
+        {"USD", "US Dollar", "$"},
+        {"EUR", "Euro", "€"},
+        {"GBP", "British Pound", "£"},
+        {"JPY", "Japanese Yen", "¥"},
+        {"CHF", "Swiss Franc", "CHF"},
+        {"CAD", "Canadian Dollar", "C$"},
+        {"AUD", "Australian Dollar", "A$"},
+        {"CNY", "Chinese Yuan", "¥"},
+        {"INR", "Indian Rupee", "₹"},
+        {"BRL", "Brazilian Real", "R$"}
+    }
+)
+
+-- Exchange Rates Table Structure
+ExchangeRates:
+| Date       | FromCurrency | ToCurrency | Rate   |
+|------------|--------------|------------|--------|
+| 2024-01-01 | EUR          | USD        | 1.1050 |
+| 2024-01-01 | GBP          | USD        | 1.2750 |
+| 2024-01-01 | USD          | EUR        | 0.9050 |
+| 2024-01-01 | USD          | GBP        | 0.7843 |
+*/
+
+
+// ---------------------------------------------------------------------------
+// USAGE EXAMPLES
+// ---------------------------------------------------------------------------
+
+/*
+After creating the calculation group:
+
+1. Add the calculation group column to your visual
+2. Select the currency conversion type
+3. All applicable measures will be converted automatically
+
+Example visual setup:
+- Rows: Product Category
+- Values: Revenue, Cost, Profit
+- Slicer: CurrencyConversion[Currency] = "EUR"
+
+All three measures (Revenue, Cost, Profit) will be displayed in EUR
+*/

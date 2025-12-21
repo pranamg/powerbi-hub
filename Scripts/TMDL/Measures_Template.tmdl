@@ -1,0 +1,257 @@
+/// =============================================================================
+/// TMDL Measures Template
+/// Description: Common measure patterns organized by category
+/// Usage: Copy measures to your table definitions
+/// =============================================================================
+
+/// ===================
+/// BASIC AGGREGATIONS
+/// ===================
+
+measure 'Total Sales' = 
+    SUM(Sales[Amount])
+    formatString: $#,##0.00
+    displayFolder: Basic Measures
+    description: "Sum of all sales amounts"
+    lineageTag: mea-basic-001
+
+measure 'Total Quantity' = 
+    SUM(Sales[Quantity])
+    formatString: #,##0
+    displayFolder: Basic Measures
+    lineageTag: mea-basic-002
+
+measure 'Average Sale' = 
+    AVERAGE(Sales[Amount])
+    formatString: $#,##0.00
+    displayFolder: Basic Measures
+    lineageTag: mea-basic-003
+
+measure 'Transaction Count' = 
+    COUNTROWS(Sales)
+    formatString: #,##0
+    displayFolder: Basic Measures
+    lineageTag: mea-basic-004
+
+measure 'Distinct Customers' = 
+    DISTINCTCOUNT(Sales[CustomerID])
+    formatString: #,##0
+    displayFolder: Basic Measures
+    lineageTag: mea-basic-005
+
+/// ===================
+/// TIME INTELLIGENCE
+/// ===================
+
+measure 'Sales YTD' = 
+    CALCULATE(
+        [Total Sales],
+        DATESYTD('Date'[Date])
+    )
+    formatString: $#,##0.00
+    displayFolder: Time Intelligence
+    lineageTag: mea-ti-001
+
+measure 'Sales QTD' = 
+    CALCULATE(
+        [Total Sales],
+        DATESQTD('Date'[Date])
+    )
+    formatString: $#,##0.00
+    displayFolder: Time Intelligence
+    lineageTag: mea-ti-002
+
+measure 'Sales MTD' = 
+    CALCULATE(
+        [Total Sales],
+        DATESMTD('Date'[Date])
+    )
+    formatString: $#,##0.00
+    displayFolder: Time Intelligence
+    lineageTag: mea-ti-003
+
+measure 'Sales PY' = 
+    CALCULATE(
+        [Total Sales],
+        SAMEPERIODLASTYEAR('Date'[Date])
+    )
+    formatString: $#,##0.00
+    displayFolder: Time Intelligence
+    lineageTag: mea-ti-004
+
+measure 'Sales YoY' = 
+    [Total Sales] - [Sales PY]
+    formatString: $#,##0.00
+    displayFolder: Time Intelligence
+    lineageTag: mea-ti-005
+
+measure 'Sales YoY %' = 
+    DIVIDE(
+        [Sales YoY],
+        [Sales PY],
+        BLANK()
+    )
+    formatString: 0.0%;-0.0%;0.0%
+    displayFolder: Time Intelligence
+    lineageTag: mea-ti-006
+
+measure 'Sales Rolling 12M' = 
+    CALCULATE(
+        [Total Sales],
+        DATESINPERIOD('Date'[Date], MAX('Date'[Date]), -12, MONTH)
+    )
+    formatString: $#,##0.00
+    displayFolder: Time Intelligence
+    lineageTag: mea-ti-007
+
+/// ===================
+/// WINDOW FUNCTIONS
+/// ===================
+
+measure 'Sales Previous Month' = 
+    CALCULATE(
+        [Total Sales],
+        OFFSET(-1, ALLSELECTED('Date'[Year-Month]), ORDERBY('Date'[Year-Month]))
+    )
+    formatString: $#,##0.00
+    displayFolder: Window Functions
+    lineageTag: mea-wf-001
+
+measure 'Sales MoM Change' = 
+    [Total Sales] - [Sales Previous Month]
+    formatString: $#,##0.00
+    displayFolder: Window Functions
+    lineageTag: mea-wf-002
+
+measure 'Sales Moving Avg 3M' = 
+    AVERAGEX(
+        WINDOW(-2, 0, ALLSELECTED('Date'[Year-Month]), ORDERBY('Date'[Year-Month])),
+        [Total Sales]
+    )
+    formatString: $#,##0.00
+    displayFolder: Window Functions
+    lineageTag: mea-wf-003
+
+measure 'Running Total' = 
+    SUMX(
+        WINDOW(1, 0, ALLSELECTED('Date'[Year-Month]), ORDERBY('Date'[Year-Month])),
+        [Total Sales]
+    )
+    formatString: $#,##0.00
+    displayFolder: Window Functions
+    lineageTag: mea-wf-004
+
+measure 'Product Rank' = 
+    RANK(
+        ALLSELECTED(Products[Product]),
+        ORDERBY([Total Sales], DESC)
+    )
+    formatString: 0
+    displayFolder: Window Functions
+    lineageTag: mea-wf-005
+
+/// ===================
+/// PERCENTAGE & SHARE
+/// ===================
+
+measure 'Sales % of Total' = 
+    DIVIDE(
+        [Total Sales],
+        CALCULATE([Total Sales], ALL(Products)),
+        0
+    )
+    formatString: 0.0%
+    displayFolder: Percentages
+    lineageTag: mea-pct-001
+
+measure 'Sales % of Category' = 
+    DIVIDE(
+        [Total Sales],
+        CALCULATE([Total Sales], ALLEXCEPT(Products, Products[Category])),
+        0
+    )
+    formatString: 0.0%
+    displayFolder: Percentages
+    lineageTag: mea-pct-002
+
+measure 'Cumulative %' = 
+    VAR CurrentSales = [Total Sales]
+    VAR AllSales = CALCULATE([Total Sales], ALL(Products[Product]))
+    VAR CumulativeSales = 
+        CALCULATE(
+            [Total Sales],
+            FILTER(
+                ALL(Products[Product]),
+                [Total Sales] >= CurrentSales
+            )
+        )
+    RETURN
+    DIVIDE(CumulativeSales, AllSales)
+    formatString: 0.0%
+    displayFolder: Percentages
+    lineageTag: mea-pct-003
+
+/// ===================
+/// KPI MEASURES
+/// ===================
+
+measure 'Sales Target' = 
+    SUM(Targets[TargetAmount])
+    formatString: $#,##0.00
+    displayFolder: KPIs
+    lineageTag: mea-kpi-001
+
+measure 'Target Achievement %' = 
+    DIVIDE([Total Sales], [Sales Target], 0)
+    formatString: 0.0%
+    displayFolder: KPIs
+    lineageTag: mea-kpi-002
+
+measure 'Sales RAG Status' = 
+    VAR Achievement = [Target Achievement %]
+    RETURN
+    SWITCH(
+        TRUE(),
+        Achievement >= 1, "Green",
+        Achievement >= 0.8, "Amber",
+        "Red"
+    )
+    displayFolder: KPIs
+    lineageTag: mea-kpi-003
+
+measure 'Sales Trend Icon' = 
+    VAR Change = [Sales YoY %]
+    RETURN
+    SWITCH(
+        TRUE(),
+        Change > 0.05, "▲",
+        Change < -0.05, "▼",
+        "►"
+    )
+    displayFolder: KPIs
+    lineageTag: mea-kpi-004
+
+/// ===================
+/// CONDITIONAL FORMATTING HELPERS
+/// ===================
+
+measure 'Sales Color' = 
+    VAR Achievement = [Target Achievement %]
+    RETURN
+    SWITCH(
+        TRUE(),
+        Achievement >= 1, "#107C10",      // Green
+        Achievement >= 0.8, "#FF8C00",    // Orange
+        "#D13438"                         // Red
+    )
+    displayFolder: Formatting
+    lineageTag: mea-fmt-001
+
+measure 'Sales Background' = 
+    VAR Value = [Total Sales]
+    VAR MaxValue = MAXX(ALL(Products[Product]), [Total Sales])
+    VAR Intensity = DIVIDE(Value, MaxValue, 0)
+    RETURN
+    "rgba(0, 120, 212, " & FORMAT(Intensity * 0.5, "0.00") & ")"
+    displayFolder: Formatting
+    lineageTag: mea-fmt-002

@@ -1,0 +1,200 @@
+/* =============================================================================
+   CALCULATION GROUP: Time Intelligence
+   
+   Purpose: Apply time intelligence calculations to any measure dynamically
+   
+   Requirements:
+   - Requires Tabular Editor 2/3 or TMDL to create
+   - Date table must be marked as date table
+   - Works with Power BI Desktop (Oct 2020+) or Premium/Fabric
+   
+   Usage: Add 'Time Calculation' to visual alongside any measure
+============================================================================= */
+
+-- Create this calculation group using Tabular Editor or TMDL:
+-- Table Name: Time Calculation
+-- Column Name: Time Calc
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: Current
+   Ordinal: 0
+----------------------------------------------------------------------------- */
+SELECTEDMEASURE()
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: YTD (Year to Date)
+   Ordinal: 1
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    DATESYTD('Date'[Date])
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: QTD (Quarter to Date)
+   Ordinal: 2
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    DATESQTD('Date'[Date])
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: MTD (Month to Date)
+   Ordinal: 3
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    DATESMTD('Date'[Date])
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: PY (Prior Year)
+   Ordinal: 4
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    SAMEPERIODLASTYEAR('Date'[Date])
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: PY YTD
+   Ordinal: 5
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    SAMEPERIODLASTYEAR(DATESYTD('Date'[Date]))
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: YoY (Year over Year Change)
+   Ordinal: 6
+----------------------------------------------------------------------------- */
+VAR CurrentValue = SELECTEDMEASURE()
+VAR PriorYear = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        SAMEPERIODLASTYEAR('Date'[Date])
+    )
+RETURN
+    CurrentValue - PriorYear
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: YoY % (Year over Year Percentage)
+   Ordinal: 7
+   Format String: 0.00%
+----------------------------------------------------------------------------- */
+VAR CurrentValue = SELECTEDMEASURE()
+VAR PriorYear = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        SAMEPERIODLASTYEAR('Date'[Date])
+    )
+RETURN
+    DIVIDE(CurrentValue - PriorYear, PriorYear)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: Rolling 12 Months
+   Ordinal: 8
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    DATESINPERIOD(
+        'Date'[Date],
+        MAX('Date'[Date]),
+        -12,
+        MONTH
+    )
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: Rolling 3 Months
+   Ordinal: 9
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    DATESINPERIOD(
+        'Date'[Date],
+        MAX('Date'[Date]),
+        -3,
+        MONTH
+    )
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: Prior Month
+   Ordinal: 10
+----------------------------------------------------------------------------- */
+CALCULATE(
+    SELECTEDMEASURE(),
+    DATEADD('Date'[Date], -1, MONTH)
+)
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: MoM Change
+   Ordinal: 11
+----------------------------------------------------------------------------- */
+VAR CurrentValue = SELECTEDMEASURE()
+VAR PriorMonth = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        DATEADD('Date'[Date], -1, MONTH)
+    )
+RETURN
+    CurrentValue - PriorMonth
+
+/* -----------------------------------------------------------------------------
+   Calculation Item: MoM % Change
+   Ordinal: 12
+   Format String: 0.00%
+----------------------------------------------------------------------------- */
+VAR CurrentValue = SELECTEDMEASURE()
+VAR PriorMonth = 
+    CALCULATE(
+        SELECTEDMEASURE(),
+        DATEADD('Date'[Date], -1, MONTH)
+    )
+RETURN
+    DIVIDE(CurrentValue - PriorMonth, PriorMonth)
+
+/* -----------------------------------------------------------------------------
+   TMDL DEFINITION
+   
+   Use this in Tabular Editor or as part of your TMDL model:
+----------------------------------------------------------------------------- */
+
+/*
+calculationGroup 'Time Calculation'
+    precedence: 1
+    
+    calculationItem Current = SELECTEDMEASURE()
+        ordinal: 0
+    
+    calculationItem YTD = 
+        CALCULATE(SELECTEDMEASURE(), DATESYTD('Date'[Date]))
+        ordinal: 1
+    
+    calculationItem QTD = 
+        CALCULATE(SELECTEDMEASURE(), DATESQTD('Date'[Date]))
+        ordinal: 2
+    
+    calculationItem MTD = 
+        CALCULATE(SELECTEDMEASURE(), DATESMTD('Date'[Date]))
+        ordinal: 3
+    
+    calculationItem PY = 
+        CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Date'[Date]))
+        ordinal: 4
+    
+    calculationItem 'YoY %' = ```
+        VAR CurrentValue = SELECTEDMEASURE()
+        VAR PriorYear = CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('Date'[Date]))
+        RETURN DIVIDE(CurrentValue - PriorYear, PriorYear)
+        ```
+        formatString: "0.00%"
+        ordinal: 7
+
+    column 'Time Calc'
+        dataType: string
+        isDefaultLabel: true
+*/

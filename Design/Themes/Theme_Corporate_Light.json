@@ -1,0 +1,150 @@
+{
+    "name": "Corporate Light Theme",
+    "description": "Clean, professional light theme for corporate reports",
+    "dataColors": [
+        "#0078D4",
+        "#00A36C",
+        "#FFB900",
+        "#E74C3C",
+        "#9B59B6",
+        "#3498DB",
+        "#1ABC9C",
+        "#F39C12",
+        "#E67E22",
+        "#95A5A6"
+    ],
+    "good": "#00A36C",
+    "neutral": "#FFB900",
+    "bad": "#E74C3C",
+    "maximum": "#0078D4",
+    "center": "#FFB900",
+    "minimum": "#E74C3C",
+    "background": "#FFFFFF",
+    "foreground": "#252423",
+    "tableAccent": "#0078D4",
+    "visualStyles": {
+        "*": {
+            "*": {
+                "general": [{
+                    "responsive": true,
+                    "keepLayerOrder": true
+                }],
+                "title": [{
+                    "show": true,
+                    "fontColor": {"solid": {"color": "#252423"}},
+                    "fontSize": 12,
+                    "fontFamily": "Segoe UI Semibold"
+                }],
+                "subTitle": [{
+                    "show": true,
+                    "fontColor": {"solid": {"color": "#666666"}},
+                    "fontSize": 10,
+                    "fontFamily": "Segoe UI"
+                }],
+                "background": [{
+                    "color": {"solid": {"color": "#FFFFFF"}},
+                    "transparency": 0
+                }],
+                "border": [{
+                    "show": false
+                }],
+                "dropShadow": [{
+                    "show": false
+                }],
+                "visualHeader": [{
+                    "show": true
+                }],
+                "visualHeaderTooltip": [{
+                    "show": true
+                }]
+            }
+        },
+        "page": {
+            "*": {
+                "background": [{
+                    "color": {"solid": {"color": "#F5F5F5"}},
+                    "transparency": 0
+                }],
+                "outspace": [{
+                    "color": {"solid": {"color": "#E0E0E0"}}
+                }]
+            }
+        },
+        "card": {
+            "*": {
+                "labels": [{
+                    "color": {"solid": {"color": "#252423"}},
+                    "fontSize": 28,
+                    "fontFamily": "Segoe UI Light"
+                }],
+                "categoryLabels": [{
+                    "show": true,
+                    "color": {"solid": {"color": "#666666"}},
+                    "fontSize": 10
+                }]
+            }
+        },
+        "slicer": {
+            "*": {
+                "general": [{
+                    "outlineColor": {"solid": {"color": "#0078D4"}},
+                    "outlineWeight": 1
+                }],
+                "items": [{
+                    "fontColor": {"solid": {"color": "#252423"}},
+                    "background": {"solid": {"color": "#FFFFFF"}}
+                }]
+            }
+        },
+        "tableEx": {
+            "*": {
+                "grid": [{
+                    "gridVertical": true,
+                    "gridVerticalColor": {"solid": {"color": "#E0E0E0"}},
+                    "gridHorizontal": true,
+                    "gridHorizontalColor": {"solid": {"color": "#E0E0E0"}},
+                    "rowPadding": 4
+                }],
+                "columnHeaders": [{
+                    "fontColor": {"solid": {"color": "#FFFFFF"}},
+                    "backColor": {"solid": {"color": "#0078D4"}},
+                    "fontSize": 10,
+                    "fontFamily": "Segoe UI Semibold"
+                }],
+                "values": [{
+                    "fontColor": {"solid": {"color": "#252423"}},
+                    "backColor": {"solid": {"color": "#FFFFFF"}},
+                    "fontSize": 10
+                }],
+                "total": [{
+                    "fontColor": {"solid": {"color": "#252423"}},
+                    "backColor": {"solid": {"color": "#F0F0F0"}},
+                    "fontSize": 10,
+                    "fontFamily": "Segoe UI Semibold"
+                }]
+            }
+        }
+    },
+    "textClasses": {
+        "callout": {
+            "fontFace": "Segoe UI Light",
+            "fontSize": 28,
+            "color": "#252423"
+        },
+        "title": {
+            "fontFace": "Segoe UI Semibold",
+            "fontSize": 14,
+            "color": "#252423"
+        },
+        "header": {
+            "fontFace": "Segoe UI Semibold",
+            "fontSize": 12,
+            "color": "#252423"
+        },
+        "label": {
+            "fontFace": "Segoe UI",
+            "fontSize": 10,
+            "color": "#666666"
+        }
+    }
+}

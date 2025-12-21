@@ -1,0 +1,342 @@
+// ═══════════════════════════════════════════════════════════════════════════════
+// DAX WINDOW FUNCTIONS (2024+)
+// INDEX, OFFSET, WINDOW, RANK, ROWNUMBER
+// 
+// These functions enable row navigation over sorted and partitioned tables
+// Key concept: "Apply Semantics" - functions return tables that modify CALCULATE
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ───────────────────────────────────────────────────────────────────────────────
+// OFFSET - Return row relative to current position
+// Syntax: OFFSET(delta, relation, orderBy, [blanks], [partitionBy])
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Previous Month Value
+Sales Previous Month = 
+CALCULATE(
+    [Sales Amount],
+    OFFSET(
+        -1,                                    -- Go back 1 row
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    )
+)
+
+// Previous Year Same Month
+Sales PYSM = 
+CALCULATE(
+    [Sales Amount],
+    OFFSET(
+        -12,
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    )
+)
+
+// Next Month Value (Lead)
+Sales Next Month = 
+CALCULATE(
+    [Sales Amount],
+    OFFSET(
+        1,
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    )
+)
+
+// Month-over-Month Change using OFFSET
+Sales MoM Change OFFSET = 
+VAR CurrentSales = [Sales Amount]
+VAR PreviousSales = [Sales Previous Month]
+RETURN
+    CurrentSales - PreviousSales
+
+// MoM % Change
+Sales MoM % OFFSET = 
+VAR CurrentSales = [Sales Amount]
+VAR PreviousSales = [Sales Previous Month]
+RETURN
+    DIVIDE(CurrentSales - PreviousSales, PreviousSales)
+
+// Previous Value within Category (Partitioned)
+Sales Previous Month by Category = 
+CALCULATE(
+    [Sales Amount],
+    OFFSET(
+        -1,
+        ALLSELECTED('Date'[Year], 'Date'[Month], 'Product'[Category]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC),
+        DEFAULT,
+        PARTITIONBY('Product'[Category])      -- Reset for each category
+    )
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// INDEX - Return specific row by position
+// Syntax: INDEX(position, relation, orderBy, [blanks], [partitionBy])
+// ───────────────────────────────────────────────────────────────────────────────
+
+// First Month Sales (in selection)
+Sales First Month = 
+CALCULATE(
+    [Sales Amount],
+    INDEX(
+        1,                                     -- First row
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    )
+)
+
+// Last Month Sales (in selection)
+Sales Last Month = 
+CALCULATE(
+    [Sales Amount],
+    INDEX(
+        -1,                                    -- Last row (negative = from end)
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    )
+)
+
+// Growth from First Month
+Sales Growth from Start = 
+VAR CurrentSales = [Sales Amount]
+VAR FirstSales = [Sales First Month]
+RETURN
+    DIVIDE(CurrentSales - FirstSales, FirstSales)
+
+// First Month of Each Year (Partitioned)
+Sales First Month of Year = 
+CALCULATE(
+    [Sales Amount],
+    INDEX(
+        1,
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Month], ASC),
+        DEFAULT,
+        PARTITIONBY('Date'[Year])             -- Reset for each year
+    )
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// WINDOW - Define a range of rows
+// Syntax: WINDOW(from, fromType, to, toType, relation, orderBy, [blanks], [partitionBy])
+// fromType/toType: REL (relative) or ABS (absolute)
+// ───────────────────────────────────────────────────────────────────────────────
+
+// 3-Month Moving Average
+Sales 3M Moving Avg WINDOW = 
+AVERAGEX(
+    WINDOW(
+        -2, REL,                               -- Start: 2 rows before current
+        0, REL,                                -- End: current row
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    ),
+    [Sales Amount]
+)
+
+// 6-Month Moving Average
+Sales 6M Moving Avg = 
+AVERAGEX(
+    WINDOW(
+        -5, REL,
+        0, REL,
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    ),
+    [Sales Amount]
+)
+
+// 12-Month Moving Average
+Sales 12M Moving Avg = 
+AVERAGEX(
+    WINDOW(
+        -11, REL,
+        0, REL,
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    ),
+    [Sales Amount]
+)
+
+// Running Total (YTD using WINDOW)
+Sales Running Total WINDOW = 
+SUMX(
+    WINDOW(
+        1, ABS,                                -- Start: first row (absolute)
+        0, REL,                                -- End: current row (relative)
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    ),
+    [Sales Amount]
+)
+
+// Running Total within Year (Partitioned)
+Sales YTD WINDOW = 
+SUMX(
+    WINDOW(
+        1, ABS,
+        0, REL,
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Month], ASC),
+        DEFAULT,
+        PARTITIONBY('Date'[Year])
+    ),
+    [Sales Amount]
+)
+
+// Last 3 Months Total
+Sales Last 3M Total = 
+SUMX(
+    WINDOW(
+        -2, REL,
+        0, REL,
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    ),
+    [Sales Amount]
+)
+
+// Centered Moving Average (±2 months)
+Sales Centered 5M Avg = 
+AVERAGEX(
+    WINDOW(
+        -2, REL,                               -- 2 months before
+        2, REL,                                -- 2 months after
+        ALLSELECTED('Date'[Year], 'Date'[Month]),
+        ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+    ),
+    [Sales Amount]
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// RANK - Ranking within partition
+// Syntax: RANK([blanks], relation, orderBy, [partitionBy])
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Rank Products by Sales (descending)
+Product Rank by Sales = 
+RANK(
+    DEFAULT,
+    ALLSELECTED('Product'[Product Name]),
+    ORDERBY([Sales Amount], DESC)
+)
+
+// Rank within Category
+Product Rank in Category = 
+RANK(
+    DEFAULT,
+    ALLSELECTED('Product'[Product Name], 'Product'[Category]),
+    ORDERBY([Sales Amount], DESC),
+    PARTITIONBY('Product'[Category])
+)
+
+// Monthly Sales Rank
+Monthly Sales Rank = 
+RANK(
+    DEFAULT,
+    ALLSELECTED('Date'[Year], 'Date'[Month]),
+    ORDERBY([Sales Amount], DESC)
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// ROWNUMBER - Sequential row number
+// Syntax: ROWNUMBER([blanks], relation, orderBy, [partitionBy])
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Row Number by Date
+Date Row Number = 
+ROWNUMBER(
+    DEFAULT,
+    ALLSELECTED('Date'[Year], 'Date'[Month]),
+    ORDERBY('Date'[Year], ASC, 'Date'[Month], ASC)
+)
+
+// Row Number by Sales (Top to Bottom)
+Sales Row Number = 
+ROWNUMBER(
+    DEFAULT,
+    ALLSELECTED('Product'[Product Name]),
+    ORDERBY([Sales Amount], DESC)
+)
+
+// Row Number within Category
+Product Row in Category = 
+ROWNUMBER(
+    DEFAULT,
+    ALLSELECTED('Product'[Product Name], 'Product'[Category]),
+    ORDERBY([Sales Amount], DESC),
+    PARTITIONBY('Product'[Category])
+)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// ADVANCED PATTERNS
+// ───────────────────────────────────────────────────────────────────────────────
+
+// Year-over-Year using OFFSET (simpler than SAMEPERIODLASTYEAR in some cases)
+Sales YoY OFFSET = 
+VAR CurrentSales = [Sales Amount]
+VAR PYSales = 
+    CALCULATE(
+        [Sales Amount],
+        OFFSET(
+            -1,
+            ALLSELECTED('Date'[Year]),
+            ORDERBY('Date'[Year], ASC)
+        )
+    )
+RETURN
+    DIVIDE(CurrentSales - PYSales, PYSales)
+
+// Variance from Moving Average
+Sales Variance from 3M Avg = 
+VAR CurrentSales = [Sales Amount]
+VAR MovingAvg = [Sales 3M Moving Avg WINDOW]
+RETURN
+    CurrentSales - MovingAvg
+
+// Percent of Running Total
+Sales Pct of Running Total = 
+VAR CurrentSales = [Sales Amount]
+VAR RunningTotal = [Sales Running Total WINDOW]
+RETURN
+    DIVIDE(CurrentSales, RunningTotal)
+
+// Cumulative Market Share
+Cumulative Market Share = 
+VAR ProductRank = [Product Rank by Sales]
+VAR TotalSales = CALCULATE([Sales Amount], ALL('Product'))
+VAR CumulativeSales = 
+    SUMX(
+        WINDOW(
+            1, ABS,
+            0, REL,
+            ALLSELECTED('Product'[Product Name]),
+            ORDERBY([Sales Amount], DESC)
+        ),
+        [Sales Amount]
+    )
+RETURN
+    DIVIDE(CumulativeSales, TotalSales)
+
+// ───────────────────────────────────────────────────────────────────────────────
+// PERFORMANCE NOTES
+// ───────────────────────────────────────────────────────────────────────────────
+
+/*
+Window Functions Performance Tips:
+
+1. OFFSET is generally faster than WINDOW for single-row lookups
+2. Use PARTITIONBY to limit scope and improve performance
+3. Pre-calculate complex orderBy expressions if used repeatedly
+4. Window functions work best with Import mode (DirectQuery may have limitations)
+5. Consider using variables to store intermediate results
+6. Test with Performance Analyzer in Power BI Desktop
+
+Comparison with Traditional Time Intelligence:
+- SAMEPERIODLASTYEAR requires a proper date table with Date column
+- OFFSET works with any sortable column (Month number, Week, etc.)
+- Window functions provide more flexibility for non-date dimensions
+- Traditional functions may still be more readable for simple cases
+*/

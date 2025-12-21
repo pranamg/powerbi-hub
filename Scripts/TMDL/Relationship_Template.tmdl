@@ -1,0 +1,192 @@
+/// =============================================================================
+/// TMDL Relationship Templates
+/// Description: Common relationship patterns for Power BI data models
+/// Usage: Copy and customize for your model relationships
+/// =============================================================================
+
+/// ===================
+/// STANDARD FACT-TO-DIMENSION
+/// ===================
+/// Most common pattern: Many-to-One from Fact to Dimension
+
+relationship rel_Sales_to_Date
+    fromColumn: Sales.'Order Date'
+    toColumn: 'Date'.Date
+    isActive: true
+    crossFilteringBehavior: singleDirection
+    securityFilteringBehavior: oneDirection
+
+relationship rel_Sales_to_Product
+    fromColumn: Sales.ProductID
+    toColumn: Products.ProductID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+    securityFilteringBehavior: oneDirection
+
+relationship rel_Sales_to_Customer
+    fromColumn: Sales.CustomerID
+    toColumn: Customers.CustomerID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+    securityFilteringBehavior: oneDirection
+
+/// ===================
+/// MULTIPLE DATE RELATIONSHIPS
+/// ===================
+/// Common pattern: Multiple dates in fact table
+
+relationship rel_Sales_OrderDate
+    fromColumn: Sales.'Order Date'
+    toColumn: 'Date'.Date
+    isActive: true                      /// Primary relationship
+    crossFilteringBehavior: singleDirection
+    securityFilteringBehavior: oneDirection
+
+relationship rel_Sales_ShipDate
+    fromColumn: Sales.'Ship Date'
+    toColumn: 'Date'.Date
+    isActive: false                     /// Inactive - use USERELATIONSHIP
+    crossFilteringBehavior: singleDirection
+    securityFilteringBehavior: oneDirection
+
+relationship rel_Sales_DueDate
+    fromColumn: Sales.'Due Date'
+    toColumn: 'Date'.Date
+    isActive: false                     /// Inactive - use USERELATIONSHIP
+    crossFilteringBehavior: singleDirection
+    securityFilteringBehavior: oneDirection
+
+/// ===================
+/// BIDIRECTIONAL FILTERING
+/// ===================
+/// Use sparingly - can cause performance and ambiguity issues
+
+relationship rel_Products_to_Inventory
+    fromColumn: Products.ProductID
+    toColumn: Inventory.ProductID
+    isActive: true
+    crossFilteringBehavior: bothDirections    /// Bidirectional
+    securityFilteringBehavior: bothDirections
+
+/// ===================
+/// MANY-TO-MANY (via Bridge Table)
+/// ===================
+/// Pattern for M:M relationships using intermediate table
+
+relationship rel_Sales_to_OrderProducts
+    fromColumn: Sales.OrderID
+    toColumn: OrderProducts.OrderID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+
+relationship rel_OrderProducts_to_Products
+    fromColumn: OrderProducts.ProductID
+    toColumn: Products.ProductID
+    isActive: true
+    crossFilteringBehavior: bothDirections    /// Enable for M:M
+
+/// ===================
+/// ROLE-PLAYING DIMENSIONS
+/// ===================
+/// Single dimension used in multiple contexts
+
+/// Example: Geography table used for Customer, Supplier, and Warehouse locations
+
+relationship rel_Customer_to_Geography
+    fromColumn: Customers.GeographyID
+    toColumn: Geography.GeographyID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+
+relationship rel_Supplier_to_Geography
+    fromColumn: Suppliers.GeographyID
+    toColumn: Geography.GeographyID
+    isActive: false                     /// Inactive role
+    crossFilteringBehavior: singleDirection
+
+relationship rel_Warehouse_to_Geography
+    fromColumn: Warehouses.GeographyID
+    toColumn: Geography.GeographyID
+    isActive: false                     /// Inactive role
+    crossFilteringBehavior: singleDirection
+
+/// ===================
+/// SNOWFLAKE DIMENSION
+/// ===================
+/// Dimension hierarchy across multiple tables
+
+relationship rel_Product_to_SubCategory
+    fromColumn: Products.SubCategoryID
+    toColumn: SubCategories.SubCategoryID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+
+relationship rel_SubCategory_to_Category
+    fromColumn: SubCategories.CategoryID
+    toColumn: Categories.CategoryID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+
+/// ===================
+/// SELF-REFERENCING (HIERARCHY)
+/// ===================
+/// Employee org chart or recursive structure
+
+relationship rel_Employee_to_Manager
+    fromColumn: Employees.ManagerID
+    toColumn: Employees.EmployeeID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+
+/// ===================
+/// SECURITY FILTERING
+/// ===================
+/// Relationship with RLS considerations
+
+relationship rel_Sales_to_Region
+    fromColumn: Sales.RegionID
+    toColumn: Regions.RegionID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+    securityFilteringBehavior: oneDirection   /// Important for RLS
+
+/// =============================================================================
+/// RELATIONSHIP BEST PRACTICES
+/// =============================================================================
+/// 
+/// 1. Use single-direction filtering by default
+/// 2. Only use bidirectional when absolutely necessary
+/// 3. Mark only one relationship as active between any two tables
+/// 4. Use USERELATIONSHIP() for inactive relationships in DAX
+/// 5. Consider security filtering behavior with RLS
+/// 6. Avoid circular dependencies in bidirectional relationships
+/// 7. Use weak relationships for Direct Query composite models
+/// 
+/// =============================================================================
+
+/// ===================
+/// WEAK RELATIONSHIP (DirectQuery)
+/// ===================
+/// Used in composite models with DirectQuery sources
+
+relationship rel_DQ_Sales_to_Product
+    fromColumn: Sales.ProductID
+    toColumn: Products.ProductID
+    isActive: true
+    crossFilteringBehavior: singleDirection
+    joinOnDateBehavior: datePartOnly
+    relyOnReferentialIntegrity: true    /// Assume referential integrity
+
+/// =============================================================================
+/// USAGE IN DAX
+/// =============================================================================
+/// 
+/// Activating inactive relationships:
+/// 
+/// Sales by Ship Date = 
+///     CALCULATE(
+///         [Total Sales],
+///         USERELATIONSHIP(Sales[Ship Date], 'Date'[Date])
+///     )
+/// 
+/// =============================================================================
