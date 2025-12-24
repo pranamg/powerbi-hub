@@ -6,6 +6,7 @@ Welcome to the PowerBI-Hub! This repository serves as a centralized hub for all 
 ```
 PowerBI-Repository/
 │
+├── AgenticDevelopment/    # AI-assisted semantic model development
 ├── Data/
 ├── Scripts/
 ├── Queries/
@@ -40,6 +41,18 @@ PowerBI-Repository/
 - **Documentation:** [Documentation](./Documentation/README.md)
 - **Setup Instructions:** [Environment Setup](./Documentation/Setup/EnvironmentSetup.md)
 - **User Guides:** [User Guides](./Documentation/UserGuides/README.md)
+
+## 🤖 Agentic Development
+
+Use AI agents to accelerate Power BI semantic model development. The [AgenticDevelopment](./AgenticDevelopment/) folder contains comprehensive guidance on:
+
+| Topic | Description |
+|-------|-------------|
+| [Hooks](./AgenticDevelopment/Hooks/) | Automated triggers and quality gates (BPA, CI/CD) |
+| [Agents & Skills](./AgenticDevelopment/AgentsAndSkills/) | Coding agents (Claude Code, GitHub Copilot) and capabilities |
+| [MCP Tools](./AgenticDevelopment/MCPTools/) | Model Context Protocol servers for semantic models |
+| [Workflows](./AgenticDevelopment/Workflows/) | Enterprise development patterns (TMDL, MCP, CLI) |
+| [Custom Commands](./AgenticDevelopment/CustomCommands/) | Tabular Editor CLI and C# script automation |
 
 ## 🔗 Reference Materials
 
