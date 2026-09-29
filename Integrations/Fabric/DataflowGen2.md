@@ -293,6 +293,3 @@ in
 - [Direct Lake Setup](./DirectLake.md)
 - [Power Query Functions](../../Queries/PowerQuery/CustomFunctions/README.md)
 
----
-
-*Last Updated: December 2024*

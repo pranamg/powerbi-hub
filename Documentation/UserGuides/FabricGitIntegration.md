@@ -473,6 +473,3 @@ Thumbs.db
 - [Deployment Pipelines](../../Deployment/Pipelines/README.md)
 - [Development Standards](../../Governance/DevelopmentStandards.md)
 
----
-
-*Last Updated: December 2024*

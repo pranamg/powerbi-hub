@@ -436,6 +436,3 @@ Use VS Code's secret storage for sensitive values:
 - [MCP Protocol Specification](https://modelcontextprotocol.io)
 - [Power BI MCP GitHub Repository](https://github.com/anthropics/powerbi-mcp)
 
----
-
-*Last Updated: December 2024*

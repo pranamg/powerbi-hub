@@ -14,7 +14,21 @@ last_verified: 2026-09-29
 
 ## Overview
 
-Direct Lake is a storage mode that reads Parquet files directly from OneLake into memory, combining the speed of Import with the freshness of DirectQuery.
+Direct Lake is a storage mode that reads Parquet files directly from OneLake
+into memory, combining the speed of Import with the freshness of DirectQuery.
+
+### Status as of 2026
+
+| Variant | Status |
+|---------|--------|
+| Direct Lake on SQL | GA since November 2023 |
+| Direct Lake on OneLake, model creation from Desktop | Introduced March 2025 |
+| **Direct Lake on OneLake** | **GA** — now with OneLake security compatibility, more modeling features, and faster query performance |
+| Direct Lake **calculated columns** | Preview |
+
+The GA of Direct Lake on OneLake matters for security design: models respect
+OneLake security, so lakehouse permissions now flow through to report
+visibility rather than needing a parallel mechanism.
 
 ### How Direct Lake Works
 
@@ -27,6 +41,9 @@ OneLake (Delta/Parquet)  →  VertiPaq (In-Memory)  →  Power BI Visual
 - Data loaded on-demand
 - Automatic cache management
 - Transactional consistency (Delta Lake)
+
+> Direct Lake is covered here only where Power BI depends on it. For the wider
+> Fabric platform, see [Microsoft Learn](https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-direct-lake-overview).
 
 ---
 
@@ -322,6 +339,3 @@ VACUUM FactSales RETAIN 168 HOURS;
 - [Dataflow Gen2](./DataflowGen2.md)
 - [OneLake Integration](./OneLake.md)
 
----
-
-*Last Updated: December 2024*

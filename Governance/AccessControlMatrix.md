@@ -299,7 +299,3 @@ Maintain evidence of:
 - [RLS Patterns](./RLSPatterns.md)
 - [OLS Configuration](./OLSConfiguration.md)
 
----
-
-*Last Updated: December 2024*
-*Next Review: March 2025*

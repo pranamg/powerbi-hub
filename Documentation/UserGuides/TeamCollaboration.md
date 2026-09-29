@@ -523,6 +523,3 @@ A feature is complete when:
 - [Deployment Pipelines](../../Deployment/Pipelines/README.md)
 - [Change Management](../../Governance/ChangeManagement.md)
 
----
-
-*Last Updated: December 2024*

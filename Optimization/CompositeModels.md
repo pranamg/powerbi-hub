@@ -368,6 +368,3 @@ For detailed analysis:
 - [Direct Lake Setup](../Integrations/Fabric/DirectLake.md)
 - [DAX Optimization](../TipsAndTricks/DAX.md)
 
----
-
-*Last Updated: December 2024*

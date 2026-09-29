@@ -444,6 +444,3 @@ SUMMARIZECOLUMNS(
 - [Data Classification](./DataClassification.md)
 - [Audit Procedures](./AuditProcedures.md)
 
----
-
-*Last Updated: December 2024*

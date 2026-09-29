@@ -480,6 +480,3 @@ DEFINE
 - [DEFINE Documentation](https://dax.guide/define/)
 - [DAX.do - Online Query Playground](https://dax.do)
 
----
-
-*Last Updated: December 2024*

@@ -322,6 +322,3 @@ Can be configured per Lakehouse/Warehouse:
 - [Direct Lake Setup](./DirectLake.md)
 - [Dataflow Gen2](./DataflowGen2.md)
 
----
-
-*Last Updated: December 2024*

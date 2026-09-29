@@ -426,7 +426,3 @@ $results = Invoke-PowerBIRestMethod -Url $scannerUrl -Method Post -Body $body
 - [Access Control Matrix](./AccessControlMatrix.md)
 - [Development Standards](./DevelopmentStandards.md)
 
----
-
-*Last Updated: December 2024*
-*Review Date: March 2025*

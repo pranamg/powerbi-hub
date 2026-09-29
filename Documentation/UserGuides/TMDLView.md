@@ -12,27 +12,46 @@ last_verified: 2026-09-29
 
 ## Overview
 
-TMDL View was introduced in Power BI Desktop and became Generally Available (GA) in **September 2024**. It allows you to:
+TMDL View lets you script, modify, and apply changes to semantic model objects
+in a code editor using Tabular Model Definition Language. It gives you
+visibility and control over model metadata, including properties not exposed in
+the Power BI interface such as `IsAvailableInMDX` and `DetailRowsDefinition`.
 
-- View model definitions as readable text
-- Edit tables, columns, measures, and relationships as code
-- Copy and paste model objects between files
-- Use familiar code editing features (IntelliSense, search, etc.)
-- Compare changes using diff view
+**Status — the two surfaces differ:**
 
-## Enabling TMDL View
+| Surface | Status |
+|---------|--------|
+| TMDL View in **Power BI Desktop** | Generally Available |
+| TMDL View on the **web** (service and Fabric portal) | **Preview** |
 
-### For GA Version (September 2024+)
+TMDL View in Desktop is enabled by default; there is nothing to switch on.
 
-TMDL View is enabled by default in Power BI Desktop versions from September 2024 onwards.
+TMDL View on the **web** was announced in the March 2026 update and rolled out
+through the June and July 2026 updates. It adds code-first semantic modelling in
+the browser — bulk edits, automation of repetitive tasks, and reuse of
+definitions — without switching to Desktop or downloading model files.
 
-### For Earlier Versions
+## What the web version changes
 
-1. Open **Power BI Desktop**
-2. Go to **File > Options and Settings > Options**
-3. Navigate to **Preview features**
-4. Check **TMDL View**
-5. Click **OK** and restart Power BI Desktop
+| Aspect | Desktop | Web (Preview) |
+|--------|---------|---------------|
+| View and Edit modes | No distinct modes; change and apply at any time | Two modes: View (script and preview) and Edit (apply to the model) |
+| Access | Local model | Published semantic models in the service |
+| Availability | GA | Preview |
+
+If you rely on the absence of an explicit apply step, that difference matters
+when moving a workflow from Desktop to the web.
+
+## Enabling TMDL View on the web
+
+1. Open the workspace in the Power BI service or the Fabric portal
+2. Select the published semantic model
+3. Choose **TMDL View (Preview)**
+
+## Using TMDL View in Desktop
+
+Open your `.pbix`, then select the TMDL view icon on the left side of the
+window, or use the **View** menu.
 
 ## Accessing TMDL View
 
@@ -330,6 +349,3 @@ TMDL View works well with:
 - [TMDL Language Reference](https://learn.microsoft.com/analysis-services/tmdl/tmdl-overview)
 - [Power BI Blog - TMDL Announcements](https://powerbi.microsoft.com/blog/)
 
----
-
-*Last Updated: December 2024*

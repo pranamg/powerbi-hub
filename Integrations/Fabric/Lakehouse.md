@@ -264,6 +264,3 @@ df_fact_sales.write.format("delta").mode("overwrite").saveAsTable("FactSales")
 - [Dataflow Gen2](./DataflowGen2.md)
 - [OneLake Integration](./OneLake.md)
 
----
-
-*Last Updated: December 2024*

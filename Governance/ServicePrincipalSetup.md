@@ -488,6 +488,3 @@ catch {
 - [PowerShell Scripts](../Scripts/PowerShell/README.md)
 - [Audit Procedures](./AuditProcedures.md)
 
----
-
-*Last Updated: December 2024*

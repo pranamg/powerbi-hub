@@ -282,7 +282,3 @@ Data may need reclassification when:
 - [OLS Configuration](./OLSConfiguration.md)
 - [Access Control Matrix](./AccessControlMatrix.md)
 
----
-
-*Last Updated: December 2024*
-*Review Date: March 2025*

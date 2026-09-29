@@ -392,7 +392,3 @@ BI Team
 - [Deployment Pipelines](../Deployment/Pipelines/README.md)
 - [Audit Procedures](./AuditProcedures.md)
 
----
-
-*Last Updated: December 2024*
-*Review Date: March 2025*
