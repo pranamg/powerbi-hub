@@ -314,6 +314,8 @@ Owning the platform: access, security, lifecycle, and standards.
 
 ### Supporting material
 
+- [Tenant Settings](../../Governance/TenantSettings.md) — which settings exist, what they block, and which cause surprising failures
+- [Capacity Planning](../../Monitoring/CapacityPlanning.md) — sizing, and telling a capacity problem from a model problem
 - [Access Control Matrix](../../Governance/AccessControlMatrix.md)
 - [Data Classification](../../Governance/DataClassification.md)
 - [Audit Procedures](../../Governance/AuditProcedures.md)
@@ -325,10 +327,8 @@ Owning the platform: access, security, lifecycle, and standards.
 
 ### Known gaps
 
-- No tenant-settings reference. The hub assumes settings exist but never
-  enumerates them.
-- No capacity planning or cost-management content.
-- Monitoring (alerts, logs, metrics) is thin — see
+- No cost-management content beyond capacity sizing.
+- Alert definitions and log analytics setup are still thin under
   [Monitoring](../../Monitoring/README.md).
 - [Audits](../../Governance/Audits/README.md),
   [Compliance](../../Governance/Compliance/README.md), and

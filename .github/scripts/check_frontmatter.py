@@ -22,7 +22,7 @@ EXCLUDE_DIRS = {".git", "node_modules", ".venv", "__pycache__", "site"}
 REQUIRED = ("title", "tags", "audience", "difficulty", "last_verified")
 
 VALID_TAGS = {
-    "advanced", "agentic", "ai", "architecture", "assets", "automation", "best-practices",
+    "administration", "advanced", "agentic", "ai", "architecture", "assets", "automation", "best-practices",
     "ci-cd", "collaboration", "community", "constants", "contributing", "copilot", "csharp",
     "dashboards", "data", "data-connections", "dates", "deployment", "design", "development",
     "devops", "dax", "documentation", "etl", "fabric", "git", "governance", "hub", "integration",

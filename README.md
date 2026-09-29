@@ -97,8 +97,8 @@ they explain the mental model everything else builds on.
 | Pipelines | [Deployment Pipelines](./Deployment/Pipelines/README.md) |
 | Environments | [Environments](./Deployment/Environments/README.md) |
 | Git in the service | [Fabric Git Integration](./Documentation/UserGuides/FabricGitIntegration.md) |
-| Monitoring | [Monitoring](./Monitoring/README.md) |
-| Governance | [Governance](./Governance/README.md) · [RLS](./Governance/RLSPatterns.md) · [OLS](./Governance/OLSConfiguration.md) |
+| Monitoring | [Monitoring](./Monitoring/README.md) · [Capacity Planning](./Monitoring/CapacityPlanning.md) |
+| Governance | [Governance](./Governance/README.md) · [Tenant Settings](./Governance/TenantSettings.md) · [RLS](./Governance/RLSPatterns.md) · [OLS](./Governance/OLSConfiguration.md) |
 
 ### Agentic development & AI
 

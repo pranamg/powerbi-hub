@@ -11,7 +11,7 @@ last_verified: 2026-09-29
 <!-- GENERATED FILE - do not edit by hand. -->
 <!-- Regenerate: python .github/scripts/build_index.py -->
 
-Every document in the hub (201 files). Browse the [table of contents](#table-of-contents) below, the [learning paths](./LearningPaths/), or filter by [audience](#by-audience) and [tag](#by-tag).
+Every document in the hub (203 files). Browse the [table of contents](#table-of-contents) below, the [learning paths](./LearningPaths/), or filter by [audience](#by-audience) and [tag](#by-tag).
 
 > Generated file. To add or re-tag content, edit the source Markdown and run `python .github/scripts/build_index.py`. CI fails if this file is out of date.
 
@@ -29,9 +29,9 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | [Deployment/](../Deployment/README) | 4 | [Jump](#deployment) |
 | [Design/](../Design/README) | 14 | [Jump](#design) |
 | [Documentation/](README) | 16 | [Jump](#documentation) |
-| [Governance/](../Governance/README) | 13 | [Jump](#governance) |
+| [Governance/](../Governance/README) | 14 | [Jump](#governance) |
 | [Integrations/](../Integrations/README) | 19 | [Jump](#integrations) |
-| [Monitoring/](../Monitoring/README) | 4 | [Jump](#monitoring) |
+| [Monitoring/](../Monitoring/README) | 5 | [Jump](#monitoring) |
 | [Optimization/](../Optimization/README) | 5 | [Jump](#optimization) |
 | [PromptLibrary/](../PromptLibrary/README) | 7 | [Jump](#promptlibrary) |
 | [Queries/](../Queries/README) | 11 | [Jump](#queries) |
@@ -211,6 +211,7 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | [Governance](../Governance/README) | `governance`, `security` | bi-admin | advanced | 2026-09-29 |
 | [Row-Level Security (RLS) Patterns](../Governance/RLSPatterns) | `governance`, `security` | bi-admin | advanced | 2026-09-29 |
 | [Service Principal Setup Guide](../Governance/ServicePrincipalSetup) | `governance`, `security` | bi-admin | advanced | 2026-09-29 |
+| [Tenant Settings Reference](../Governance/TenantSettings) | `governance`, `security`, `administration` | bi-admin | advanced | 2026-09-29 |
 
 ### [Integrations](../Integrations/README)
 
@@ -241,6 +242,7 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | Topic | Tags | Audience | Level | Verified |
 |-------|------|----------|-------|----------|
 | [Alerts](../Monitoring/Alerts/README) | `monitoring`, `operations` | bi-admin | intermediate | 2026-09-29 |
+| [Capacity Planning and Monitoring](../Monitoring/CapacityPlanning) | `monitoring`, `performance`, `governance` | bi-admin | advanced | 2026-09-29 |
 | [Logs](../Monitoring/Logs/README) | `monitoring`, `operations` | bi-admin | intermediate | 2026-09-29 |
 | [Metrics](../Monitoring/Metrics/README) | `monitoring`, `operations` | bi-admin | intermediate | 2026-09-29 |
 | [Monitoring](../Monitoring/README) | `monitoring`, `operations` | bi-admin | intermediate | 2026-09-29 |
@@ -357,7 +359,7 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | Report authors (`report-author`) | 26 |
 | Model authors (`model-author`) | 29 |
 | Developers (`developer`) | 89 |
-| BI admins (`bi-admin`) | 22 |
+| BI admins (`bi-admin`) | 24 |
 
 ## By Tag
 
@@ -372,9 +374,9 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | `data-connections` | 18 |
 | `modeling` | 18 |
 | `visuals` | 18 |
-| `governance` | 14 |
+| `governance` | 16 |
 | `mcp` | 14 |
-| `security` | 13 |
+| `security` | 14 |
 | `dax` | 11 |
 | `documentation` | 11 |
 | `etl` | 9 |
@@ -387,11 +389,12 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | `ci-cd` | 6 |
 | `devops` | 6 |
 | `fabric` | 6 |
+| `performance` | 6 |
 | `tips` | 6 |
 | `collaboration` | 5 |
 | `development` | 5 |
+| `monitoring` | 5 |
 | `optimization` | 5 |
-| `performance` | 5 |
 | `powershell` | 5 |
 | `reports` | 5 |
 | `workspaces` | 5 |
@@ -399,7 +402,6 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | `contributing` | 4 |
 | `copilot` | 4 |
 | `integration` | 4 |
-| `monitoring` | 4 |
 | `operations` | 4 |
 | `reference` | 4 |
 | `setup` | 4 |
@@ -410,6 +412,7 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | `constants` | 2 |
 | `navigation` | 2 |
 | `python` | 2 |
+| `administration` | 1 |
 | `best-practices` | 1 |
 | `data` | 1 |
 | `dates` | 1 |
@@ -430,5 +433,5 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 |-------|-----:|
 | beginner | 31 |
 | intermediate | 85 |
-| advanced | 72 |
+| advanced | 74 |
 | reference | 13 |
