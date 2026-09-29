@@ -1,0 +1,40 @@
+/// =============================================================================
+/// Model1 relationships
+///
+/// Three many-to-one relationships, each single-direction.
+///
+/// Rules demonstrated
+/// ------------------
+///   - Single-direction filtering on every relationship. Bi-directional
+///     filtering widens the filter context, can create ambiguity between
+///     tables, and is one of the most common causes of unexpected totals.
+///   - Exactly one active relationship per table pair.
+///   - Many-to-one, from the fact table up to each dimension. The filter flows
+///     downward from dimension to fact, which is the direction a slicer needs.
+///   - securityFilteringBehavior is stated explicitly. It defaults to the same
+///     value as crossFilteringBehavior, but stating it makes the RLS
+///     behaviour reviewable rather than implied.
+/// =============================================================================
+
+/// Order date to the date dimension. This is the model's primary relationship
+/// to time; every time intelligence measure depends on it.
+relationship 'FactSales_DimDate'
+    fromColumn: 'FactSales'.DateKey
+    toColumn: 'DimDate'.Date
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+relationship 'FactSales_DimProduct'
+    fromColumn: 'FactSales'.ProductID
+    toColumn: 'DimProduct'.ProductID
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+relationship 'FactSales_DimCustomer'
+    fromColumn: 'FactSales'.CustomerID
+    toColumn: 'DimCustomer'.CustomerID
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection

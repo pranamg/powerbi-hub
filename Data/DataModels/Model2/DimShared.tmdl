@@ -1,0 +1,194 @@
+/// =============================================================================
+/// Model2 shared dimensions
+///
+/// DimProduct and DimStore are the conformed dimensions: both fact tables join
+/// to them, which is what allows a single slicer to filter across sales and
+/// inventory at once.
+///
+/// This file deliberately groups the two smaller dimensions together. In a
+/// real model, one file per table is easier to navigate; they are combined
+/// here only to keep the example short.
+/// =============================================================================
+
+table 'DimProduct'
+    lineageTag: model2-dimproduct
+    description: "Product dimension, grain: one row per product. Conformed across FactSales and FactInventory."
+
+    column 'ProductID'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        summarizeBy: none
+        description: "Surrogate key shared by both fact tables"
+        lineageTag: model2-prod-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'Product Name'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        lineageTag: model2-prod-col-002
+        annotation SummarizationSetBy = Automatic
+
+    column 'Category'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        lineageTag: model2-prod-col-003
+        annotation SummarizationSetBy = Automatic
+
+    column 'Subcategory'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        lineageTag: model2-prod-col-004
+        annotation SummarizationSetBy = Automatic
+
+    /// A product can be held at several stores, so this is many-to-many in
+    /// effect even though each relationship is modelled many-to-one.
+    column 'Standard Cost'
+        dataType: decimal
+        isNullable: false
+        formatString: $#,##0.00
+        summarizeBy: sum
+        description: "Current standard cost. Not time-varying; use FactSales[Unit Cost] for historical margin analysis."
+        lineageTag: model2-prod-col-005
+        annotation SummarizationSetBy = Automatic
+
+    hierarchy 'Product Hierarchy'
+        lineageTag: model2-prod-hier-001
+
+        level 'Category'
+            lineageTag: model2-prod-hier-lvl-001
+            column: 'Category'
+
+        level 'Subcategory'
+            lineageTag: model2-prod-hier-lvl-002
+            column: 'Subcategory'
+
+        level 'Product Name'
+            lineageTag: model2-prod-hier-lvl-003
+            column: 'Product Name'
+
+    partition 'DimProduct' = m
+        mode: import
+        source =
+            let
+                // TODO: Replace with your real source.
+                Source = Csv.Document(
+                    File.Contents("C:\Data\dim_product.csv"),
+                    [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.None]
+                ),
+                PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+                Renamed = Table.RenameColumns(
+                    PromotedHeaders,
+                    {{"ProductName", "Product Name"}, {"StandardCost", "Standard Cost"}}
+                ),
+                Typed = Table.TransformColumnTypes(
+                    Renamed,
+                    {
+                        {"ProductID", Int64.Type},
+                        {"Product Name", type text},
+                        {"Category", type text},
+                        {"Subcategory", type text},
+                        {"Standard Cost", Currency.Type}
+                    }
+                )
+            in
+                Typed
+
+table 'DimStore'
+    lineageTag: model2-dimstore
+    description: "Store dimension, grain: one row per store. Conformed across FactSales and FactInventory."
+
+    column 'StoreID'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        summarizeBy: none
+        lineageTag: model2-store-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'Store Name'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        lineageTag: model2-store-col-002
+        annotation SummarizationSetBy = Automatic
+
+    column 'Region'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Sales region the store belongs to"
+        lineageTag: model2-store-col-003
+        annotation SummarizationSetBy = Automatic
+
+    column 'Store Type'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "For example Flagship, Standard, or Outlet"
+        lineageTag: model2-store-col-004
+        annotation SummarizationSetBy = Automatic
+
+    column 'Is Active'
+        dataType: boolean
+        isNullable: false
+        summarizeBy: none
+        lineageTag: model2-store-col-005
+        annotation SummarizationSetBy = Automatic
+
+    /// Dimension-level measure, so it appears beside the store fields rather
+    /// than with either fact table's measures.
+    measure 'Store Count' =
+        CALCULATE(
+            COUNTROWS('DimStore'),
+            'DimStore'[Is Active] = TRUE()
+        )
+        formatString: #,##0
+        displayFolder: Store Summary
+        description: "Number of active stores in the current filter context"
+        lineageTag: model2-store-mea-001
+
+    hierarchy 'Store Geography Hierarchy'
+        lineageTag: model2-store-hier-001
+
+        level 'Region'
+            lineageTag: model2-store-hier-lvl-001
+            column: 'Region'
+
+        level 'Store Type'
+            lineageTag: model2-store-hier-lvl-002
+            column: 'Store Type'
+
+        level 'Store Name'
+            lineageTag: model2-store-hier-lvl-003
+            column: 'Store Name'
+
+    partition 'DimStore' = m
+        mode: import
+        source =
+            let
+                // TODO: Replace with your real source.
+                Source = Csv.Document(
+                    File.Contents("C:\Data\dim_store.csv"),
+                    [Delimiter = ",", Columns = 5, Encoding = 65001, QuoteStyle = QuoteStyle.None]
+                ),
+                PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+                Renamed = Table.RenameColumns(
+                    PromotedHeaders,
+                    {{"StoreName", "Store Name"}, {"StoreType", "Store Type"}, {"IsActive", "Is Active"}}
+                ),
+                Typed = Table.TransformColumnTypes(
+                    Renamed,
+                    {
+                        {"StoreID", Int64.Type},
+                        {"Store Name", type text},
+                        {"Region", type text},
+                        {"Store Type", type text},
+                        {"Is Active", type logical}
+                    }
+                )
+            in
+                Typed

@@ -1,0 +1,91 @@
+/// =============================================================================
+/// Model2 relationships
+///
+/// Five relationships across two fact tables and four dimensions.
+///
+/// The relationship that matters here
+/// ---------------------------------
+/// FactSales joins DimDate twice. Power BI permits only one *active*
+/// relationship per table pair, so:
+///
+///   FactSales[OrderDateKey] -> DimDate[Date]   isActive: true
+///   FactSales[ShipDateKey]  -> DimDate[Date]   isActive: false
+///
+/// The inactive relationship is reached with USERELATIONSHIP. Note that
+/// ShipDateKey is nullable: an unshipped order has no ship date, and a
+/// relationship on a nullable key silently excludes those rows from any
+/// measure using USERELATIONSHIP. That is correct behaviour, not a bug, but it
+/// surprises people the first time totals change between the two measures.
+///
+/// FactInventory joins DimDate once, on its own snapshot date, and that
+/// relationship is active.
+/// =============================================================================
+
+/// --- FactSales ---------------------------------------------------------
+///
+/// Order date is the active relationship because revenue is normally
+/// recognised when the order is placed.
+
+relationship 'FactSales_OrderDate'
+    fromColumn: 'FactSales'.OrderDateKey
+    toColumn: 'DimDate'.Date
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+relationship 'FactSales_ShipDate'
+    fromColumn: 'FactSales'.ShipDateKey
+    toColumn: 'DimDate'.Date
+    isActive: false
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+relationship 'FactSales_DimProduct'
+    fromColumn: 'FactSales'.ProductID
+    toColumn: 'DimProduct'.ProductID
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+relationship 'FactSales_DimStore'
+    fromColumn: 'FactSales'.StoreID
+    toColumn: 'DimStore'.StoreID
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+/// --- FactInventory -----------------------------------------------------
+///
+/// Product and Store are the conformed dimensions: the same filter on either
+/// applies to both fact tables, which is what allows a single slicer to drive
+/// a combined sales-and-inventory view.
+
+relationship 'FactInventory_Date'
+    fromColumn: 'FactInventory'.DateKey
+    toColumn: 'DimDate'.Date
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+relationship 'FactInventory_DimProduct'
+    fromColumn: 'FactInventory'.ProductID
+    toColumn: 'DimProduct'.ProductID
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+relationship 'FactInventory_DimStore'
+    fromColumn: 'FactInventory'.StoreID
+    toColumn: 'DimStore'.StoreID
+    isActive: true
+    crossFilteringBehavior: oneDirection
+    securityFilteringBehavior: oneDirection
+
+/// --- On avoiding bi-directional filtering ------------------------------
+///
+/// Every relationship above is single-direction. Bi-directional filtering
+/// would let a filter flow from fact to dimension as well, which widens the
+/// filter context, can create ambiguity when two paths exist between tables,
+/// and forces the engine to materialise more data. Use it only where a
+/// many-to-many relationship genuinely requires it, and prefer a bridge table
+/// over bi-directional relationships where possible.

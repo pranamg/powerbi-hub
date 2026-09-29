@@ -1,0 +1,141 @@
+/// =============================================================================
+/// DimProduct
+///
+/// A dimension joined to FactSales on a surrogate key.
+///
+/// Demonstrates
+/// ------------
+///   - Surrogate integer key rather than a natural key such as a product code.
+///   - A hierarchy so the field list is navigable.
+///   - The foreign key column is intentionally absent: FactSales holds
+///     ProductID and the relationship is made on DimProduct[ProductID], so
+///     there is nothing to hide here. If you instead load the key twice, hide
+///     the copy in the fact table.
+/// =============================================================================
+
+table 'DimProduct'
+    lineageTag: model1-dimproduct
+    description: "Product dimension, grain: one row per product"
+
+    column 'ProductID'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        summarizeBy: none
+        description: "Surrogate key. Not a business-facing identifier."
+        lineageTag: model1-prod-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'Product Name'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Display name for the product"
+        lineageTag: model1-prod-col-002
+        annotation SummarizationSetBy = Automatic
+
+    column 'Category'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Top-level product grouping"
+        lineageTag: model1-prod-col-003
+        annotation SummarizationSetBy = Automatic
+
+    column 'Subcategory'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Second-level product grouping, subordinate to Category"
+        lineageTag: model1-prod-col-004
+        annotation SummarizationSetBy = Automatic
+
+    column 'List Price'
+        dataType: decimal
+        isNullable: false
+        formatString: $#,##0.00
+        summarizeBy: sum
+        description: "List price at time of publication, not a time-varying price"
+        lineageTag: model1-prod-col-005
+        annotation SummarizationSetBy = Automatic
+
+    column 'Is Active'
+        dataType: boolean
+        isNullable: false
+        summarizeBy: none
+        description: "True while the product is orderable"
+        lineageTag: model1-prod-col-006
+        annotation SummarizationSetBy = Automatic
+
+    /// Summary measures attached to the dimension rather than the fact table,
+    /// so they sit next to the product fields in the field list.
+    measure 'Product Count' =
+        COUNTROWS('DimProduct')
+        formatString: #,##0
+        displayFolder: Product Summary
+        description: "Number of products in the current filter context"
+        lineageTag: model1-prod-mea-001
+
+    measure 'Active Product Count' =
+        CALCULATE(
+            COUNTROWS('DimProduct'),
+            'DimProduct'[Is Active] = TRUE()
+        )
+        formatString: #,##0
+        displayFolder: Product Summary
+        description: "Number of products currently orderable"
+        lineageTag: model1-prod-mea-002
+
+    hierarchy 'Product Hierarchy'
+        lineageTag: model1-prod-hier-001
+
+        level 'Category'
+            lineageTag: model1-prod-hier-lvl-001
+            column: 'Category'
+
+        level 'Subcategory'
+            lineageTag: model1-prod-hier-lvl-002
+            column: 'Subcategory'
+
+        level 'Product Name'
+            lineageTag: model1-prod-hier-lvl-003
+            column: 'Product Name'
+
+    /// =====================================================================
+    /// Partition
+    /// =====================================================================
+    ///
+    /// PLACEHOLDER SOURCE. Replace the path and column list with a real
+    /// connection before loading. See Data/DataSources/ for the connection
+    /// pattern that suits your source type, and prefer reading from a view or
+    /// table you control over a raw file.
+
+    partition 'DimProduct' = m
+        mode: import
+        source =
+            let
+                // TODO: Replace with your real source.
+                Source = Csv.Document(
+                    File.Contents("C:\Data\dim_product.csv"),
+                    [Delimiter = ",", Columns = 6, Encoding = 65001, QuoteStyle = QuoteStyle.None]
+                ),
+                // Promote headers first, then set types explicitly. Relying on
+                // type inference is a common source of refresh-time errors.
+                PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+                Renamed = Table.RenameColumns(
+                    PromotedHeaders,
+                    {{"ProductName", "Product Name"}, {"ListPrice", "List Price"}}
+                ),
+                Typed = Table.TransformColumnTypes(
+                    Renamed,
+                    {
+                        {"ProductID", Int64.Type},
+                        {"Product Name", type text},
+                        {"Category", type text},
+                        {"Subcategory", type text},
+                        {"List Price", Currency.Type},
+                        {"Is Active", type logical}
+                    }
+                )
+            in
+                Typed
