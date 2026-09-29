@@ -260,11 +260,10 @@ Designing and building reports that people can read.
 
 ### Known gaps
 
-- [TipsAndTricks/Visuals.md](../../TipsAndTricks/Visuals.md) is a 3-line
-  placeholder and needs real content.
 - No PBIR documentation, so report source control is not covered (see path 3).
-- No accessibility checklist beyond a link in
-  [References/Articles.md](../../References/Articles.md).
+- Accessibility is covered as a checklist in
+  [TipsAndTricks/Visuals.md](../../TipsAndTricks/Visuals.md) but there is no
+  dedicated accessibility guide, and no coverage of the mobile report layout.
 
 ---
 

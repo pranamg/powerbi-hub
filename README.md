@@ -41,6 +41,14 @@ they explain the mental model everything else builds on.
 
 ## What's here
 
+### Get set up
+
+| Area | Start at |
+|------|----------|
+| New machine | [Environment Setup](./Documentation/Setup/EnvironmentSetup.md) — install order, platform matrix, troubleshooting |
+| One tool | [Installation Instructions](./Documentation/Setup/InstallationInstructions.md) — Desktop, Git, VS Code, Node, Tabular Editor, DAX Studio, pbi-tools, pbir-cli, MCP |
+| Project layout | [Fabric Git Integration](./Documentation/UserGuides/FabricGitIntegration.md) · [TMDL View](./Documentation/UserGuides/TMDLView.md) |
+
 ### Modeling & data
 
 | Area | Start at |
@@ -128,7 +136,9 @@ they explain the mental model everything else builds on.
 | Articles | [Articles](./References/Articles.md) |
 | Blogs | [Blogs](./References/BlogPosts.md) |
 | Repos | [GitHub Repos](./References/GitHubRepos.md) |
-| Books, video, other | [References](./References/README.md) |
+| Books | [Books](./References/Books.md) |
+| Video | [Channels](./References/YouTube/Channels.md) · [Playlists](./References/YouTube/Playlists.md) |
+| Certs, practice tools, Learn paths | [Other Resources](./References/OtherResources.md) |
 | Tips | [TipsAndTricks](./TipsAndTricks/README.md) |
 
 ---
