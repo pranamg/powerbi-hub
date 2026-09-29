@@ -10,6 +10,7 @@ Exit codes: 0 clean, 1 problems found.
 
 from __future__ import annotations
 
+import difflib
 import os
 import re
 import sys
@@ -92,9 +93,15 @@ def main() -> int:
                     problems.append(f"{rel}: missing '{key}'")
 
             if "difficulty" in meta and meta["difficulty"] not in VALID_DIFFICULTY:
+                # Suggest a near match: typos like 'beginnter' are otherwise
+                # just as opaque as a deliberately wrong value.
+                guess = difflib.get_close_matches(
+                    meta["difficulty"], VALID_DIFFICULTY, n=1, cutoff=0.7
+                )
+                hint = f" Did you mean '{guess[0]}'?" if guess else ""
                 problems.append(
                     f"{rel}: invalid difficulty '{meta['difficulty']}' "
-                    f"(allowed: {', '.join(sorted(VALID_DIFFICULTY))})"
+                    f"(allowed: {', '.join(sorted(VALID_DIFFICULTY))}).{hint}"
                 )
 
             if "last_verified" in meta:
