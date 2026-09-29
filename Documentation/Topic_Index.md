@@ -11,7 +11,7 @@ last_verified: 2026-09-29
 <!-- GENERATED FILE - do not edit by hand. -->
 <!-- Regenerate: python .github/scripts/build_index.py -->
 
-Every document in the hub (194 files). Browse the [table of contents](#table-of-contents) below, the [learning paths](./LearningPaths/), or filter by [audience](#by-audience) and [tag](#by-tag).
+Every document in the hub (202 files). Browse the [table of contents](#table-of-contents) below, the [learning paths](./LearningPaths/), or filter by [audience](#by-audience) and [tag](#by-tag).
 
 > Generated file. To add or re-tag content, edit the source Markdown and run `python .github/scripts/build_index.py`. CI fails if this file is out of date.
 
@@ -21,16 +21,16 @@ Every document in the hub (194 files). Browse the [table of contents](#table-of-
 |-------|-----:|-------|
 | *(repository root)* | 2 | [Jump](#repository-root) |
 | [.github/](../.github/) | 4 | [Jump](#github) |
-| [AgenticDevelopment/](../AgenticDevelopment/README) | 15 | [Jump](#agenticdevelopment) |
+| [AgenticDevelopment/](../AgenticDevelopment/README) | 17 | [Jump](#agenticdevelopment) |
 | [Collaboration/](../Collaboration/README) | 4 | [Jump](#collaboration) |
 | [Contributions/](../Contributions/README) | 3 | [Jump](#contributions) |
 | [Dashboards/](../Dashboards/README) | 3 | [Jump](#dashboards) |
-| [Data/](../Data/README) | 31 | [Jump](#data) |
+| [Data/](../Data/README) | 34 | [Jump](#data) |
 | [Deployment/](../Deployment/README) | 4 | [Jump](#deployment) |
 | [Design/](../Design/README) | 14 | [Jump](#design) |
-| [Documentation/](README) | 15 | [Jump](#documentation) |
+| [Documentation/](README) | 17 | [Jump](#documentation) |
 | [Governance/](../Governance/README) | 13 | [Jump](#governance) |
-| [Integrations/](../Integrations/README) | 18 | [Jump](#integrations) |
+| [Integrations/](../Integrations/README) | 19 | [Jump](#integrations) |
 | [Monitoring/](../Monitoring/README) | 4 | [Jump](#monitoring) |
 | [Optimization/](../Optimization/README) | 5 | [Jump](#optimization) |
 | [PromptLibrary/](../PromptLibrary/README) | 7 | [Jump](#promptlibrary) |
@@ -66,6 +66,8 @@ Every document in the hub (194 files). Browse the [table of contents](#table-of-
 | [Coding Agents for Semantic Model Development](../AgenticDevelopment/AgentsAndSkills/CodingAgents) | `agentic`, `ai`, `tooling` | developer | intermediate | 2026-09-29 |
 | [Agents, Subagents & Skills](../AgenticDevelopment/AgentsAndSkills/README) | `agentic`, `ai`, `tooling` | developer | intermediate | 2026-09-29 |
 | [Semantic Model Agents](../AgenticDevelopment/AgentsAndSkills/SemanticModelAgents) | `agentic`, `ai`, `tooling` | developer | intermediate | 2026-09-29 |
+| [pbir-cli: Report Automation from the Terminal](../AgenticDevelopment/AgentSkills/pbir-cli) | `agentic`, `ai`, `tooling`, `automation` | developer | intermediate | 2026-09-29 |
+| [Agent Skills and Plugin Marketplaces](../AgenticDevelopment/AgentSkills/README) | `agentic`, `ai`, `tooling` | developer | intermediate | 2026-09-29 |
 | [Custom Commands: Reusable Workflow Automation](../AgenticDevelopment/CustomCommands/README) | `agentic`, `automation`, `tooling` | developer | advanced | 2026-09-29 |
 | [C# Script Examples for Tabular Editor](../AgenticDevelopment/CustomCommands/ScriptExamples/README) | `agentic`, `automation`, `tooling` | developer | advanced | 2026-09-29 |
 | [Tabular Editor CLI Reference](../AgenticDevelopment/CustomCommands/TabularEditorCLI) | `agentic`, `automation`, `tooling` | developer | advanced | 2026-09-29 |
@@ -108,6 +110,9 @@ Every document in the hub (194 files). Browse the [table of contents](#table-of-
 
 | Topic | Tags | Audience | Level | Verified |
 |-------|------|----------|-------|----------|
+| [Preparing a Semantic Model for AI](../Data/AIReadiness/PrepForAI) | `copilot`, `ai`, `modeling`, `governance` | model-author | intermediate | 2026-09-29 |
+| [AI Readiness](../Data/AIReadiness/README) | `copilot`, `ai`, `modeling` | model-author | beginner | 2026-09-29 |
+| [Semantic Model AI Readiness](../Data/AIReadiness/SemanticModelAIReadiness) | `copilot`, `ai`, `modeling` | model-author | intermediate | 2026-09-29 |
 | [ColorTable](../Data/Constants/ColorTable/README) | `visuals`, `design` | report-author | beginner | 2026-09-29 |
 | [Date Table Templates](../Data/Constants/DateTable/README) | `modeling`, `dax`, `dates` | model-author | intermediate | 2026-09-29 |
 | [Other Constants](../Data/Constants/Other/README) | `modeling`, `constants` | model-author | beginner | 2026-09-29 |
@@ -184,9 +189,11 @@ Every document in the hub (194 files). Browse the [table of contents](#table-of-
 | [Microsoft Copilot in Power BI](UserGuides/Copilot) | `copilot`, `ai`, `reports` | report-author | intermediate | 2026-09-29 |
 | [DAX Query View User Guide](UserGuides/DAXQueryView) | `dax`, `tooling` | model-author | beginner | 2026-09-29 |
 | [Microsoft Fabric Git Integration Guide](UserGuides/FabricGitIntegration) | `fabric`, `git`, `ci-cd` | developer | advanced | 2026-09-29 |
+| [Power BI Enhanced Report Format (PBIR)](UserGuides/PBIR) | `pbir`, `pbip`, `reports`, `tmdl` | developer | advanced | 2026-09-29 |
 | [User Guides](UserGuides/README) | `documentation` | all | beginner | 2026-09-29 |
 | [Team Collaboration Patterns](UserGuides/TeamCollaboration) | `collaboration`, `workspaces` | bi-admin | intermediate | 2026-09-29 |
 | [TMDL View User Guide](UserGuides/TMDLView) | `tmdl`, `modeling`, `tooling` | model-author | intermediate | 2026-09-29 |
+| [What's New](WhatsNew/README) | `meta`, `documentation` | all | reference | 2026-09-29 |
 
 ### [Governance](../Governance/README)
 
@@ -217,7 +224,8 @@ Every document in the hub (194 files). Browse the [table of contents](#table-of-
 | [OneLake Integration](../Integrations/Fabric/OneLake) | `fabric`, `data-connections` | developer | advanced | 2026-09-29 |
 | [Microsoft Fabric Integration Patterns](../Integrations/Fabric/README) | `fabric`, `data-connections` | developer | advanced | 2026-09-29 |
 | [Power BI MCP (Model Context Protocol)](../Integrations/MCP/README) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
-| [Power BI MCP Server - Detailed Setup Guide](../Integrations/MCP/Setup_Guide) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
+| [MCP Servers](../Integrations/MCP/ServerGuide) | `mcp`, `agentic`, `ai`, `tooling` | developer | advanced | 2026-09-29 |
+| [Power BI Authoring MCP Server — Local Setup](../Integrations/MCP/Setup_Guide) | `mcp`, `agentic`, `ai`, `setup` | developer | intermediate | 2026-09-29 |
 | [Data Exploration Workflows](../Integrations/MCP/UseCases/DataExploration) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
 | [Documentation Generation via MCP](../Integrations/MCP/UseCases/DocumentationGeneration) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
 | [AI-Assisted Measure Development](../Integrations/MCP/UseCases/MeasureDevelopment) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
@@ -346,70 +354,72 @@ Every document in the hub (194 files). Browse the [table of contents](#table-of-
 
 | Audience | Docs |
 |----------|-----:|
-| Everyone (`all`) | 35 |
+| Everyone (`all`) | 36 |
 | Report authors (`report-author`) | 26 |
-| Model authors (`model-author`) | 26 |
-| Developers (`developer`) | 85 |
+| Model authors (`model-author`) | 29 |
+| Developers (`developer`) | 89 |
 | BI admins (`bi-admin`) | 22 |
 
 ## By Tag
 
 | Tag | Docs |
 |-----|-----:|
+| `ai` | 30 |
+| `agentic` | 27 |
 | `power-query` | 25 |
-| `agentic` | 24 |
-| `ai` | 24 |
 | `design` | 22 |
-| `automation` | 20 |
+| `automation` | 21 |
+| `tooling` | 19 |
 | `data-connections` | 18 |
+| `modeling` | 18 |
 | `visuals` | 18 |
-| `tooling` | 16 |
-| `modeling` | 15 |
-| `governance` | 13 |
-| `mcp` | 13 |
+| `governance` | 14 |
+| `mcp` | 14 |
 | `security` | 13 |
 | `dax` | 11 |
-| `documentation` | 9 |
+| `documentation` | 10 |
 | `etl` | 9 |
+| `meta` | 8 |
 | `references` | 8 |
 | `deployment` | 7 |
 | `learning` | 7 |
-| `meta` | 7 |
 | `prompts` | 7 |
+| `tmdl` | 7 |
 | `ci-cd` | 6 |
 | `devops` | 6 |
 | `fabric` | 6 |
 | `tips` | 6 |
-| `tmdl` | 6 |
 | `collaboration` | 5 |
 | `development` | 5 |
 | `optimization` | 5 |
 | `performance` | 5 |
 | `powershell` | 5 |
+| `reports` | 5 |
 | `workspaces` | 5 |
 | `assets` | 4 |
 | `contributing` | 4 |
+| `copilot` | 4 |
 | `integration` | 4 |
 | `monitoring` | 4 |
 | `operations` | 4 |
 | `reference` | 4 |
-| `reports` | 4 |
+| `setup` | 4 |
 | `advanced` | 3 |
 | `csharp` | 3 |
 | `dashboards` | 3 |
-| `setup` | 3 |
 | `architecture` | 2 |
 | `constants` | 2 |
 | `navigation` | 2 |
 | `python` | 2 |
 | `best-practices` | 1 |
-| `copilot` | 1 |
 | `data` | 1 |
 | `dates` | 1 |
 | `git` | 1 |
 | `hub` | 1 |
 | `office` | 1 |
 | `onboarding` | 1 |
+| `pbip` | 1 |
+| `pbir` | 1 |
 | `r` | 1 |
 | `rest-api` | 1 |
 | `scripts` | 1 |
@@ -420,7 +430,7 @@ Every document in the hub (194 files). Browse the [table of contents](#table-of-
 
 | Level | Docs |
 |-------|-----:|
-| beginner | 31 |
-| intermediate | 78 |
-| advanced | 73 |
-| reference | 12 |
+| beginner | 32 |
+| intermediate | 83 |
+| advanced | 74 |
+| reference | 13 |

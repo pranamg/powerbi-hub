@@ -47,7 +47,8 @@ they explain the mental model everything else builds on.
 |------|----------|
 | New machine | [Environment Setup](./Documentation/Setup/EnvironmentSetup.md) — install order, platform matrix, troubleshooting |
 | One tool | [Installation Instructions](./Documentation/Setup/InstallationInstructions.md) — Desktop, Git, VS Code, Node, Tabular Editor, DAX Studio, pbi-tools, pbir-cli, MCP |
-| Project layout | [Fabric Git Integration](./Documentation/UserGuides/FabricGitIntegration.md) · [TMDL View](./Documentation/UserGuides/TMDLView.md) |
+| Project layout | [Fabric Git Integration](./Documentation/UserGuides/FabricGitIntegration.md) · [TMDL View](./Documentation/UserGuides/TMDLView.md) · [PBIR](./Documentation/UserGuides/PBIR.md) |
+| Keeping current | [What's New](./Documentation/WhatsNew/README.md) — dated change register and deprecations |
 
 ### Modeling & data
 
@@ -104,12 +105,17 @@ they explain the mental model everything else builds on.
 | Area | Start at |
 |------|----------|
 | Overview | [Agentic Development](./AgenticDevelopment/README.md) |
-| MCP server | [Power BI Modeling MCP](./AgenticDevelopment/MCPTools/PowerBI_Modeling_MCP.md) · [Setup](./Integrations/MCP/Setup_Guide.md) |
+| **Which MCP server** | [MCP Server Guide](./Integrations/MCP/ServerGuide.md) — Authoring vs Fabric IQ, hosted vs local |
+| MCP setup | [Local Setup](./Integrations/MCP/Setup_Guide.md) · [VS Code](./Integrations/MCP/VSCode_Integration.md) |
 | MCP use cases | [Use Cases](./Integrations/MCP/UseCases/README.md) |
+| **Agent skills & plugins** | [Agent Skills](./AgenticDevelopment/AgentSkills/README.md) — Microsoft's plugin, Data Goblins marketplace |
+| **Report automation** | [pbir-cli](./AgenticDevelopment/AgentSkills/pbir-cli.md) |
+| **Preparing a model for AI** | [AI Readiness](./Data/AIReadiness/README.md) |
 | Workflows | [Direct TMDL](./AgenticDevelopment/Workflows/DirectMetadataModification.md) · [MCP](./AgenticDevelopment/Workflows/MCPServerWorkflow.md) · [CLI](./AgenticDevelopment/Workflows/CLIToolsWorkflow.md) |
 | Custom commands | [Tabular Editor CLI](./AgenticDevelopment/CustomCommands/TabularEditorCLI.md) |
 | Prompts | [Prompt Library](./PromptLibrary/README.md) |
 | Copilot | [Copilot in Power BI](./Documentation/UserGuides/Copilot.md) |
+| Staying current | [What's New](./Documentation/WhatsNew/README.md) |
 
 ### Visuals & design
 

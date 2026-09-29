@@ -21,8 +21,8 @@ A centralized documentation and resource hub for Power BI best practices, templa
 
 Top-level folders, in rough order of importance:
 
-├── AgenticDevelopment/ → AI-assisted semantic model development (hooks, agents, MCP, workflows, custom commands)
-├── Data/               → Data sources, models, ETL scripts, datasets, constants
+├── AgenticDevelopment/ → AI-assisted semantic model development (agent skills, MCP, hooks, agents, workflows, custom commands)
+├── Data/               → Data sources, models, ETL scripts, datasets, constants, AI readiness
 ├── Scripts/            → PowerShell, Python, C#, TMDL, Azure Automation, Jupyter
 ├── Queries/            → DAX measures, calculated columns, Power Query functions
 ├── Visuals/            → Custom visuals, R/Python visuals, layouts
@@ -35,7 +35,7 @@ Top-level folders, in rough order of importance:
 ├── Optimization/       → Performance tuning, query, memory, composite models
 ├── Collaboration/      → Workspaces, permissions, comments
 ├── Governance/         → Policies, compliance, audits, RLS, naming conventions
-├── Documentation/      → Setup guides, architecture diagrams, design documents, user guides
+├── Documentation/      → Setup guides, architecture diagrams, design documents, user guides, learning paths, what's new, topic index
 ├── References/         → Books, articles, blogs, YouTube, GitHub repos
 ├── TipsAndTricks/      → DAX, Power Query, ETL, Performance, Visuals tips
 ├── PromptLibrary/      → AI prompts for DAX, Power Query, ETL, Visuals, MCP

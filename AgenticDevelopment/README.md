@@ -80,11 +80,29 @@ Agentic development refers to using AI agents with tools to read, query, and mod
 
 | Folder | Description |
 |--------|-------------|
+| [AgentSkills](./AgentSkills/) | **Agent skills and plugin marketplaces** — Microsoft's `powerbi-authoring` plugin, the Data Goblins marketplace, and `pbir-cli` |
+| [MCPTools](./MCPTools/) | Model Context Protocol servers and tools |
 | [Hooks](./Hooks/) | Automated triggers and quality gates |
 | [AgentsAndSkills](./AgentsAndSkills/) | Coding agents and their capabilities |
-| [MCPTools](./MCPTools/) | Model Context Protocol servers and tools |
 | [Workflows](./Workflows/) | Enterprise-ready development patterns |
 | [CustomCommands](./CustomCommands/) | Tabular Editor CLI and automation |
+
+> **Naming has changed.** The "Power BI Modeling MCP server" is now the
+> **Power BI Authoring MCP server**, and **Fabric IQ** is the consumption
+> layer. See [MCP Server Guide](../Integrations/MCP/ServerGuide.md) for the
+> current setup — pages under `MCPTools/` and `Workflows/` predate the change
+> and are best read as background.
+
+## Where to start
+
+| You want to… | Go to |
+|-------------|-------|
+| Know which MCP server to use | [MCP Server Guide](../Integrations/MCP/ServerGuide.md) |
+| Install and wire up the local server | [Setup Guide](../Integrations/MCP/Setup_Guide.md) |
+| Give your agent Power BI skills | [Agent Skills](./AgentSkills/README.md) |
+| Automate report changes from the terminal | [pbir-cli](./AgentSkills/pbir-cli.md) |
+| Make a model answer Copilot correctly | [AI Readiness](../Data/AIReadiness/README.md) |
+| Check what has changed recently | [What's New](../Documentation/WhatsNew/README.md) |
 
 ## Quick Start
 

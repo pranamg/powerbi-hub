@@ -16,6 +16,7 @@ last_verified: 2026-09-29
 |----------|-------------|
 | [Topic Index](./Topic_Index.md) | Every document, filterable by audience, tag, and difficulty (generated) |
 | [Learning Paths](./LearningPaths/) | Six sequenced reading paths by role, with known gaps named |
+| [What's New](./WhatsNew/) | Dated change register and deprecation deadlines |
 
 ## Getting Started
 
@@ -31,6 +32,7 @@ last_verified: 2026-09-29
 | Guide | Description |
 |-------|-------------|
 | [User Guides](./UserGuides/) | All user-facing guides |
+| [PBIR](./UserGuides/PBIR.md) | Power BI Enhanced Report Format — the report half of PBIP |
 | [DAX Query View](./UserGuides/DAXQueryView.md) | Develop and test DAX queries in the desktop client |
 | [TMDL View](./UserGuides/TMDLView.md) | Edit semantic model metadata as TMDL |
 | [Copilot](./UserGuides/Copilot.md) | Using Copilot features in Power BI |

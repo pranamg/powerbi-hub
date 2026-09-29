@@ -145,30 +145,35 @@ Source control for Power BI. Assumes you can build a model and have used Git.
 2. **[TMDL View (Desktop)](../../Documentation/UserGuides/TMDLView.md)** — The
    in-Desktop authoring surface for TMDL.
 
-3. **[Reference Models](../../Data/DataModels/README.md)** —
+3. **[PBIR (Enhanced Report Format)](../../Documentation/UserGuides/PBIR.md)** —
+   The report side of a PBIP project: the `definition/` folder,
+   `definition.pbir`, `byPath` versus `byConnection`, and the public JSON
+   schemas. Read this before committing report files to Git.
+
+4. **[Reference Models](../../Data/DataModels/README.md)** —
    [Model 1](../../Data/DataModels/Model1/README.md) is a working TMDL model you
    can inspect; [Model 2](../../Data/DataModels/Model2/README.md) adds
    calculation groups and a shared dimension.
 
-4. **[Fabric Git Integration](../../Documentation/UserGuides/FabricGitIntegration.md)** —
+5. **[Fabric Git Integration](../../Documentation/UserGuides/FabricGitIntegration.md)** —
    Round-tripping through the service.
 
-5. **[Deployment Pipelines](../../Deployment/Pipelines/README.md)** — The
+6. **[Deployment Pipelines](../../Deployment/Pipelines/README.md)** — The
    service-native path, with
    [GitHub Actions](../../Deployment/Pipelines/github-actions.yml) and
    [Azure Pipelines](../../Deployment/Pipelines/azure-pipelines.yml) examples.
 
-6. **[Hooks: Quality Gates](../../AgenticDevelopment/Hooks/README.md)** — Run
+7. **[Hooks: Quality Gates](../../AgenticDevelopment/Hooks/README.md)** — Run
    Best Practice Analyzer in CI so bad changes never merge.
 
 ### Known gaps
 
-- **PBIR is not documented.** The report side of a PBIP project (the
-  `definition/` folder, `definition.pbir`, and the public JSON schemas) is
-  entirely absent. This is the highest-priority gap in the hub and blocks
-  report-level source control.
-- No conflict-resolution guide for TMDL merges.
-- No schema-validation setup for TMDL or JSON files.
+- No conflict-resolution guide for TMDL or PBIR merges. This is the practical
+  hard part of co-development and is not covered.
+- No schema-validation setup for TMDL or JSON files in CI. The
+  [Agent Skills](../../AgenticDevelopment/AgentSkills/README.md) page records
+  that the Data Goblins `pbip` plugin provides PBIR, TMDL, and binding
+  validation hooks, but this hub has no configuration for it.
 
 ---
 
@@ -182,15 +187,20 @@ complete path — read the gaps.
 1. **[Copilot in Power BI](../../Documentation/UserGuides/Copilot.md)** — What
    Copilot can and cannot do today, and what the model owes it.
 
-2. **[Agentic Development](../../AgenticDevelopment/README.md)** — The
-   overview: when agentic work helps and when it does not.
+2. **[Preparing a Semantic Model for AI](../../Data/AIReadiness/README.md)** —
+   What you must change before Copilot can be trusted. Start with
+   [Semantic Model AI Readiness](../../Data/AIReadiness/SemanticModelAIReadiness.md)
+   for the checklist, then
+   [Prep for AI](../../Data/AIReadiness/PrepForAI.md) for the features.
 
-3. **[MCP Tools](../../AgenticDevelopment/MCPTools/README.md)** — Start with
-   [Power BI Modeling MCP Server](../../AgenticDevelopment/MCPTools/PowerBI_Modeling_MCP.md),
-   then [Configuration Examples](../../AgenticDevelopment/MCPTools/ConfigurationExamples.md).
+3. **[MCP Server Guide](../../Integrations/MCP/ServerGuide.md)** — Which server
+   to use, hosted versus local, Fabric IQ for consumption, and permissions.
+   Then [Setup Guide](../../Integrations/MCP/Setup_Guide.md) to wire it up.
 
-4. **[MCP Setup Guide](../../Integrations/MCP/Setup_Guide.md)** and
-   [VS Code Integration](../../Integrations/MCP/VSCode_Integration.md) — Wiring.
+4. **[Agent Skills](../../AgenticDevelopment/AgentSkills/README.md)** —
+   Microsoft's `powerbi-authoring` plugin and the Data Goblins marketplace.
+   Also [pbir-cli](../../AgenticDevelopment/AgentSkills/pbir-cli.md) for
+   report-layer automation.
 
 5. **[MCP Use Cases](../../Integrations/MCP/UseCases/README.md)** —
    [Data Exploration](../../Integrations/MCP/UseCases/DataExploration.md),
@@ -199,7 +209,11 @@ complete path — read the gaps.
    [Report Analysis](../../Integrations/MCP/UseCases/ReportAnalysis.md),
    [Documentation Generation](../../Integrations/MCP/UseCases/DocumentationGeneration.md).
 
-6. **[Prompt Library](../../PromptLibrary/README.md)** — Starting prompts for
+6. **[Agentic Development](../../AgenticDevelopment/README.md)** — The
+   overview: when agentic work helps and when it does not. Read this before
+   adopting any of the above.
+
+7. **[Prompt Library](../../PromptLibrary/README.md)** — Starting prompts for
    [DAX](../../PromptLibrary/DAXPrompts.md),
    [Power Query](../../PromptLibrary/PowerQueryPrompts.md),
    [MCP](../../PromptLibrary/MCPPrompts.md), and
@@ -212,20 +226,23 @@ complete path — read the gaps.
 - [MCP Server Workflow](../../AgenticDevelopment/Workflows/MCPServerWorkflow.md)
   and [CLI Tools Workflow](../../AgenticDevelopment/Workflows/CLIToolsWorkflow.md).
 - [Tabular Editor CLI](../../AgenticDevelopment/CustomCommands/TabularEditorCLI.md).
+- [What's New](../../Documentation/WhatsNew/README.md) — this area changes
+  fastest; check what has moved.
 
 ### Known gaps
 
-- **"Prep for AI" is not documented at all.** AI data schemas, AI
-  instructions, and verified answers — the features that determine whether
-  Copilot answers your model correctly — have no coverage.
-- Microsoft's official agent skills (`semantic-model-authoring`,
-  `power-bi-report-authoring`, and the planner/design skills) are not
-  covered; the repo's agentic content predates them.
-- The remote Power BI MCP server (natural-language querying against a
-  published model) is not covered; only local/modeling MCP is.
-- No Power BI Desktop Bridge / CLI coverage for the reload-and-screenshot
-  verification loop.
-- No Fabric data agent guidance.
+- **No Power BI Desktop Bridge coverage.** The reload-and-screenshot
+  verification loop is described in
+  [pbir-cli](../../AgenticDevelopment/AgentSkills/pbir-cli.md) but there is no
+  dedicated page for the Desktop Bridge commands.
+- **No Fabric data agent setup guide.** Consumption is covered from the MCP
+  side in the [Server Guide](../../Integrations/MCP/ServerGuide.md), but
+  creating and configuring a data agent is not.
+- The `AgenticDevelopment/MCPTools/` and `Workflows/` pages predate the
+  Authoring/Fabric IQ split and still use the older "Modeling MCP" naming.
+  Treat [Server Guide](../../Integrations/MCP/ServerGuide.md) as current and
+  those pages as background.
+- No paginated report (RDL) agentic tooling.
 
 ---
 
