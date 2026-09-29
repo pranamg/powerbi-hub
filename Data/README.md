@@ -14,6 +14,7 @@ last_verified: 2026-09-29
 
 | Folder | Description |
 |--------|-------------|
+| [AIReadiness/](./AIReadiness/) | **Preparing a semantic model for Copilot and data agents** — AI data schema, AI instructions, verified answers |
 | [DataSources/](./DataSources/) | Connection patterns by source type (SQL, Excel, CSV, Parquet, APIs, and more) |
 | [DataModels/](./DataModels/) | Sample and starter semantic models |
 | [Datasets/](./Datasets/) | Dataset examples and templates |
