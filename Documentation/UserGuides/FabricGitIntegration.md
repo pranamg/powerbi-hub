@@ -463,7 +463,7 @@ Thumbs.db
 
 - [Microsoft Fabric Git Integration Docs](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
 - [Fabric REST API Reference](https://learn.microsoft.com/rest/api/fabric/)
-- [Azure DevOps Integration Guide](https://learn.microsoft.com/fabric/cicd/git-integration/git-integration-with-azure-devops)
+- [Azure DevOps Integration Guide](https://learn.microsoft.com/en-us/fabric/cicd/git-integration/source-code-format)
 
 ---
 
@@ -472,4 +472,3 @@ Thumbs.db
 - [TMDL View Guide](./TMDLView.md)
 - [Deployment Pipelines](../../Deployment/Pipelines/README.md)
 - [Development Standards](../../Governance/DevelopmentStandards.md)
-

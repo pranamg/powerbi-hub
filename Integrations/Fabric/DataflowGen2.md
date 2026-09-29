@@ -292,4 +292,3 @@ in
 - [Lakehouse Patterns](./Lakehouse.md)
 - [Direct Lake Setup](./DirectLake.md)
 - [Power Query Functions](../../Queries/PowerQuery/CustomFunctions/README.md)
-

@@ -395,7 +395,7 @@ Copilot in Power BI Service complements MCP:
 ## Resources
 
 - [Microsoft Copilot Documentation](https://learn.microsoft.com/power-bi/create-reports/copilot-introduction)
-- [DAX Copilot Tips](https://learn.microsoft.com/power-bi/transform-model/copilot-dax)
+- [DAX Copilot Tips](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-reports-overview)
 - [Q&A Best Practices](https://learn.microsoft.com/power-bi/natural-language/q-and-a-best-practices)
 
 ## Related Resources

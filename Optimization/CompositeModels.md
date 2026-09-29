@@ -367,4 +367,3 @@ For detailed analysis:
 - [Performance Tips](../TipsAndTricks/Performance.md)
 - [Direct Lake Setup](../Integrations/Fabric/DirectLake.md)
 - [DAX Optimization](../TipsAndTricks/DAX.md)
-

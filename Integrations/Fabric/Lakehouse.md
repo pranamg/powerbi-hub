@@ -263,4 +263,3 @@ df_fact_sales.write.format("delta").mode("overwrite").saveAsTable("FactSales")
 - [Direct Lake Setup](./DirectLake.md)
 - [Dataflow Gen2](./DataflowGen2.md)
 - [OneLake Integration](./OneLake.md)
-

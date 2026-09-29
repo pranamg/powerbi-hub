@@ -23,7 +23,7 @@ Follow these blogs for the latest Power BI tips, tricks, and updates.
 
 ### Radacad (Reza Rad)
 
-**Website:** [radacad.com](https://www.radacad.com/blog)
+**Website:** [radacad.com](https://radacad.com/)
 
 - Comprehensive tutorials from basics to advanced
 - Power Query deep dives

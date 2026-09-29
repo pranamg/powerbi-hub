@@ -219,4 +219,4 @@ foreach(var c in Model.AllColumns.Where(c => c.IsReferenced == false && !c.IsKey
 
 - [Tabular Editor CLI Options](../CustomCommands/TabularEditorCLI.md)
 - [Best Practice Analyzer Documentation](https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html)
-- [Azure DevOps Integration Guide](https://tabulareditor.github.io/2019/10/08/DevOps3.html)
+- [Azure DevOps Integration Guide](https://tabulareditor.com/blog/)

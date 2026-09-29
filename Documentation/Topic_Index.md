@@ -11,7 +11,7 @@ last_verified: 2026-09-29
 <!-- GENERATED FILE - do not edit by hand. -->
 <!-- Regenerate: python .github/scripts/build_index.py -->
 
-Every document in the hub (202 files). Browse the [table of contents](#table-of-contents) below, the [learning paths](./LearningPaths/), or filter by [audience](#by-audience) and [tag](#by-tag).
+Every document in the hub (201 files). Browse the [table of contents](#table-of-contents) below, the [learning paths](./LearningPaths/), or filter by [audience](#by-audience) and [tag](#by-tag).
 
 > Generated file. To add or re-tag content, edit the source Markdown and run `python .github/scripts/build_index.py`. CI fails if this file is out of date.
 
@@ -28,7 +28,7 @@ Every document in the hub (202 files). Browse the [table of contents](#table-of-
 | [Data/](../Data/README) | 34 | [Jump](#data) |
 | [Deployment/](../Deployment/README) | 4 | [Jump](#deployment) |
 | [Design/](../Design/README) | 14 | [Jump](#design) |
-| [Documentation/](README) | 17 | [Jump](#documentation) |
+| [Documentation/](README) | 16 | [Jump](#documentation) |
 | [Governance/](../Governance/README) | 13 | [Jump](#governance) |
 | [Integrations/](../Integrations/README) | 19 | [Jump](#integrations) |
 | [Monitoring/](../Monitoring/README) | 4 | [Jump](#monitoring) |
@@ -178,11 +178,10 @@ Every document in the hub (202 files). Browse the [table of contents](#table-of-
 | Topic | Tags | Audience | Level | Verified |
 |-------|------|----------|-------|----------|
 | [Architecture Diagrams](ArchitectureDiagrams/README) | `architecture`, `documentation` | all | intermediate | 2026-09-29 |
-| [PowerBI-Hub Implementation Checklist](CHECKLIST) | `meta`, `onboarding` | all | beginner | 2026-09-29 |
 | [Design Documents](DesignDocuments/README) | `architecture`, `documentation` | all | intermediate | 2026-09-29 |
-| [PowerBI-Hub Implementation Plan](IMPLEMENTATION_PLAN) | `meta` | all | reference | 2026-09-29 |
 | [Learning Paths](LearningPaths/README) | `meta`, `navigation`, `learning` | all | beginner | 2026-09-29 |
 | [Documentation](README) | `documentation` | all | beginner | 2026-09-29 |
+| [PowerBI-Hub Roadmap](ROADMAP) | `meta`, `documentation` | all | reference | 2026-09-29 |
 | [Environment Setup](Setup/EnvironmentSetup) | `setup`, `tooling` | all | beginner | 2026-09-29 |
 | [Installation Instructions](Setup/InstallationInstructions) | `setup`, `tooling` | all | beginner | 2026-09-29 |
 | [Setup](Setup/README) | `setup`, `tooling` | all | beginner | 2026-09-29 |
@@ -232,7 +231,7 @@ Every document in the hub (202 files). Browse the [table of contents](#table-of-
 | [Querying Semantic Models via MCP](../Integrations/MCP/UseCases/QueryingModels) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
 | [Power BI MCP Use Cases](../Integrations/MCP/UseCases/README) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
 | [Report Analysis via MCP](../Integrations/MCP/UseCases/ReportAnalysis) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
-| [VS Code Integration for Power BI MCP](../Integrations/MCP/VSCode_Integration) | `mcp`, `agentic`, `ai` | developer | advanced | 2026-09-29 |
+| [VS Code as an MCP Host for Power BI](../Integrations/MCP/VSCode_Integration) | `mcp`, `agentic`, `ai` | developer | intermediate | 2026-09-29 |
 | [Power Apps](../Integrations/PowerApps/README) | `integration` | developer | intermediate | 2026-09-29 |
 | [Power Automate](../Integrations/PowerAutomate/README) | `integration` | developer | intermediate | 2026-09-29 |
 | [Integrations](../Integrations/README) | `integration` | developer | intermediate | 2026-09-29 |
@@ -354,7 +353,7 @@ Every document in the hub (202 files). Browse the [table of contents](#table-of-
 
 | Audience | Docs |
 |----------|-----:|
-| Everyone (`all`) | 36 |
+| Everyone (`all`) | 35 |
 | Report authors (`report-author`) | 26 |
 | Model authors (`model-author`) | 29 |
 | Developers (`developer`) | 89 |
@@ -377,12 +376,12 @@ Every document in the hub (202 files). Browse the [table of contents](#table-of-
 | `mcp` | 14 |
 | `security` | 13 |
 | `dax` | 11 |
-| `documentation` | 10 |
+| `documentation` | 11 |
 | `etl` | 9 |
-| `meta` | 8 |
 | `references` | 8 |
 | `deployment` | 7 |
 | `learning` | 7 |
+| `meta` | 7 |
 | `prompts` | 7 |
 | `tmdl` | 7 |
 | `ci-cd` | 6 |
@@ -417,7 +416,6 @@ Every document in the hub (202 files). Browse the [table of contents](#table-of-
 | `git` | 1 |
 | `hub` | 1 |
 | `office` | 1 |
-| `onboarding` | 1 |
 | `pbip` | 1 |
 | `pbir` | 1 |
 | `r` | 1 |
@@ -430,7 +428,7 @@ Every document in the hub (202 files). Browse the [table of contents](#table-of-
 
 | Level | Docs |
 |-------|-----:|
-| beginner | 32 |
-| intermediate | 83 |
-| advanced | 74 |
+| beginner | 31 |
+| intermediate | 84 |
+| advanced | 73 |
 | reference | 13 |

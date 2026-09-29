@@ -16,7 +16,7 @@ open-ended channel. Ordered roughly as a beginner would tackle them.
 | Playlist | Channel | What it covers |
 |----------|---------|----------------|
 | [Get Started with Power BI](https://www.youtube.com/@guyinacube) | [Guy in a Cube](https://www.youtube.com/@guyinacube) | Complete beginner introduction: connect data, build a report, create visuals, share it. The best single starting point |
-| [Power BI Tutorials](https://www.youtube.com/playlist?list=PLP5ApWIzouNlKtCqjoafaVEBqkK4U6cYV) | [Curbal](https://www.youtube.com/channel/UCJ7UhloHSA4wAqPzyi6TOkw) | Cross-cutting tips on visuals, report creation, and UI |
+| [Power BI Tutorials](https://www.youtube.com/playlist?list=PLP5ApWIzouNlKtCqjoafaVEBqkK4U6cYV) | [Curbal](https://www.youtube.com/@curbal) | Cross-cutting tips on visuals, report creation, and UI |
 | [Power BI for Beginners](https://www.youtube.com/@LearnitTraining) | [Learnit Training](https://www.youtube.com/@LearnitTraining) | Longer structured walkthroughs, Excel-to-Power BI framing |
 
 ## DAX
@@ -24,7 +24,7 @@ open-ended channel. Ordered roughly as a beginner would tackle them.
 | Playlist | Channel | What it covers |
 |----------|---------|----------------|
 | [DAX 101](https://www.youtube.com/@SQLBI) | [SQLBI](https://www.youtube.com/@SQLBI) | Variables, row and filter context, measures vs calculated columns, disconnected tables. The DAX starting point |
-| DAX performance and optimisation | [DAX.noob](https://www.youtube.com/@JustinMartin) | Query plans, VertiPaq, and fixing slow measures. Pair with [DAX Studio](https://dax.studio/) |
+| DAX performance and optimisation | [DAX.noob](https://daxnoob.blog/) | Query plans, VertiPaq, and fixing slow measures. Pair with [DAX Studio](https://dax.studio/) |
 | DAX and modelling deep dives | [SQLBI](https://www.youtube.com/@SQLBI) | Advanced topics, generally released alongside their written articles |
 
 DAX is the topic where the primary authors teach best. Work through
@@ -37,9 +37,9 @@ intuition, the book for precision.
 | Playlist | Channel | What it covers |
 |----------|---------|----------------|
 | Power Query for Beginners | [Guy in a Cube](https://www.youtube.com/@guyinacube) | Clean, fold, load — the three things that matter most |
-| Power Query tips | [Curbal](https://www.youtube.com/channel/UCJ7UhloHSA4wAqPzyi6TOkw) | Weekly short patterns |
+| Power Query tips | [Curbal](https://www.youtube.com/@curbal) | Weekly short patterns |
 | Query folding and performance | [RADACAD](https://www.youtube.com/@RADACAD) | Reza Rad on keeping the source doing the work |
-| Power Query deep dives | [DataVeld](https://www.youtube.com/@DataVeld) | Function design, error handling, lists |
+| Power Query deep dives | [DataVeld](https://gorilla.bi/) | Function design, error handling, lists |
 
 ## Data modelling
 
@@ -53,7 +53,7 @@ intuition, the book for precision.
 | Playlist | Channel | What it covers |
 |----------|---------|----------------|
 | Report design and dataviz | [SQLBI](https://www.youtube.com/@SQLBI) | Visual choice, hierarchy, and the theory behind it |
-| Visual formatting and interaction | [Curbal](https://www.youtube.com/channel/UCJ7UhloHSA4wAqPzyi6TOkw) | Bookmarks, drill-through, custom labels, tooltips |
+| Visual formatting and interaction | [Curbal](https://www.youtube.com/@curbal) | Bookmarks, drill-through, custom labels, tooltips |
 
 See also [Design Guidelines](../../Design/Guidelines/README.md) and
 [Atomic Elements](../../Design/AtomicElements/README.md) in this hub — those
@@ -63,7 +63,7 @@ carry the written rules these videos demonstrate.
 
 | Playlist | Channel | What it covers |
 |----------|---------|----------------|
-| Agentic semantic model development | [Data Goblins](https://www.youtube.com/@DataGoblins) | MCP servers, Tabular Editor scripting, AI-assisted DAX and modeling |
+| Agentic semantic model development | [Data Goblins](https://data-goblins.com/) | MCP servers, Tabular Editor scripting, AI-assisted DAX and modeling |
 | Copilot in Power BI | [Guy in a Cube](https://www.youtube.com/@guyinacube) | Copilot features, narrative visuals, report generation |
 
 ## Copilot and AI

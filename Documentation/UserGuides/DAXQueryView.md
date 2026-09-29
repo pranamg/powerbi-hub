@@ -475,8 +475,7 @@ DEFINE
 
 ## Resources
 
-- [DAX Query View Documentation](https://learn.microsoft.com/power-bi/transform-model/desktop-dax-query-view)
+- [DAX Query View Documentation](https://learn.microsoft.com/en-us/power-bi/transform-model/dax-query-view)
 - [EVALUATE Documentation](https://dax.guide/evaluate/)
 - [DEFINE Documentation](https://dax.guide/define/)
 - [DAX.do - Online Query Playground](https://dax.do)
-

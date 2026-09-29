@@ -17,8 +17,8 @@ little about fit.
 | Channel | Handle | Focus |
 |---------|--------|-------|
 | [Guy in a Cube](https://www.youtube.com/@guyinacube) | `@guyinacube` | Adam Saxton, Patrick LeBlanc, Alex Powers (Microsoft). The most complete Power BI + Fabric video library. Daily uploads, weekly "Power BI Update" recaps of the newest Desktop features |
-| [How to Power BI](https://www.youtube.com/c/HowtoPowerBI) | `@HowtoPowerBI` | Longer, project-style tutorials rather than feature clips |
-| [Curbal](https://www.youtube.com/channel/UCJ7UhloHSA4wAqPzyi6TOkw) | `@curbal` | Ruth Pozuelo. Power Query and DAX tips, one per week, short and immediately usable |
+| [How to Power BI](https://www.youtube.com/@HowToPowerBI) | `@HowtoPowerBI` | Longer, project-style tutorials rather than feature clips |
+| [Curbal](https://www.youtube.com/@curbal) | `@curbal` | Ruth Pozuelo. Power Query and DAX tips, one per week, short and immediately usable |
 | [RADACAD](https://www.youtube.com/@RADACAD) | `@RADACAD` | Reza Rad. Deep Power Query and architecture, including enterprise-scale patterns |
 | [Learnit Training](https://www.youtube.com/@LearnitTraining) | `@LearnitTraining` | Broad, mostly Excel-to-Power BI transition material |
 | [Enterprise DNA](https://www.youtube.com/@EnterpriseDNA) | `@EnterpriseDNA` | Practical Power BI, DAX, and M applied to business problems |
@@ -28,7 +28,7 @@ little about fit.
 | Channel | Handle | Focus |
 |---------|--------|-------|
 | [SQLBI](https://www.youtube.com/@SQLBI) | `@SQLBI` | Marco Russo and Alberto Ferrari. The authoritative voice on DAX and the tabular engine. Deep, not introductory |
-| [DAX.noob](https://www.youtube.com/@JustinMartin) | — | Justin Martin. Practical DAX performance and optimisation; contributed to the Data Goblins DAX skill |
+| [DAX.noob](https://daxnoob.blog/) | — | Justin Martin. Practical DAX performance and optimisation; contributed to the Data Goblins DAX skill |
 
 DAX is the one topic where the primary authors (SQLBI) are the best teacher.
 For anything else, secondary channels tend to cover it adequately; for DAX
@@ -39,29 +39,29 @@ specifically they do not.
 | Channel | Handle | Focus |
 |---------|--------|-------|
 | [SQLBI](https://www.youtube.com/@SQLBI) | `@SQLBI` | VertiPaq, relationships, filter context. See also the [Books](../Books.md) |
-| [Data Goblins](https://www.youtube.com/@DataGoblins) | — | Kurt Buhler, Tabular Editor. Best Practice Analyzer, Tabular Editor scripting, and agentic development for semantic models |
+| [Data Goblins](https://data-goblins.com/) | — | Kurt Buhler, Tabular Editor. Best Practice Analyzer, Tabular Editor scripting, and agentic development for semantic models |
 
 ## Agentic development and AI
 
 | Channel | Handle | Focus |
 |---------|--------|-------|
-| [Data Goblins](https://www.youtube.com/@DataGoblins) | — | Agentic semantic model development, MCP servers, PBIP workflows |
+| [Data Goblins](https://data-goblins.com/) | — | Agentic semantic model development, MCP servers, PBIP workflows |
 | [Guy in a Cube](https://www.youtube.com/@guyinacube) | `@guyinacube` | Copilot in Power BI, agent features, Fabric AI |
 
 ## Power Query / M
 
 | Channel | Handle | Focus |
 |---------|--------|-------|
-| [Curbal](https://www.youtube.com/channel/UCJ7UhloHSA4wAqPzyi6TOkw) | `@curbal` | Short, practical M patterns |
+| [Curbal](https://www.youtube.com/@curbal) | `@curbal` | Short, practical M patterns |
 | [RADACAD](https://www.youtube.com/@RADACAD) | `@RADACAD` | Query folding, error handling, function design |
-| [DataVeld](https://www.youtube.com/@DataVeld) | — | Rick de Groot. Power Query in depth, including performance |
+| [DataVeld](https://gorilla.bi/) | — | Rick de Groot. Power Query in depth, including performance |
 
 ## Custom visuals and report design
 
 | Channel | Handle | Focus |
 |---------|--------|-------|
 | [SQLBI](https://www.youtube.com/@SQLBI) | `@SQLBI` | Report design guidance, data visualisation theory |
-| [Curbal](https://www.youtube.com/channel/UCJ7UhloHSA4wAqPzyi6TOkw) | `@curbal` | Visual tricks, formatting, interaction patterns |
+| [Curbal](https://www.youtube.com/@curbal) | `@curbal` | Visual tricks, formatting, interaction patterns |
 
 ## Microsoft official
 
@@ -78,11 +78,11 @@ resource — for that, use the practitioner channels above.
 | If you want to… | Start with |
 |-----------------|------------|
 | Learn Power BI from nothing | [Guy in a Cube — Get Started with Power BI](https://www.youtube.com/@guyinacube) |
-| Get faster at Power Query | [Curbal](https://www.youtube.com/channel/UCJ7UhloHSA4wAqPzyi6TOkw), then [RADACAD](https://www.youtube.com/@RADACAD) |
+| Get faster at Power Query | [Curbal](https://www.youtube.com/@curbal), then [RADACAD](https://www.youtube.com/@RADACAD) |
 | Learn DAX properly | [SQLBI](https://www.youtube.com/@SQLBI) — pair with [The Definitive Guide to DAX](../Books.md) |
-| Diagnose a slow model | [DAX.noob](https://www.youtube.com/@JustinMartin) and [DAX Studio](https://dax.studio/) |
+| Diagnose a slow model | [DAX.noob](https://daxnoob.blog/) and [DAX Studio](https://dax.studio/) |
 | Track monthly Power BI changes | [Guy in a Cube](https://www.youtube.com/@guyinacube) weekly update |
-| Set up AI-assisted development | [Data Goblins](https://www.youtube.com/@DataGoblins) — see [Agentic Development](../../AgenticDevelopment/README.md) |
+| Set up AI-assisted development | [Data Goblins](https://data-goblins.com/) — see [Agentic Development](../../AgenticDevelopment/README.md) |
 
 ## A note on video quality
 

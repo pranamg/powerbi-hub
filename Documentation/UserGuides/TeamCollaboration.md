@@ -522,4 +522,3 @@ A feature is complete when:
 - [Fabric Git Integration](./FabricGitIntegration.md)
 - [Deployment Pipelines](../../Deployment/Pipelines/README.md)
 - [Change Management](../../Governance/ChangeManagement.md)
-

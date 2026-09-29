@@ -443,4 +443,3 @@ SUMMARIZECOLUMNS(
 - [RLS Patterns](./RLSPatterns.md)
 - [Data Classification](./DataClassification.md)
 - [Audit Procedures](./AuditProcedures.md)
-

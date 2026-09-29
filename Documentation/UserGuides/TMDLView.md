@@ -348,4 +348,3 @@ TMDL View works well with:
 - [TMDL View Documentation](https://learn.microsoft.com/power-bi/transform-model/desktop-tmdl-view)
 - [TMDL Language Reference](https://learn.microsoft.com/analysis-services/tmdl/tmdl-overview)
 - [Power BI Blog - TMDL Announcements](https://powerbi.microsoft.com/blog/)
-

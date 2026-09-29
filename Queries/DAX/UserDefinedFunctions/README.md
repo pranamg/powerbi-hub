@@ -56,6 +56,6 @@ Sales with Tax = AddTax([Sales Amount], 0.10)
 
 ## Resources
 
-- [Microsoft Documentation](https://learn.microsoft.com/power-bi/transform-model/desktop-user-defined-functions)
+- [Microsoft Documentation](https://learn.microsoft.com/en-us/power-bi/transform-model/)
 - [SQLBI Introduction](https://www.sqlbi.com/articles/introducing-user-defined-functions-in-dax/)
 - [daxlib.org](https://daxlib.org) - Community UDF library

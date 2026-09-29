@@ -22,7 +22,7 @@ passing a free online assessment, so the cost of staying current is a
 | [PL-300](https://learn.microsoft.com/en-us/credentials/certifications/exams/pl-300) | Power BI Data Analyst Associate | Power Query, DAX, modelling, visual design, service and refresh | Report authors and analysts. Replaced the older DA-100 |
 | [DP-600](https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-600) | Fabric Data Engineer Associate | Fabric analytics: DAX, SQL analytics endpoints, Spark, dataflows | Developers whose work spans Power BI and Fabric |
 | [DP-700](https://learn.microsoft.com/en-us/credentials/certifications/exams/dp-700) | Fabric Data Engineer Associate | Data engineering with Fabric: pipelines, warehouses, orchestration | Data engineers, not BI developers |
-| [GH-300](https://learn.microsoft.com/en-us/credentials/certifications/exams/gh-300) | GitHub Copilot Exam | Using agents and Copilot effectively | Relevant if you are adopting the agentic workflows in this hub |
+| [GH-300](https://learn.microsoft.com/en-us/credentials/certifications/) | GitHub Copilot Exam | Using agents and Copilot effectively | Relevant if you are adopting the agentic workflows in this hub |
 
 ### A common misconception
 
@@ -67,8 +67,8 @@ before you invest in a study plan.
 | [DAX Patterns](https://www.daxpatterns.com/) | Solved DAX problems by category; the reference behind many patterns in this hub |
 | [DAX Guide](https://dax.guide/) | Searchable DAX function index |
 | [DAX Formatter](https://www.daxformatter.com/) (SQLBI) | Formats a `.dax` file so diffs are readable — useful in CI |
-| [Bravo for Power BI](https://bravo.sqlbi.com/) (SQLBI) | Free external tools suite: measure extraction, DAX debugger, model documentation |
-| [Microsoft Learn sandbox](https://learn.microsoft.com/en-us/credentials/certifications/certification-exams/overview) | Practice the exam interface before test day |
+| [Bravo for Power BI](https://www.sqlbi.com/tools/bravo) (SQLBI) | Free external tools suite: measure extraction, DAX debugger, model documentation |
+| [Microsoft Learn sandbox](https://learn.microsoft.com/en-us/credentials/certifications/) | Practice the exam interface before test day |
 | [Sample reports](https://github.com/microsoft/powerbi-desktop-samples) | Real PBIX files to open, break, and learn from |
 | [AdventureWorks / Contoso datasets](https://learn.microsoft.com/en-us/power-bi/sample-datasets) | Microsoft's standard sample data for tutorials and demos |
 
@@ -79,13 +79,13 @@ completing once, then treating as reference:
 
 | Path | Focus |
 |------|-------|
-| [Get data with Power BI Desktop](https://learn.microsoft.com/en-us/training/paths/get-data/) | Power Query fundamentals |
+| [Get data with Power BI Desktop](https://learn.microsoft.com/en-us/training/paths/?terms=power%20bi) | Power Query fundamentals |
 | [Model data with Power BI](https://learn.microsoft.com/en-us/training/paths/model-data-power-bi/) | Relationships, dimensions, star schema |
-| [Build Power BI visuals and reports](https://learn.microsoft.com/en-us/training/paths/create-use-visuals-power-bi/) | Visual selection and report design |
-| [Optimize a model for performance](https://learn.microsoft.com/en-us/training/paths/optimize-model-performance/) | VertiPaq, partitioning, DAX performance |
-| [Apply security in Power BI](https://learn.microsoft.com/en-us/training/paths/security/) | RLS, OLS, sensitivity labels |
-| [Manage the lifecycle of datasets in Power BI](https://learn.microsoft.com/en-us/training/paths/manage-datasets-power-bi/) | Deployment pipelines, lineage, certification |
-| [Plan and manage Power BI in an organization](https://learn.microsoft.com/en-us/training/paths/plan-manage-power-bi/) | Workspaces, capacities, governance |
+| [Build Power BI visuals and reports](https://learn.microsoft.com/en-us/training/paths/?terms=power%20bi) | Visual selection and report design |
+| [Optimize a model for performance](https://learn.microsoft.com/en-us/training/paths/?terms=power%20bi) | VertiPaq, partitioning, DAX performance |
+| [Apply security in Power BI](https://learn.microsoft.com/en-us/training/paths/?terms=power%20bi) | RLS, OLS, sensitivity labels |
+| [Manage the lifecycle of datasets in Power BI](https://learn.microsoft.com/en-us/training/paths/?terms=power%20bi) | Deployment pipelines, lineage, certification |
+| [Plan and manage Power BI in an organization](https://learn.microsoft.com/en-us/training/paths/?terms=power%20bi) | Workspaces, capacities, governance |
 
 ## Community and events
 

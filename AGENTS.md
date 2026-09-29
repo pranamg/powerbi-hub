@@ -83,6 +83,8 @@ Run these from the repository root after adding or re-tagging content:
 | `python .github/scripts/build_index.py --check` | Fail if the index is stale |
 | `python .github/scripts/check_frontmatter.py` | Validate frontmatter values |
 | `python .github/scripts/check_links.py` | Validate relative links |
+| `python .github/scripts/check_assets.py` | Structural checks on DAX, M, TMDL, PowerShell, Python, JSON |
+| `python .github/scripts/check_external_links.py` | Validate external URLs (needs network; scheduled in CI) |
 
 `Documentation/Topic_Index.md` is generated — do not edit it by hand.
 

@@ -29,13 +29,13 @@ Curated collection of high-quality articles for Power BI learning and reference.
 
 | Article | Topic |
 |---------|-------|
-| [Understanding CALCULATE](https://www.sqlbi.com/articles/understanding-calculate-in-dax/) | Core DAX concept |
-| [Filter Context and Row Context](https://www.sqlbi.com/articles/row-context-and-filter-context-in-dax/) | Context fundamentals |
-| [SUMMARIZE vs SUMMARIZECOLUMNS](https://www.sqlbi.com/articles/best-practices-using-summarize-and-summarizecolumns/) | Query optimization |
+| [Understanding CALCULATE](https://www.sqlbi.com/articles/introducing-calculate-in-dax) | Core DAX concept |
+| [Filter Context and Row Context](https://www.sqlbi.com/articles/row-context-in-dax) | Context fundamentals |
+| [SUMMARIZE vs SUMMARIZECOLUMNS](https://www.sqlbi.com/articles/understanding-summarizecolumns) | Query optimization |
 | [Optimizing DAX](https://www.sqlbi.com/articles/optimizing-dax/) | Performance tuning |
 | [Understanding USERELATIONSHIP](https://www.sqlbi.com/articles/userelationship/) | Role-playing dimensions |
 | [Variables in DAX](https://www.sqlbi.com/articles/variables-in-dax/) | VAR best practices |
-| [Iterator Functions](https://www.sqlbi.com/articles/from-sql-to-dax-implementing-iterator-functions/) | SUMX, AVERAGEX, etc. |
+| [Iterator Functions](https://www.sqlbi.com/articles/row-context-in-dax) | SUMX, AVERAGEX, etc. |
 
 ## Data Modeling
 
@@ -68,7 +68,7 @@ Curated collection of high-quality articles for Power BI learning and reference.
 
 | Article | Topic |
 |---------|-------|
-| [Power Query Best Practices](https://learn.microsoft.com/en-us/power-bi/guidance/power-query-best-practices) | Microsoft Guide |
+| [Power Query Best Practices](https://learn.microsoft.com/en-us/power-query/) | Microsoft Guide |
 | [Custom Functions in M](https://learn.microsoft.com/power-query/custom-function) | Function creation |
 | [Error Handling in Power Query](https://learn.microsoft.com/power-query/dealing-with-errors) | Robust ETL |
 | [Parameters in Power Query](https://learn.microsoft.com/en-us/power-bi/connect-data/desktop-dynamic-m-query-parameters) | Dynamic queries |
@@ -77,7 +77,7 @@ Curated collection of high-quality articles for Power BI learning and reference.
 
 | Article | Topic |
 |---------|-------|
-| [Report Design Tips](https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-design-tips) | Microsoft Guide |
+| [Report Design Tips](https://learn.microsoft.com/en-us/power-bi/create-reports/) | Microsoft Guide |
 | [Accessibility in Power BI](https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-accessibility-overview) | Inclusive design |
 | [Custom Themes](https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes) | Theme JSON reference |
 | [Bookmarks & Buttons](https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-bookmarks) | Interactive reports |

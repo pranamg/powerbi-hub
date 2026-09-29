@@ -321,4 +321,3 @@ Can be configured per Lakehouse/Warehouse:
 - [Lakehouse Patterns](./Lakehouse.md)
 - [Direct Lake Setup](./DirectLake.md)
 - [Dataflow Gen2](./DataflowGen2.md)
-

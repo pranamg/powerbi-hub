@@ -45,8 +45,8 @@ Microsoft Press.
 
 | Book | Author | Read it for |
 |------|--------|-------------|
-| [Analyzing Data with Power BI and Power Pivot for Excel](https://www.sqlbi.com/books/analyzing-data-with-power-bi) | Marco Russo & Alberto Ferrari | Power Query and Power Pivot taught from first principles. Still the best Power Query book in print |
-| [Analyzing Data with Power BI and Power Pivot for Excel](https://www.sqlbi.com/books/tabular-modeling-in-sql-server-analysis-services) — companion volume | Marco Russo | Tabular engine internals: VertiPaq, partitioning, processing. Pairs with [Memory Optimization](../Optimization/MemoryOptimization/README.md) |
+| [Analyzing Data with Power BI and Power Pivot for Excel](https://www.sqlbi.com/tools/tabular-editor) | Marco Russo & Alberto Ferrari | Power Query and Power Pivot taught from first principles. Still the best Power Query book in print |
+| [Analyzing Data with Power BI and Power Pivot for Excel](https://www.sqlbi.com/tools/tabular-editor) — companion volume | Marco Russo | Tabular engine internals: VertiPaq, partitioning, processing. Pairs with [Memory Optimization](../Optimization/MemoryOptimization/README.md) |
 | [The Data Warehouse Toolkit](https://www.kimballgroup.com/data-warehouse-business-intelligence-resources/kimball-techniques/dimensional-modeling-techniques/) | Ralph Kimball & Margy Kimball | Dimensional modelling, the discipline behind a star schema. Vendor-neutral |
 | [Power Pivot and Power BI: The Excel User's Guide](https://www.robcollie.com/) | Rob Collie | A gentler on-ramp for Excel users. Older, but the mental model still holds |
 
