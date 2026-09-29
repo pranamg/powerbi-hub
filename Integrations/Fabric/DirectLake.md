@@ -43,7 +43,27 @@ OneLake (Delta/Parquet)  →  VertiPaq (In-Memory)  →  Power BI Visual
 - Transactional consistency (Delta Lake)
 
 > Direct Lake is covered here only where Power BI depends on it. For the wider
-> Fabric platform, see [Microsoft Learn](https://learn.microsoft.com/en-us/fabric/data-engineering/lakehouse-direct-lake-overview).
+> Fabric platform, see the
+> [Direct Lake overview](https://learn.microsoft.com/en-us/fabric/fundamentals/direct-lake-overview).
+
+### Choosing between the two variants
+
+| | Direct Lake on OneLake | Direct Lake on SQL endpoints |
+|---|---|---|
+| Connector in TMDL view | Azure Data Lake Storage | SQL Server or `OneLake.SqlAnalytics()` |
+| OneLake security | Supported — tighter integration, and DAX plans skip SQL security checks | Not applicable |
+| DirectQuery fallback | **Not supported** | Supported |
+| Composite models | Yes — combine with Import and DirectQuery tables | No — cannot mix Direct Lake with DirectQuery or Dual in one model |
+| Licensing | Fabric capacity (F SKUs) only | Fabric capacity (F SKUs) only |
+
+**The fallback difference is the one to plan around.** On SQL endpoints, a
+Direct Lake query that exceeds a SKU limit or uses an unsupported feature
+silently falls back to DirectQuery so reports keep working. On OneLake it does
+not — the query fails. Size OneLake models against the SKU limit deliberately
+rather than relying on a graceful degradation that is not there.
+
+Both variants require a Fabric capacity subscription (F SKUs), unlike Import
+and DirectQuery, which work on any Power BI licence including Fabric Free.
 
 ---
 
@@ -220,11 +240,18 @@ INFO.STORAGETABLECOLUMNSEGMENTS()
 
 ### Fallback Detection
 
-Direct Lake may fall back to DirectQuery for:
+**Direct Lake on SQL endpoints** may fall back to DirectQuery for:
 
 - Unsupported DAX patterns
 - Memory pressure
 - Large cardinality columns
+- Exceeding a SKU limit
+
+**Direct Lake on OneLake does not support DirectQuery fallback.** A query that
+would have degraded gracefully on a SQL endpoint fails instead. If you are
+seeing failures rather than slow queries, check whether the model is on
+OneLake and whether the query exceeds a SKU limit or uses an unsupported
+feature.
 
 Check in Fabric Monitoring Hub or:
 
@@ -338,4 +365,3 @@ VACUUM FactSales RETAIN 168 HOURS;
 - [Lakehouse Patterns](./Lakehouse.md)
 - [Dataflow Gen2](./DataflowGen2.md)
 - [OneLake Integration](./OneLake.md)
-

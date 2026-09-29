@@ -1,438 +1,223 @@
 ---
-title: VS Code Integration for Power BI MCP
+title: "VS Code as an MCP Host for Power BI"
 tags: [mcp, agentic, ai]
 audience: [developer]
-difficulty: advanced
+difficulty: intermediate
 last_verified: 2026-09-29
 ---
 
-# VS Code Integration for Power BI MCP
+# VS Code as an MCP Host for Power BI
 
-> Configure Visual Studio Code to use AI assistants with your Power BI semantic models via MCP.
+VS Code is the most direct way to use the Power BI MCP server: it is an MCP
+**host**, and GitHub Copilot is the **client** inside it that connects to the
+server.
 
-## Overview
+> This page previously documented a package `@anthropic/powerbi-mcp`, a
+> repository `github.com/anthropics/powerbi-mcp`, and CLI flags (`--model`,
+> `--debug`, `--log-level`, `--config`) that do not exist. It has been
+> rewritten against the real server. See
+> [Server Guide](./ServerGuide.md) for which server to use and
+> [Setup Guide](./Setup_Guide.md) for the four installation methods.
 
-This guide covers integrating the Power BI MCP server with VS Code, enabling AI assistants like Claude and GitHub Copilot to directly interact with your semantic models.
+---
 
 ## Prerequisites
 
-- VS Code installed (latest version recommended)
-- Power BI MCP Server installed (see [Setup_Guide.md](./Setup_Guide.md))
-- Power BI Desktop with an open .pbix file
-- One of the supported AI extensions installed
-
-## Supported Extensions
-
-| Extension | Provider | MCP Support |
-|-----------|----------|-------------|
-| Claude for VS Code | Anthropic | Native |
-| GitHub Copilot | GitHub/Microsoft | Via MCP plugin |
-| Continue | Continue.dev | Native |
-| Cody | Sourcegraph | Via MCP adapter |
+| Requirement | Detail |
+|---|---|
+| VS Code | Latest |
+| GitHub Copilot extension | The MCP client |
+| Node.js 18+ | Only for the local server |
+| **Write** permission on the model | Build alone allows queries but no changes |
+| External tools enabled in Desktop | File → Options → Security → *Allow external tools to access semantic model* |
+| A model to connect to | Desktop, PBIP folder, or Fabric workspace |
 
 ---
 
-## Method 1: Claude Extension (Recommended)
+## The extension route (easiest)
 
-### Install Claude Extension
+Install the Power BI Modeling MCP extension and skip the config file:
 
-1. Open VS Code
-2. Go to Extensions (`Ctrl+Shift+X`)
-3. Search for "Claude" by Anthropic
-4. Click **Install**
+1. `Ctrl+Shift+X` → search for **Power BI Modeling MCP**
+2. Install [analysis-services.powerbi-modeling-mcp](https://marketplace.visualstudio.com/items?itemName=analysis-services.powerbi-modeling-mcp)
+3. Open Copilot chat and confirm the tools appear
 
-### Configure MCP Server
-
-**Option A: Via Settings UI**
-
-1. Open Settings (`Ctrl+,`)
-2. Search for "MCP"
-3. Click "Edit in settings.json"
-4. Add the Power BI MCP configuration
-
-**Option B: Edit settings.json Directly**
-
-Press `Ctrl+Shift+P` → "Preferences: Open Settings (JSON)"
-
-Add this configuration:
-
-```json
-{
-    "claude.mcp.servers": {
-        "powerbi": {
-            "command": "npx",
-            "args": ["@anthropic/powerbi-mcp"],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe"
-            }
-        }
-    }
-}
-```
-
-### Alternative: Using Global Install
-
-If you installed globally:
-
-```json
-{
-    "claude.mcp.servers": {
-        "powerbi": {
-            "command": "powerbi-mcp",
-            "args": [],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe"
-            }
-        }
-    }
-}
-```
-
-### Verify Connection
-
-1. Open Claude panel in VS Code
-2. Check for "powerbi" in connected servers
-3. Send a test message: "List tables in my Power BI model"
+> If the tools do not appear, check that **MCP servers in Copilot** is enabled
+> in your GitHub settings. It is **off by default on enterprise accounts** and
+> an administrator has to enable it.
 
 ---
 
-## Method 2: GitHub Copilot with MCP
+## The config file route
 
-### Install Copilot Extensions
-
-1. Install "GitHub Copilot" extension
-2. Install "GitHub Copilot Chat" extension
-3. Sign in with your GitHub account
-
-### Configure MCP for Copilot
-
-Create or edit `.vscode/settings.json` in your workspace:
+Open `Ctrl+Shift+P` → **Preferences: Open User Settings (JSON)**, or use the
+MCP settings UI. Add the server under `servers`:
 
 ```json
 {
-    "github.copilot.chat.mcp.servers": {
-        "powerbi": {
-            "command": "npx",
-            "args": ["@anthropic/powerbi-mcp"],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe"
-            }
-        }
+  "mcp": {
+    "servers": {
+      "powerbi-authoring-local": {
+        "type": "stdio",
+        "command": "npx",
+        "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start"]
+      }
     }
+  }
 }
 ```
 
-### Using with Copilot Chat
-
-1. Open Copilot Chat (`Ctrl+Shift+I`)
-2. Use `@powerbi` to invoke the MCP server
-3. Example: `@powerbi what measures are in the Sales table?`
-
----
-
-## Method 3: Continue Extension
-
-### Install Continue
-
-1. Extensions → Search "Continue"
-2. Install "Continue - Codestral, Claude, and more"
-3. Complete initial setup
-
-### Configure MCP in Continue
-
-Edit Continue's config file (`~/.continue/config.json`):
+For the hosted server, no install and no Node.js:
 
 ```json
 {
-    "models": [...],
-    "mcpServers": {
-        "powerbi": {
-            "command": "npx",
-            "args": ["@anthropic/powerbi-mcp"],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe"
-            }
-        }
+  "mcp": {
+    "servers": {
+      "powerbi-authoring-remote": {
+        "type": "http",
+        "url": "https://api.fabric.microsoft.com/v1/mcp/powerbi/authoring"
+      }
     }
+  }
 }
+```
+
+> **Root key depends on the client.** VS Code uses `mcp.servers`. Other MCP
+> clients use `servers` or `mcpServers` at the top level.
+>
+> **Register one, not both.** Two servers means two overlapping tool sets,
+> ambiguous routing, and wasted tokens on every request.
+
+A workspace-scoped `.vscode/mcp.json` keeps the configuration with the project
+so a team shares it:
+
+```json
+{
+  "servers": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start"]
+    }
+  }
+}
+```
+
+Pin the version in a shared file. `@latest` in a committed config means
+everyone's agent behaviour can change without a commit.
+
+---
+
+## The three roles, in VS Code terms
+
+| MCP role | In VS Code |
+|---|---|
+| Host | VS Code |
+| Client | GitHub Copilot |
+| Server | Power BI (local server on your machine, or the hosted endpoint) |
+
+---
+
+## Connect to a model
+
+With a model open in Power BI Desktop:
+
+```text
+Connect to 'AdventureWorks' in Power BI Desktop
+```
+
+With a PBIP project on disk — start Copilot **in the project folder** so the
+agent can read the files:
+
+```text
+Open semantic model from PBIP folder './MyModel.SemanticModel/definition'
+```
+
+With a model in Fabric:
+
+```text
+Connect to semantic model 'SalesModel' in Fabric workspace 'SalesAnalytics'
+```
+
+Then confirm with a read-only request before asking for anything destructive:
+
+```text
+List the tables and measures in this model
 ```
 
 ---
 
-## Workspace Configuration
+## First prompts worth trying
 
-### Per-Project Settings
+| Goal | Prompt |
+|---|---|
+| Inventory | `List the tables and measures, grouped by display folder` |
+| Relationships | `Which relationships are active, which are inactive, and why?` |
+| Audit | `Analyze the model against best practices and report findings by severity` |
+| Document | `Add descriptions to all measures explaining their business purpose in plain language` |
+| Naming | `Analyse the naming convention of the 'Sales' table and apply the same pattern model-wide` |
+| Refactor | `Refactor 'Sales Amount 12M Avg' and '6M Avg' into a calculation group, adding 24M and 3M` |
+| Query | `Evaluate [Sales Amount] for 2026 and show the result` |
 
-Create `.vscode/settings.json` in your project for project-specific config:
-
-```json
-{
-    "claude.mcp.servers": {
-        "powerbi": {
-            "command": "npx",
-            "args": ["@anthropic/powerbi-mcp", "--config", "${workspaceFolder}/mcp-config.json"],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe"
-            }
-        }
-    }
-}
-```
-
-### Multi-Root Workspace
-
-For workspaces with multiple Power BI projects:
-
-```json
-{
-    "folders": [
-        { "path": "./Sales" },
-        { "path": "./Finance" }
-    ],
-    "settings": {
-        "claude.mcp.servers": {
-            "powerbi-sales": {
-                "command": "npx",
-                "args": ["@anthropic/powerbi-mcp", "--model", "Sales.pbix"]
-            },
-            "powerbi-finance": {
-                "command": "npx",
-                "args": ["@anthropic/powerbi-mcp", "--model", "Finance.pbix"]
-            }
-        }
-    }
-}
-```
+More in [Use Cases](./UseCases/README.md).
 
 ---
 
-## Tasks Integration
+## Working with a PBIP project in VS Code
 
-Create VS Code tasks to manage the MCP server:
+The strongest pattern: keep the model in a PBIP project under Git, point
+Copilot at the project folder, and let the MCP server edit TMDL on disk.
 
-**.vscode/tasks.json:**
+```text
+cd path/to/your/pbip-project
+code .
+```
+
+Changes become plain-text diffs you can review and revert — the main reason
+to prefer this over pointing the agent at a published model. See
+[Fabric Git Integration](../../Documentation/UserGuides/FabricGitIntegration.md).
+
+For the report half, PBIR files are also plain JSON with published schemas:
 
 ```json
 {
-    "version": "2.0.0",
-    "tasks": [
-        {
-            "label": "Start Power BI MCP",
-            "type": "shell",
-            "command": "npx @anthropic/powerbi-mcp",
-            "isBackground": true,
-            "problemMatcher": [],
-            "presentation": {
-                "reveal": "always",
-                "panel": "dedicated"
-            }
-        },
-        {
-            "label": "Stop Power BI MCP",
-            "type": "shell",
-            "command": "pkill -f powerbi-mcp || taskkill /F /IM node.exe /FI \"WINDOWTITLE eq powerbi-mcp*\"",
-            "problemMatcher": []
-        },
-        {
-            "label": "Restart Power BI MCP",
-            "dependsOn": ["Stop Power BI MCP", "Start Power BI MCP"],
-            "dependsOrder": "sequence"
-        }
-    ]
+  "json.schemas": {
+    "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json": "**/*.Report/definition.pbir"
+  }
 }
 ```
 
-Run tasks via `Ctrl+Shift+P` → "Tasks: Run Task"
-
----
-
-## Keybindings
-
-Add custom keybindings for quick access:
-
-**keybindings.json:**
-
-```json
-[
-    {
-        "key": "ctrl+shift+p b",
-        "command": "workbench.action.tasks.runTask",
-        "args": "Start Power BI MCP"
-    },
-    {
-        "key": "ctrl+shift+alt+m",
-        "command": "claude.openChat"
-    }
-]
-```
-
----
-
-## Recommended Extensions Bundle
-
-Install these for the best Power BI + VS Code experience:
-
-```json
-// .vscode/extensions.json
-{
-    "recommendations": [
-        "anthropic.claude",
-        "github.copilot",
-        "github.copilot-chat",
-        "continue.continue",
-        "ms-vscode.vscode-node-azure-pack",
-        "formulahendry.auto-rename-tag",
-        "esbenp.prettier-vscode"
-    ]
-}
-```
-
----
-
-## Snippets for Power BI Prompts
-
-Create custom snippets for common MCP prompts:
-
-**.vscode/powerbi.code-snippets:**
-
-```json
-{
-    "List Model Tables": {
-        "prefix": "pbi-tables",
-        "body": "List all tables in my Power BI model with their row counts",
-        "description": "MCP prompt: List tables"
-    },
-    "Show Measures": {
-        "prefix": "pbi-measures",
-        "body": "Show me all measures in the ${1:Sales} table with their DAX formulas",
-        "description": "MCP prompt: Show measures"
-    },
-    "Create Measure": {
-        "prefix": "pbi-create-measure",
-        "body": [
-            "Create a DAX measure called '${1:Measure Name}' that:",
-            "${2:description of what the measure should do}",
-            "",
-            "Requirements:",
-            "- Use best practices",
-            "- Include error handling with DIVIDE or IFERROR",
-            "- Add appropriate formatting"
-        ],
-        "description": "MCP prompt: Create measure"
-    },
-    "Optimize Measure": {
-        "prefix": "pbi-optimize",
-        "body": [
-            "Optimize this DAX measure for better performance:",
-            "",
-            "```dax",
-            "${1:paste measure here}",
-            "```",
-            "",
-            "Explain what changes you made and why."
-        ],
-        "description": "MCP prompt: Optimize DAX"
-    },
-    "Document Model": {
-        "prefix": "pbi-document",
-        "body": "Generate documentation for the ${1|entire model,Sales table,all measures,relationships|} in markdown format",
-        "description": "MCP prompt: Generate documentation"
-    }
-}
-```
-
-Use snippets: Type prefix (e.g., `pbi-tables`) and press Tab.
+That maps VS Code's JSON language service onto the PBIR schemas, so it
+validates as you type. See [PBIR](../../Documentation/UserGuides/PBIR.md).
 
 ---
 
 ## Troubleshooting
 
-### Extension Not Connecting
+| Symptom | Cause | Fix |
+|---|---|---|
+| No Power BI tools in Copilot | Server not registered, or the Copilot MCP setting is off | Check the config path; enable **MCP servers in Copilot** in GitHub settings |
+| `npx` not found | Node.js missing or not on PATH | Install Node.js 18+ and restart VS Code |
+| Server starts, model not found | External tools disabled, or Desktop not open | Enable the security option; open the model |
+| Reads work, writes fail | Build instead of Write; or read-only XMLA endpoint | Request Write; set the capacity's XMLA endpoint to Read Write |
+| PBIP folder not found | Copilot started in the wrong directory | Open the project folder, then start Copilot there |
+| Agent reconnects every operation | Hosted server; client not returning `mcp-Session-Id` | Use a session-preserving client, or switch to local |
+| Local server fails on macOS | Not supported | Use the hosted server |
 
-**Check MCP Server Status:**
-
-1. Open Output panel (`Ctrl+Shift+U`)
-2. Select "Claude" or "MCP" from dropdown
-3. Look for connection errors
-
-**Verify Settings:**
+Check the server directly from the CLI:
 
 ```bash
-# In VS Code terminal, test manually
-npx @anthropic/powerbi-mcp --debug
-```
-
-### Common Issues
-
-| Issue | Solution |
-|-------|----------|
-| "Server not found" | Check command path in settings |
-| "Connection refused" | Ensure Power BI Desktop is running |
-| "Model not available" | Open a .pbix file in Desktop |
-| "Timeout" | Increase timeout in MCP config |
-| "Permission denied" | Run VS Code as administrator (first time) |
-
-### Reset VS Code Settings
-
-If things aren't working, try resetting:
-
-1. `Ctrl+Shift+P` → "Preferences: Open Settings (JSON)"
-2. Remove the MCP configuration
-3. Restart VS Code
-4. Re-add configuration
-
-### Debug Logging
-
-Enable verbose logging:
-
-```json
-{
-    "claude.mcp.servers": {
-        "powerbi": {
-            "command": "npx",
-            "args": ["@anthropic/powerbi-mcp", "--debug", "--log-level", "debug"],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "...",
-                "DEBUG": "*"
-            }
-        }
-    }
-}
+copilot mcp show
 ```
 
 ---
 
-## Security Best Practices
+## Related
 
-1. **Don't commit credentials** - Use environment variables
-2. **Workspace settings** - Keep sensitive configs in user settings, not workspace
-3. **Network security** - MCP runs locally by default
-4. **Data governance** - Follow your organization's data policies
-
-### Secure Configuration
-
-Use VS Code's secret storage for sensitive values:
-
-```json
-{
-    "claude.mcp.servers": {
-        "powerbi": {
-            "command": "npx",
-            "args": ["@anthropic/powerbi-mcp"],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "${env:POWERBI_DESKTOP_PATH}"
-            }
-        }
-    }
-}
-```
-
----
-
-## Additional Resources
-
-- [Claude Extension Documentation](https://marketplace.visualstudio.com/items?itemName=anthropic.claude)
-- [GitHub Copilot Documentation](https://docs.github.com/en/copilot)
-- [MCP Protocol Specification](https://modelcontextprotocol.io)
-- [Power BI MCP GitHub Repository](https://github.com/anthropics/powerbi-mcp)
-
+- [Server Guide](./ServerGuide.md) — which server, permissions, security
+- [Setup Guide](./Setup_Guide.md) — installation methods
+- [Use Cases](./UseCases/README.md)
+- [Agent Skills](../../AgenticDevelopment/AgentSkills/README.md)
+- [PBIR](../../Documentation/UserGuides/PBIR.md)
+- [Fabric Git Integration](../../Documentation/UserGuides/FabricGitIntegration.md)
+- [Environment Setup](../../Documentation/Setup/EnvironmentSetup.md)
