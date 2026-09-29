@@ -7,8 +7,16 @@
 | File | Description |
 |------|-------------|
 | [BestPracticeRules.json](./BestPracticeRules.json) | Custom BPA rules for model validation |
-| [GenerateDocumentation.cs](./GenerateDocumentation.cs) | Auto-generate model documentation |
-| [CreateTimeIntelligence.cs](./CreateTimeIntelligence.cs) | Generate time intelligence measures |
+
+C# scripts are embedded inline below. To save one as a reusable file, copy it
+out of this document:
+
+| Script | Description |
+|--------|-------------|
+| [Generate Time Intelligence](#script-generate-time-intelligence) | Generate YTD, PY, YoY, QTD, MTD measures |
+| [Generate Documentation](#script-generate-documentation) | Export model documentation to markdown |
+| [Hide Key Columns](#script-hide-key-columns) | Hide columns ending in ID, Key, or SK |
+| [Create Display Folders](#script-create-display-folders) | Assign measures to display folders by naming pattern |
 
 ## Best Practice Analyzer (BPA)
 

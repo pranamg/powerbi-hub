@@ -23,7 +23,7 @@ First off, thank you for considering contributing to the **PowerBI-Hub**! Your c
 
 ## Code of Conduct
 
-Please read and follow our [Code of Conduct](./Contributions/CodeOfConduct.md) to ensure a welcoming and respectful environment for everyone.
+Please read and follow our [Code of Conduct](./CodeOfConduct.md) to ensure a welcoming and respectful environment for everyone.
 
 ## How to Contribute
 

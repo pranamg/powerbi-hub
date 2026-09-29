@@ -7,33 +7,26 @@ Welcome to the PowerBI-Hub! This repository serves as a centralized hub for all 
 PowerBI-Repository/
 │
 ├── AgenticDevelopment/    # AI-assisted semantic model development
-├── Data/
-├── Scripts/
-├── Queries/
-├── Visuals/
-├── Design/
-├── Templates/
-├── Reports/
-├── Dashboards/
-├── Deployment/
-├── Integrations/
-├── Monitoring/
-├── Optimization/
-├── Collaboration/
-├── Governance/
-├── Security/
-├── Testing/
-├── Performance/
-├── DataGovernance/
-├── Documentation/
-├── References/
-├── TipsAndTricks/
-├── PromptLibrary/
-├── Training/
-├── Contributions/
-├── Backup/
-├── VersionHistory/
-└── .github/
+├── Data/                  # Data sources, models, ETL, datasets, constants
+├── Scripts/               # PowerShell, C#, TMDL, Python, Jupyter
+├── Queries/               # DAX measures and Power Query functions
+├── Visuals/               # Custom visuals, R/Python visuals, layouts
+├── Design/                # Themes, guidelines, atomic elements, images
+├── Templates/             # Report and dashboard templates
+├── Reports/               # Example reports
+├── Dashboards/            # Example dashboards
+├── Deployment/            # Pipelines, environments, configurations
+├── Integrations/          # Fabric, Power Apps, Power Automate, MCP
+├── Monitoring/            # Alerts, logs, metrics
+├── Optimization/          # Performance, query, and memory tuning
+├── Collaboration/         # Workspaces, permissions, comments
+├── Governance/            # Policies, compliance, audits, RLS
+├── Documentation/         # Setup guides, architecture, user guides
+├── References/            # Books, articles, blogs, YouTube, GitHub repos
+├── TipsAndTricks/         # DAX, Power Query, ETL, Performance, Visuals tips
+├── PromptLibrary/         # AI prompts for DAX, Power Query, ETL, Visuals
+├── Contributions/         # CONTRIBUTING.md, CodeOfConduct.md
+└── .github/               # Issue/PR templates, CI workflows
 ```
 
 ## 📚 Getting Started
@@ -60,7 +53,7 @@ Find valuable resources in the [References](./References/) folder to enhance you
 
 ## 🛠️ Contribution Guidelines
 
-We welcome contributions! Please read our [Contribution Guidelines](./Contributions/README.md) before submitting a pull request.
+We welcome contributions! Please read our [Contribution Guidelines](./Contributions/CONTRIBUTING.md) before submitting a pull request.
 
 ## 📄 License
 

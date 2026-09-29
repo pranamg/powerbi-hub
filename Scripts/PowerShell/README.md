@@ -35,7 +35,6 @@ Connect-PowerBIServiceAccount -ServicePrincipal -Credential $credential -TenantI
 | [Dataset/](./Dataset/) | Refresh, parameters, credentials |
 | [Gateway/](./Gateway/) | Gateway management and data sources |
 | [Admin/](./Admin/) | Tenant-wide administration |
-| [Reports/](./Reports/) | Report deployment and management |
 
 ## Quick Start
 

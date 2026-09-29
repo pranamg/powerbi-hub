@@ -11,18 +11,32 @@ A centralized documentation and resource hub for Power BI best practices, templa
 
 ## Project Layout
 
-├── Data/           → Data sources, models, ETL scripts, constants
-├── Scripts/        → PowerShell, Python, C#, Azure Automation, Jupyter
-├── Queries/        → DAX measures, calculated columns, Power Query functions
-├── Visuals/        → Custom visuals, R/Python visuals, layouts
-├── Design/         → Themes, guidelines, templates, atomic elements
-├── Templates/      → Report and dashboard templates
-├── Reports/        → Example reports
-├── Dashboards/     → Example dashboards
-├── Documentation/  → Setup guides, architecture diagrams, user guides
-├── References/     → Books, articles, blogs, YouTube, GitHub repos
-├── TipsAndTricks/  → DAX, Power Query, ETL, Performance, Visuals tips
-├── PromptLibrary/  → AI prompts for DAX, Power Query, ETL, Visuals
+Top-level folders, in rough order of importance:
+
+├── AgenticDevelopment/ → AI-assisted semantic model development (hooks, agents, MCP, workflows, custom commands)
+├── Data/               → Data sources, models, ETL scripts, datasets, constants
+├── Scripts/            → PowerShell, Python, C#, TMDL, Azure Automation, Jupyter
+├── Queries/            → DAX measures, calculated columns, Power Query functions
+├── Visuals/            → Custom visuals, R/Python visuals, layouts
+├── Design/             → Themes, guidelines, templates, atomic elements, background images
+├── Templates/          → Report and dashboard templates
+├── Reports/            → Example reports
+├── Dashboards/         → Example dashboards
+├── Deployment/         → Pipelines (GitHub Actions, Azure Pipelines), environments, configurations
+├── Integrations/       → Fabric, Power Apps, Power Automate, Azure services, MCP
+├── Monitoring/         → Alerts, logs, metrics
+├── Optimization/       → Performance tuning, query, memory, composite models
+├── Collaboration/      → Workspaces, permissions, comments
+├── Governance/         → Policies, compliance, audits, RLS, naming conventions
+├── Documentation/      → Setup guides, architecture diagrams, design documents, user guides
+├── References/         → Books, articles, blogs, YouTube, GitHub repos
+├── TipsAndTricks/      → DAX, Power Query, ETL, Performance, Visuals tips
+├── PromptLibrary/      → AI prompts for DAX, Power Query, ETL, Visuals, MCP
+├── Contributions/      → CONTRIBUTING.md, CodeOfConduct.md
+└── .github/            → Issue and PR templates, CI workflows
+
+Keep this list in sync with the actual folder tree when adding or removing
+top-level folders.
 
 ## Conventions & Patterns
 
