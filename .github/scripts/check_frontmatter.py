@@ -27,9 +27,10 @@ VALID_TAGS = {
     "dashboards", "data", "data-connections", "dates", "deployment", "design", "development",
     "devops", "dax", "documentation", "etl", "fabric", "git", "governance", "hub", "integration",
     "learning", "mcp", "meta", "modeling", "monitoring", "navigation", "office", "onboarding",
-    "operations", "optimization", "performance", "power-query", "powershell", "prompts",
-    "python", "r", "reference", "references", "reports", "rest-api", "scripts", "security",
-    "setup", "templates", "themes", "tmdl", "tooling", "tips", "visuals", "workspaces",
+    "operations", "optimization", "pbir", "pbip", "performance", "power-query", "powershell",
+    "prompts", "python", "r", "reference", "references", "reports", "rest-api", "scripts",
+    "security", "setup", "templates", "themes", "tmdl", "tooling", "tips", "visuals",
+    "workspaces",
 }
 VALID_AUDIENCE = {"all", "bi-admin", "data-engineer", "developer", "model-author", "report-author"}
 VALID_DIFFICULTY = {"beginner", "intermediate", "advanced", "reference"}

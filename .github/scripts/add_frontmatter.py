@@ -72,6 +72,7 @@ OVERRIDES: dict[str, tuple[list[str], list[str], str]] = {
 # (prefix, tags, audience, difficulty).
 RULES: list[tuple[str, list[str], list[str], str]] = [
     ("AgenticDevelopment/AgentsAndSkills", ["agentic", "ai", "tooling"], ["developer"], "intermediate"),
+    ("AgenticDevelopment/AgentSkills", ["agentic", "ai", "tooling"], ["developer"], "intermediate"),
     ("AgenticDevelopment/MCPTools", ["agentic", "mcp", "ai"], ["developer"], "advanced"),
     ("AgenticDevelopment/CustomCommands", ["agentic", "automation", "tooling"], ["developer"], "advanced"),
     ("AgenticDevelopment/Workflows", ["agentic", "automation", "tooling"], ["developer"], "advanced"),
@@ -81,6 +82,7 @@ RULES: list[tuple[str, list[str], list[str], str]] = [
     ("Data/Constants/DateTable", ["modeling", "dax", "dates"], ["model-author"], "intermediate"),
     ("Data/Constants/ColorTable", ["visuals", "design"], ["report-author"], "beginner"),
     ("Data/Constants", ["modeling", "constants"], ["model-author"], "beginner"),
+    ("Data/AIReadiness", ["copilot", "ai", "modeling"], ["model-author"], "intermediate"),
     ("Data/DataModels", ["modeling", "tmdl", "reference"], ["model-author"], "advanced"),
     ("Data/DataSources", ["data-connections", "power-query"], ["developer"], "intermediate"),
     ("Data/Datasets", ["modeling", "deployment"], ["model-author"], "intermediate"),
@@ -130,6 +132,7 @@ RULES: list[tuple[str, list[str], list[str], str]] = [
     ("TipsAndTricks", ["tips"], ["all"], "intermediate"),
 
     ("Documentation/UserGuides/Copilot", ["copilot", "ai", "reports"], ["report-author"], "intermediate"),
+    ("Documentation/UserGuides/PBIR", ["pbir", "pbip", "reports"], ["developer"], "advanced"),
     ("Documentation/UserGuides/TMDLView", ["tmdl", "modeling", "tooling"], ["model-author"], "intermediate"),
     ("Documentation/UserGuides/DAXQueryView", ["dax", "tooling"], ["model-author"], "beginner"),
     ("Documentation/UserGuides/FabricGitIntegration", ["fabric", "git", "ci-cd"], ["developer"], "advanced"),
@@ -138,6 +141,8 @@ RULES: list[tuple[str, list[str], list[str], str]] = [
     ("Documentation/ArchitectureDiagrams", ["architecture", "documentation"], ["all"], "intermediate"),
     ("Documentation/DesignDocuments", ["architecture", "documentation"], ["all"], "intermediate"),
     ("Documentation/Setup", ["setup", "tooling"], ["all"], "beginner"),
+    ("Documentation/WhatsNew", ["meta", "documentation"], ["all"], "reference"),
+    ("Documentation/LearningPaths", ["meta", "navigation", "learning"], ["all"], "beginner"),
     ("Documentation", ["documentation"], ["all"], "beginner"),
 ]
 

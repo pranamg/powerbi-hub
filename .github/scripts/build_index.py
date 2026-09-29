@@ -73,6 +73,10 @@ def parse_frontmatter(text: str) -> dict[str, object] | None:
             inner = value[1:-1].strip()
             data[key.strip()] = [v.strip() for v in inner.split(",") if v.strip()]
         else:
+            # YAML quotes are required for titles containing a colon; they
+            # must not leak into the rendered index.
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+                value = value[1:-1]
             data[key.strip()] = value
     return data
 
