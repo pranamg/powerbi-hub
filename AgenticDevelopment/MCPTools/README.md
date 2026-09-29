@@ -1,144 +1,173 @@
 ---
-title: MCP Tools: Model Context Protocol for Semantic Models
+title: MCP Tools and Servers
 tags: [agentic, mcp, ai]
 audience: [developer]
-difficulty: advanced
+difficulty: intermediate
 last_verified: 2026-09-29
 ---
 
-# MCP Tools: Model Context Protocol for Semantic Models
+# MCP Tools and Servers
 
-> Powerful integrations and servers for agentic development
+MCP (Model Context Protocol) is an open standard that lets an AI agent call
+tools on a Power BI semantic model. This page is the map of what exists.
 
-## Overview
+> **Start with the [Server Guide](../../Integrations/MCP/ServerGuide.md)** for
+> which server to use and how to set it up. This page explains the components.
 
-The Model Context Protocol (MCP) is a standard for extending LLM capabilities by providing tools, resources, and prompts. For semantic models, MCP servers enable programmatic interaction with the Tabular Object Model (TOM).
-
-## How MCP Works with Semantic Models
+## What an MCP server is made of
 
 ```
-┌─────────────────────────────────────────────────────────────────┐
-│                        AI Application                            │
-│                  (Claude Code, VS Code, etc.)                   │
-└─────────────────────────────┬───────────────────────────────────┘
-                              │ MCP Protocol
-                              ↓
-┌─────────────────────────────────────────────────────────────────┐
-│                      MCP Server                                  │
-│              (powerbi-modeling-mcp)                             │
-├─────────────────────────────────────────────────────────────────┤
-│  Tools         │  Resources        │  Prompts                   │
-│  - list_tables │  - DAX functions  │  - Create measure          │
-│  - add_measure │  - Model schema   │  - Optimize DAX            │
-│  - query_model │  - Best practices │  - Document model          │
-└─────────────────────────────┬───────────────────────────────────┘
-                              │ TOM / XMLA
-                              ↓
-┌─────────────────────────────────────────────────────────────────┐
-│                     Semantic Model                               │
-│         (Power BI Desktop / Published / TMDL files)             │
-└─────────────────────────────────────────────────────────────────┘
+AI Application  (Claude Code, Copilot CLI, VS Code)
+       │  MCP protocol
+       ▼
+  MCP Server
+   ├─ Tools      — actions: edit a measure, run a DAX query
+   ├─ Resources  — read-only context: model schema, DAX docs
+   └─ Prompts    — prepared workflows the agent can invoke
+       │  TOM / XMLA / TMDL
+       ▼
+  Semantic Model  (Power BI Desktop, Fabric, PBIP files)
 ```
 
-## Available MCP Servers
+**Tools are the *what*; skills are the *how*.** A server full of tools does not
+make an agent good at Power BI — see
+[Agent Skills](../AgentSkills/README.md) for the guidance layer.
 
-### Microsoft's Power BI Modeling MCP
+---
 
-The official MCP server from Microsoft for semantic model development.
+## The three things
 
-**GitHub:** [microsoft/powerbi-modeling-mcp](https://github.com/microsoft/powerbi-modeling-mcp)
+| | Use | Status |
+|---|---|---|
+| **Authoring** — create or change model objects | Power BI Authoring MCP server | Local **GA**, hosted preview |
+| **Consumption** — answer business questions in natural language | Fabric IQ | Current path |
+| Legacy consumption | Power BI Consumption MCP server | Existing integrations only |
 
-**Features:**
+Microsoft's guidance is explicit: **do not use the Authoring server for
+consumption.** It can run DAX to validate a model you are building, but it is
+not designed to answer end-user questions.
 
-- Connect to Power BI Desktop, published models, or local TMDL
-- Comprehensive tools for model manipulation
-- Built-in resources for DAX functions and patterns
-- Guardrails to prevent common mistakes
+---
 
-### Community MCP Servers
+## The Power BI Authoring server
+
+Microsoft's server, documented in
+[PowerBI_Modeling_MCP.md](./PowerBI_Modeling_MCP.md). It exposes tools grouped by
+object type — `table_operations`, `measure_operations`,
+`calculation_group_operations`, `dax_query_operations`, and around fifteen more
+— plus built-in prompts for connecting and running queries.
+
+One deployment, two options:
+
+| | Hosted | Local |
+|---|---|---|
+| Transport | Streamable HTTP | `stdio` |
+| Install | None | VS Code extension, npm, or executable |
+| Power BI Desktop | No | Yes |
+| PBIP / TMDL on disk | No | Yes |
+| Transactions, traces | No | Yes |
+| macOS | Yes | No |
+
+**Register one, never both** — two servers means ambiguous routing.
+
+---
+
+## Community servers
+
+Community MCP servers exist, but treat them as a supply-chain decision rather
+than an install-and-forget.
 
 | Server | Author | Focus |
-|--------|--------|-------|
-| PowerBI-Desktop-MCP | Maxim Anatsko | Desktop-specific operations |
-| semantic-model-mcp | Community | Lightweight alternative |
+|---|---|---|
+| [powerbi-modeling-mcp](https://github.com/microsoft/powerbi-modeling-mcp) | Microsoft | The official authoring server |
+| [superbi-mcp](https://github.com/cyphonica/superbi-mcp) | cyphonica | Local authoring across semantic model, report, and Power Query by editing PBIX/PBIP/PBIR files |
+| [powerbi-report-mcp](https://github.com/jonathan-pap/powerbi-report-mcp) | jonathan-pap | Report authoring against PBIR |
+| [pbi-search](https://github.com/data-goblin/pbi-search) | Data Goblins | Documentation search, used by the Data Goblins plugins |
 
-## MCP Components
+Before installing a community server, check that it publishes source, states its
+licence, and says what it does with your model metadata. A server runs with your
+credentials and can transmit what it reads to whatever LLM your client is
+configured with.
 
-### Tools
+> An earlier revision of this page listed "PowerBI-Desktop-MCP" and
+> "semantic-model-mcp". Neither could be verified as existing, so they are
+> removed rather than carried forward.
 
-Functions the agent can call to interact with the model.
+---
 
-| Tool Category | Examples |
-|---------------|----------|
-| **Read** | list_tables, get_measure, get_relationships |
-| **Write** | add_measure, update_property, delete_object |
-| **Query** | execute_dax, evaluate_expression |
-| **Deploy** | deploy_model, refresh_table |
+## MCP in three roles
 
-### Resources
+| Role | What it is | In practice |
+|---|---|---|
+| **Host** | The application running an MCP client | VS Code |
+| **Client** | The component that connects to servers | GitHub Copilot |
+| **Server** | The program exposing tools | Power BI Authoring MCP server |
 
-Pre-defined context that enriches agent understanding.
+With Copilot in VS Code: VS Code is the host, Copilot the client, Power BI the
+server.
 
-| Resource | Purpose |
-|----------|---------|
-| DAX function reference | Help agent write correct DAX |
-| Model schema | Current model structure |
-| Best practices | Guidelines for quality |
-| Custom calendars | Time intelligence patterns |
+---
 
-### Prompts
+## Configuration
 
-Pre-configured prompts for common scenarios.
+Real, working configuration lives in
+[ConfigurationExamples.md](./ConfigurationExamples.md). The essentials:
 
-| Prompt | Purpose |
-|--------|---------|
-| create_time_intelligence | Generate TI measures |
-| document_measures | Auto-document all measures |
-| optimize_model | Find performance issues |
+```json
+{
+  "servers": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start"]
+    }
+  }
+}
+```
 
-## Benefits of MCP Approach
+> The root key differs by client: `servers` for VS Code and most clients,
+> `mcp.servers` inside VS Code settings, `mcpServers` elsewhere. The npm
+> package name still says "modeling" because it predates the rename to
+> Authoring.
 
-1. **Tools for Agents**: MCP servers provide well-defined tools with descriptions of when and how to use them
-2. **Portable Context**: Resources and prompts travel with the server
-3. **Validation**: Tools can validate inputs and catch errors before they happen
-4. **Bulk Operations**: Efficient for making many changes at once
-5. **Consistent Interface**: Same tools work across different AI applications
+---
 
-## Limitations
+## When MCP is the right tool
 
-1. **Context Usage**: MCP servers consume significant context window space (~30% in some cases)
-2. **Tool Rigidity**: You can only use tools as designed; can't modify them
-3. **Opacity**: May not see exactly what a tool is doing internally
-4. **Windows Dependency**: TOM libraries require Windows (for now)
+**Good for:**
 
-## When to Use MCP
+- Exploring an unfamiliar model
+- Bulk changes — renaming, description writing, translation
+- Refactoring many measures at once
+- Generating model documentation
+- Applying best-practice fixes consistently
 
-### Good For
+**Not ideal for:**
 
-- Bulk operations (create many measures, update many properties)
-- Operations requiring validation (DAX syntax, model consistency)
-- Repeatable workflows (perspectives, translations)
-- When you want agent to "just work" without detailed instructions
+- Single changes you can make faster in Desktop or Tabular Editor
+- Anything needing immediate validation
+- Report layout — the server cannot touch report pages or visuals
+- Consumption — use Fabric IQ
 
-### Not Ideal For
+---
 
-- Single simple changes (faster to edit TMDL directly)
-- Very custom operations not covered by tools
-- When context window is already constrained
-- Deterministic, scriptable operations (use CLI instead)
+## Security
 
-## Connection Modes
+- The server runs with **your** credentials and does not bypass Power BI
+  security, but it **can transmit** what it reads to your LLM provider
+- Review the whole chain — server, client, model provider — against your
+  regulations
+- Apply least privilege; `--readonly` exists for safe exploration
+- No tenant setting blocks the MCP server specifically. It connects through the
+  XMLA endpoint, so blocking it means disabling the XMLA endpoint
 
-MCP servers can connect to semantic models in different ways:
+---
 
-| Mode | Description | Use Case |
-|------|-------------|----------|
-| Power BI Desktop | Connect to open PBIX | Local development |
-| Published Model | Connect via XMLA endpoint | Testing, validation |
-| Local TMDL | Work on metadata files | Source-controlled development |
+## Related
 
-## Related Documentation
-
-- [Power BI Modeling MCP Setup](./PowerBI_Modeling_MCP.md)
-- [Configuration Examples](./ConfigurationExamples.md)
-- [Existing MCP Integration](../../Integrations/MCP/)
+- [Server Guide](../../Integrations/MCP/ServerGuide.md) — the current state of play
+- [PowerBI_Modeling_MCP.md](./PowerBI_Modeling_MCP.md) — the Microsoft server in detail
+- [ConfigurationExamples.md](./ConfigurationExamples.md)
+- [Agent Skills](../AgentSkills/README.md)
+- [Use Cases](../../Integrations/MCP/UseCases/README.md)
+- [MCP Prompts](../../PromptLibrary/MCPPrompts.md)

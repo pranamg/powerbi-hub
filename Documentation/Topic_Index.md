@@ -72,9 +72,9 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | [C# Script Examples for Tabular Editor](../AgenticDevelopment/CustomCommands/ScriptExamples/README) | `agentic`, `automation`, `tooling` | developer | advanced | 2026-09-29 |
 | [Tabular Editor CLI Reference](../AgenticDevelopment/CustomCommands/TabularEditorCLI) | `agentic`, `automation`, `tooling` | developer | advanced | 2026-09-29 |
 | [Hooks: Automated Triggers and Quality Gates](../AgenticDevelopment/Hooks/README) | `agentic`, `ci-cd`, `automation` | developer | advanced | 2026-09-29 |
-| [MCP Configuration Examples](../AgenticDevelopment/MCPTools/ConfigurationExamples) | `agentic`, `mcp`, `ai` | developer | advanced | 2026-09-29 |
-| [Power BI Modeling MCP Server](../AgenticDevelopment/MCPTools/PowerBI_Modeling_MCP) | `agentic`, `mcp`, `ai` | developer | advanced | 2026-09-29 |
-| [MCP Tools: Model Context Protocol for Semantic Models](../AgenticDevelopment/MCPTools/README) | `agentic`, `mcp`, `ai` | developer | advanced | 2026-09-29 |
+| [MCP Configuration Examples](../AgenticDevelopment/MCPTools/ConfigurationExamples) | `agentic`, `mcp`, `ai`, `automation` | developer | advanced | 2026-09-29 |
+| [Power BI Authoring MCP Server](../AgenticDevelopment/MCPTools/PowerBI_Modeling_MCP) | `agentic`, `mcp`, `ai` | developer | advanced | 2026-09-29 |
+| [MCP Tools and Servers](../AgenticDevelopment/MCPTools/README) | `agentic`, `mcp`, `ai` | developer | intermediate | 2026-09-29 |
 | [Agentic Development for Power BI Semantic Models](../AgenticDevelopment/README) | `agentic`, `ai` | developer | intermediate | 2026-09-29 |
 | [CLI Tools Workflow](../AgenticDevelopment/Workflows/CLIToolsWorkflow) | `agentic`, `automation`, `tooling` | developer | advanced | 2026-09-29 |
 | [Direct Metadata Modification Workflow](../AgenticDevelopment/Workflows/DirectMetadataModification) | `agentic`, `automation`, `tooling` | developer | advanced | 2026-09-29 |
@@ -366,8 +366,8 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | `ai` | 30 |
 | `agentic` | 27 |
 | `power-query` | 25 |
+| `automation` | 22 |
 | `design` | 22 |
-| `automation` | 21 |
 | `tooling` | 19 |
 | `data-connections` | 18 |
 | `modeling` | 18 |
@@ -429,6 +429,6 @@ Every document in the hub (201 files). Browse the [table of contents](#table-of-
 | Level | Docs |
 |-------|-----:|
 | beginner | 31 |
-| intermediate | 84 |
-| advanced | 73 |
+| intermediate | 85 |
+| advanced | 72 |
 | reference | 13 |

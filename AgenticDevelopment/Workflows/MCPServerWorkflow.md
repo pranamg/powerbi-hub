@@ -80,10 +80,12 @@ claude mcp add powerbi-modeling-mcp \
 
 ### Verify Connection
 
-```
-User: List all tables in the model
+Always confirm with a read-only request before asking for a change.
 
-Agent: [Calls list_tables tool]
+```
+User: List the tables and measures in this model
+
+Agent: [Uses table_operations and measure_operations]
 
 Tables in the model:
 - Sales (1,000,000 rows)

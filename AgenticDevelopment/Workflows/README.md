@@ -14,6 +14,16 @@ last_verified: 2026-09-29
 
 There are three primary workflows for agentic development of semantic models. Each has pros and cons, and effective development often combines all three.
 
+> **Terminology.** "MCP server" here means the **Power BI Authoring MCP
+> server**, which is what these workflows use. It was renamed from "Modeling
+> MCP server" in 2026 and now also has a hosted option. See
+> [Server Guide](../../Integrations/MCP/ServerGuide.md).
+>
+> These pages predate the addition of **agent skills**, which supply the
+> judgment the tools do not. Where a workflow depends on knowing how Power BI
+> work should be done, the skill layer now covers that — see
+> [Agent Skills](../AgentSkills/README.md).
+
 ## Workflow Comparison
 
 | Workflow | Best For | Pros | Cons |

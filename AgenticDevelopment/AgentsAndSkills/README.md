@@ -9,6 +9,12 @@ last_verified: 2026-09-29
 # Agents, Subagents & Skills
 
 > Specialized AI team members for semantic model development
+>
+> **For installable skills and plugin marketplaces, see
+> [Agent Skills](../AgentSkills/README.md).** That page covers Microsoft's
+> first-party `powerbi-authoring` plugin, the Data Goblins marketplace, and
+> `pbir-cli` — all of which postdate this one. This page remains useful for the
+> conceptual distinction between query and modify agents.
 
 ## Overview
 

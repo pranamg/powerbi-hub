@@ -1,6 +1,6 @@
 ---
 title: MCP Configuration Examples
-tags: [agentic, mcp, ai]
+tags: [agentic, mcp, ai, automation]
 audience: [developer]
 difficulty: advanced
 last_verified: 2026-09-29
@@ -8,313 +8,266 @@ last_verified: 2026-09-29
 
 # MCP Configuration Examples
 
-> Ready-to-use configurations for different AI applications
+Working configurations for the Power BI Authoring MCP server across clients.
 
-## Claude Code Configuration
+> These were rewritten against the current server. The previous revision
+> described a `--config` flag, a `--model` argument, an `mcp-config.json`
+> schema, and a `port` setting — none of which exist.
 
-### Basic Setup
+---
 
-Add the MCP server via command line:
+## The shape of an MCP server entry
 
-```bash
-claude mcp add powerbi-modeling-mcp \
-  --transport stdio \
-  --env PBI_MODELING_MCP_CLIENT_ID=ea0616ba-638b-4df5-95b9-636659ae5121 \
-  -- "C:/Program Files/PowerBI-Modeling-MCP/powerbi-modeling-mcp.exe" --start
+```json
+{
+  "<server-name>": {
+    "type": "stdio",
+    "command": "npx",
+    "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start"]
+  }
+}
 ```
 
-### Verify Configuration
+| Key | Meaning |
+|---|---|
+| `type` | `stdio` for local, `http` for hosted |
+| `command` | Executable to run |
+| `args` | Arguments passed to it |
+| `env` | Environment variables |
 
-```bash
-# List configured MCP servers
-claude mcp list
+**The root key depends on the client.** This is the single most common
+configuration mistake:
 
-# Test connection
-claude mcp test powerbi-modeling-mcp
-```
+| Client | Root key |
+|---|---|
+| VS Code (`mcp.json`, settings) | `mcp.servers` in settings; `servers` in `mcp.json` |
+| Claude Desktop | `mcpServers` |
+| Copilot CLI, most others | `servers` or `mcpServers` |
 
-### Project-Level Configuration
+---
 
-Create `.claude/mcp.json` in your project root:
+## The EULA gate
+
+The server blocks all other tool calls until its EULA is accepted. In an
+interactive session the agent can call `accept_eula` once you authorise it, and
+the acceptance is stored locally.
+
+For unattended runs, accept it explicitly — after reading it:
 
 ```json
 {
   "servers": {
-    "powerbi-modeling": {
-      "command": "powerbi-modeling-mcp.exe",
-      "args": ["--start"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121",
-        "PBI_MODELING_MCP_TMDL_PATH": "./Model.SemanticModel/definition"
-      },
-      "transport": "stdio"
-    }
-  }
-}
-```
-
-## VS Code Configuration
-
-### User Settings
-
-Add to `settings.json` (Ctrl+Shift+P → "Preferences: Open User Settings (JSON)"):
-
-```json
-{
-  "mcp.servers": {
-    "powerbi-modeling": {
-      "command": "C:/path/to/powerbi-modeling-mcp.exe",
-      "args": ["--start"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121"
-      }
-    }
-  },
-  "mcp.enable": true,
-  "mcp.logLevel": "info"
-}
-```
-
-### Workspace Settings
-
-Create `.vscode/settings.json` in your project:
-
-```json
-{
-  "mcp.servers": {
-    "powerbi-modeling": {
-      "command": "${workspaceFolder}/.tools/powerbi-modeling-mcp.exe",
-      "args": ["--start", "--tmdl", "${workspaceFolder}/Model.SemanticModel/definition"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121"
-      }
-    }
-  }
-}
-```
-
-## Claude Desktop Configuration
-
-Edit `%APPDATA%\Claude\claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "powerbi-modeling": {
-      "command": "C:/Program Files/PowerBI-Modeling-MCP/powerbi-modeling-mcp.exe",
-      "args": ["--start"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121"
-      }
-    },
-    "microsoft-docs": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@anthropic/mcp-docs-server", "https://learn.microsoft.com"]
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start", "--accepteula"],
+      "env": { "PBI_MODELING_MCP_ACCEPT_EULA": "true" }
     }
   }
 }
 ```
 
-## Multiple Server Configuration
+If the server starts but exposes no tools, this is usually why.
 
-Configure multiple MCP servers for comprehensive capabilities:
+---
+
+## Read-only exploration
+
+The safest way to let an agent look at a production model:
 
 ```json
 {
-  "mcpServers": {
-    "powerbi-modeling": {
-      "command": "powerbi-modeling-mcp.exe",
-      "args": ["--start"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121"
-      }
-    },
-    "filesystem": {
+  "servers": {
+    "powerbi-authoring-readonly": {
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "./"]
-    },
-    "fetch": {
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start", "--readonly"]
+    }
+  }
+}
+```
+
+Write operations are blocked entirely. Use this for audits, documentation
+generation, and anything where you want answers but not changes.
+
+---
+
+## Service principal (CI)
+
+For pipelines, use a service principal rather than an interactive session. See
+[Service Principal Setup](../../Governance/ServicePrincipalSetup.md) for
+creating one and granting the right permissions.
+
+```json
+{
+  "servers": {
+    "powerbi-authoring-ci": {
+      "type": "stdio",
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-fetch"]
-    }
-  }
-}
-```
-
-## Environment-Specific Configurations
-
-### Development Environment
-
-```json
-{
-  "mcpServers": {
-    "powerbi-modeling": {
-      "command": "powerbi-modeling-mcp.exe",
-      "args": ["--start", "--desktop"],
+      "args": [
+        "-y",
+        "@microsoft/powerbi-modeling-mcp@0.5.0-beta.12",
+        "--start",
+        "--authmode=serviceprincipal"
+      ],
       "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121",
-        "PBI_MODELING_MCP_LOG_LEVEL": "debug"
+        "AZURE_TENANT_ID": "<tenant-guid>",
+        "AZURE_CLIENT_ID": "<app-guid>",
+        "AZURE_CLIENT_SECRET": "<secret-from-your-ci-secret-store>",
+        "PBI_MODELING_MCP_ACCEPT_EULA": "true"
       }
     }
   }
 }
 ```
 
-### Production/Shared Environment
+**Three rules for CI:**
+
+1. **Pin the version.** `@latest` means your pipeline can change behaviour
+   without a commit.
+2. **Never hard-code a secret.** Read it from the CI secret store and inject it
+   as an environment variable.
+3. **Prefer certificate auth** where you can, over a client secret:
+   `AZURE_CLIENT_CERTIFICATE_PATH` plus `AZURE_CLIENT_CERTIFICATE_PASSWORD`.
+
+Also note the model needs **Write** permission and the capacity's XMLA endpoint
+must be set to Read Write. With Build only, the agent can query but not change.
+
+---
+
+## Connecting to non-Power BI endpoints
+
+To target Azure Analysis Services or SQL Server Analysis Services, set
+`--compatibility Full` and allowlist the host:
 
 ```json
 {
-  "mcpServers": {
-    "powerbi-modeling": {
-      "command": "powerbi-modeling-mcp.exe",
-      "args": ["--start", "--service"],
+  "servers": {
+    "powerbi-authoring-aas": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@microsoft/powerbi-modeling-mcp@latest",
+        "--start",
+        "--compatibility",
+        "Full"
+      ],
       "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121",
-        "PBI_MODELING_MCP_WORKSPACE_ID": "your-workspace-id",
-        "PBI_MODELING_MCP_DATASET_ID": "your-dataset-id"
+        "PBI_MODELING_MCP_ALLOWED_CONNECTION_HOSTS": "xmla.contoso.example,sqlserver_01:8373"
       }
     }
   }
 }
 ```
 
-### TMDL-Only Mode
+Restart the server after changing the allowlist.
 
-For working with local TMDL files without Power BI Desktop:
+**Access tokens are sent to allowlisted hosts on connect.** Add only hostnames
+your organisation operates. Do not add one just to clear a validation error —
+the allowlist is a credential control.
+
+---
+
+## Hosted server
+
+No install, no Node.js, Microsoft-managed updates:
 
 ```json
 {
-  "mcpServers": {
-    "powerbi-modeling": {
-      "command": "powerbi-modeling-mcp.exe",
-      "args": ["--start", "--tmdl-only"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121",
-        "PBI_MODELING_MCP_TMDL_PATH": "C:/Projects/MyModel/Model.SemanticModel/definition"
-      }
+  "servers": {
+    "powerbi-authoring-remote": {
+      "type": "http",
+      "url": "https://api.fabric.microsoft.com/v1/mcp/powerbi/authoring"
     }
   }
 }
 ```
 
-## Connection Modes
+Two things to know before choosing it:
 
-### Desktop Mode
+- **It is stateful.** It keeps your model connection in a session and expects
+  your client to return the `mcp-Session-Id` header on every request. A client
+  that opens a new session per call will make the agent reconnect before every
+  operation.
+- **Entra OAuth only.** Some clients depend on dynamic OAuth client
+  registration, which Entra does not support. Use the local server with those,
+  or register an Entra app yourself.
 
-Connect to a model open in Power BI Desktop:
+> **Register one, not both.** Two servers mean overlapping tool sets, ambiguous
+> routing, and wasted tokens on every request.
 
-```json
-{
-  "args": ["--start", "--desktop"],
-  "env": {
-    "PBI_DESKTOP_PORT": "auto"
-  }
-}
-```
+---
 
-### Service Mode (XMLA Endpoint)
+## Pinning versions
 
-Connect to a published model:
-
-```json
-{
-  "args": ["--start", "--service"],
-  "env": {
-    "PBI_MODELING_MCP_XMLA_ENDPOINT": "powerbi://api.powerbi.com/v1.0/myorg/WorkspaceName",
-    "PBI_MODELING_MCP_DATABASE": "DatasetName"
-  }
-}
-```
-
-### TMDL Mode
-
-Work directly with TMDL files:
+| Context | Recommendation |
+|---|---|
+| Local experimentation | `@latest` is fine |
+| Shared workspace config | Pin an exact version so the team gets identical behaviour |
+| CI | Pin, and update deliberately |
 
 ```json
-{
-  "args": ["--start", "--tmdl"],
-  "env": {
-    "PBI_MODELING_MCP_TMDL_PATH": "./Model.SemanticModel/definition"
-  }
-}
+"args": ["-y", "@microsoft/powerbi-modeling-mcp@0.5.0-beta.12", "--start"]
 ```
 
-## Authentication Options
+The package is pre-1.0, so breaking changes between minors are expected.
 
-### Interactive (Default)
+---
 
-User authenticates via browser popup:
+## VS Code specifics
 
-```json
-{
-  "env": {
-    "PBI_MODELING_MCP_AUTH": "interactive"
-  }
-}
+In VS Code, options and environment variables can also be set in user settings.
+Search `@ext:Microsoft.powerbi-modeling-mcp` in the settings editor.
+
+If the server does not appear in the tool list, check that **MCP servers in
+Copilot** is enabled in your GitHub settings. It is **off by default on
+enterprise accounts** and an administrator has to enable it.
+
+See [VS Code Integration](../../Integrations/MCP/VSCode_Integration.md) for the
+full walkthrough.
+
+---
+
+## Verifying a configuration
+
+```bash
+copilot mcp show
 ```
 
-### Service Principal
+Then, in the agent:
 
-For automated scenarios:
-
-```json
-{
-  "env": {
-    "PBI_MODELING_MCP_AUTH": "serviceprincipal",
-    "PBI_MODELING_MCP_TENANT_ID": "your-tenant-id",
-    "PBI_MODELING_MCP_CLIENT_ID": "your-app-client-id",
-    "PBI_MODELING_MCP_CLIENT_SECRET": "your-client-secret"
-  }
-}
+```text
+Connect to semantic model 'SalesModel' in Fabric workspace 'SalesAnalytics'
 ```
 
-## Troubleshooting Configurations
-
-### Enable Debug Logging
-
-```json
-{
-  "env": {
-    "PBI_MODELING_MCP_LOG_LEVEL": "debug",
-    "PBI_MODELING_MCP_LOG_FILE": "C:/logs/mcp-debug.log"
-  }
-}
+```text
+List the tables and measures in this model
 ```
 
-### Common Issues
+A successful inventory means the server is connected and the permissions work.
+Confirm write access separately before asking for a change.
 
-| Issue | Configuration Fix |
-|-------|-------------------|
-| Can't find Desktop | Set explicit `PBI_DESKTOP_PATH` |
-| Timeout errors | Add `"PBI_MODELING_MCP_TIMEOUT": "60000"` |
-| Auth failures | Check `_AUTH` and credential env vars |
-| Wrong model | Specify `_DATABASE` explicitly |
+---
 
-## Sample AGENTS.md for MCP Usage
+## Troubleshooting
 
-Create this file in your project root:
+| Symptom | Cause | Fix |
+|---|---|---|
+| Server registered, no tools | EULA not accepted | Authorise `accept_eula`, or pass `--accepteula` |
+| Server not listed at all | Client not in agent mode, or Copilot MCP setting off | Enable **MCP servers in Copilot** in GitHub settings |
+| `npx` not found | Node.js missing or not on PATH | Install Node.js 18+ and restart the client |
+| Reads work, writes fail | Build instead of Write; or read-only XMLA endpoint | Request Write; set the capacity's XMLA endpoint to Read Write |
+| Cannot connect to an AAS host | Host not allowlisted | Add it to `PBI_MODELING_MCP_ALLOWED_CONNECTION_HOSTS` and restart |
+| Reconnects before every operation | Hosted server; client not returning `mcp-Session-Id` | Use a session-preserving client, or switch to local |
+| Fails on macOS | Local server not supported | Use the hosted server |
 
-```markdown
-# Agent Instructions
+---
 
-## Available MCP Servers
+## Related
 
-### powerbi-modeling
-Use this MCP server for all semantic model operations:
-- `list_tables`, `list_measures` for exploration
-- `add_measure`, `update_measure` for modifications
-- `execute_dax` for queries
-
-## Workflow
-
-1. Always use `list_tables` first to understand the model
-2. Use `get_measure` to read existing DAX before modifying
-3. Use `validate_dax` before `add_measure`
-4. After bulk changes, save the TMDL files to commit
-
-## Conventions
-
-- Measure names: PascalCase
-- Display folders: Use "/" for hierarchy (e.g., "Revenue/Time Intelligence")
-- Descriptions: Required for all new measures
-```
+- [Server Guide](../../Integrations/MCP/ServerGuide.md)
+- [Setup Guide](../../Integrations/MCP/Setup_Guide.md)
+- [PowerBI_Modeling_MCP.md](./PowerBI_Modeling_MCP.md)
+- [VS Code Integration](../../Integrations/MCP/VSCode_Integration.md)
+- [Service Principal Setup](../../Governance/ServicePrincipalSetup.md)
