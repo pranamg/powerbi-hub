@@ -83,7 +83,12 @@ def mask_inline_code(line: str) -> str:
 
 
 def slugify(heading: str) -> str:
-    """Approximate GitHub's heading-anchor algorithm."""
+    """Approximate GitHub's heading-anchor algorithm.
+
+    Order matters: emphasis markers are removed *before* punctuation is
+    dropped, so ``### 1. Reporting Bugs`` becomes ``1-reporting-bugs`` rather
+    than ``1-reporting-bugs`` with a stray dot.
+    """
     heading = re.sub(r"`([^`]*)`", r"\1", heading)
     heading = re.sub(r"\[([^\]]*)\]\([^)]*\)", r"\1", heading)
     heading = re.sub(r"[*_~]", "", heading)
@@ -112,6 +117,27 @@ def iter_markdown_files():
                 yield os.path.join(dirpath, name)
 
 
+def resolve_link(base: str, path_part: str) -> str | None:
+    """Resolve a relative link the way GitHub does, or None if it is broken.
+
+    GitHub is more forgiving than a bare ``os.path.exists``: ``./Guide`` finds
+    ``Guide.md``, and ``./Folder/`` renders that folder's ``README.md``. Both
+    forms are idiomatic in a docs repo, so the checker must accept them or it
+    reports false positives on valid links.
+    """
+    candidate = os.path.normpath(os.path.join(base, path_part))
+    if os.path.isfile(candidate):
+        return candidate
+    if os.path.exists(candidate + ".md"):
+        return candidate + ".md"
+    if os.path.isdir(candidate):
+        # A directory renders its README when one exists, otherwise GitHub
+        # shows a file listing. Both are valid link targets.
+        readme = os.path.join(candidate, "README.md")
+        return readme if os.path.isfile(readme) else candidate
+    return None
+
+
 def main() -> int:
     fragment_cache: dict[str, set[str]] = {}
     broken: list[tuple[str, int, str, str]] = []
@@ -137,8 +163,8 @@ def main() -> int:
                 path_part = path_part.split("?", 1)[0]
 
                 if path_part:
-                    resolved = os.path.normpath(os.path.join(os.path.dirname(path), path_part))
-                    if not os.path.exists(resolved):
+                    resolved = resolve_link(os.path.dirname(path), path_part)
+                    if resolved is None:
                         broken.append((os.path.relpath(path, REPO_ROOT), lineno, label, target))
                         continue
                     if fragment and resolved.endswith(".md"):
