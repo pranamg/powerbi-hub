@@ -16,6 +16,7 @@ last_verified: 2026-09-29
 |----------|-------------|
 | [Topic Index](./Topic_Index.md) | Every document, filterable by audience, tag, and difficulty (generated) |
 | [Learning Paths](./LearningPaths/) | Six sequenced reading paths by role, with known gaps named |
+| [Roadmap](./ROADMAP.md) | What is covered, what is not, and what to do next |
 | [What's New](./WhatsNew/) | Dated change register and deprecation deadlines |
 
 ## Getting Started
@@ -23,9 +24,8 @@ last_verified: 2026-09-29
 | Document | Description |
 |----------|-------------|
 | [Setup](./Setup/) | Installation and environment setup |
-| [Environment Setup](./Setup/EnvironmentSetup.md) | Environment variables and configuration |
-| [Checklist](./CHECKLIST.md) | Project onboarding checklist |
-| [Implementation Plan](./IMPLEMENTATION_PLAN.md) | Roadmap and planned work |
+| [Environment Setup](./Setup/EnvironmentSetup.md) | Ordered install walkthrough |
+| [Installation Instructions](./Setup/InstallationInstructions.md) | Per-tool install, verify, update |
 
 ## User Guides
 
