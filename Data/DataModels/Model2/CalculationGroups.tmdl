@@ -1,0 +1,126 @@
+/// =============================================================================
+/// Model2 calculation groups
+///
+/// Calculation groups are the main reason this model exists. Without them,
+/// every base measure needs a hand-written YTD, prior-year, and growth variant,
+/// and the set has to be maintained by hand as measures are added. That is
+/// where the classic "the numbers disagree between two pages" defect comes
+/// from.
+///
+/// With a calculation group, [Total Sales] is defined once. The group supplies
+/// the time variants at query time, so a new base measure automatically gains
+/// YTD, PY, and growth without anyone writing them.
+///
+/// --- A caveat on this file ----------------------------------------------
+///
+/// The syntax below is written to be illustrative rather than authoritative.
+/// Calculation groups are serialised differently across Power BI Desktop
+/// versions, and the exact TMDL representation is version-dependent. Treat
+/// this file as a design reference for *what* the groups should contain and
+/// *why*, and export the real definition from your own model rather than
+/// assuming this will load as-is. See README.md.
+/// =============================================================================
+
+/// =============================================================================
+/// Time Intelligence
+///
+/// Selects the time variant applied to any numeric measure in scope.
+///
+/// SelectItemValue switches the measure as the user moves through the group,
+/// so the slicer cycles Current -> YTD -> PY -> Growth. The selected item is
+/// what changes the number, not which measure is displayed.
+/// =============================================================================
+
+calculationGroup 'Time Intelligence'
+    formatStringDefinition: "$#,##0.00"
+
+    calculationItem 'Current'
+        formula:
+            SELECTEDMEASURE()
+
+    calculationItem 'YTD'
+        formula:
+            CALCULATE(
+                SELECTEDMEASURE(),
+                DATESYTD('DimDate'[Date])
+            )
+
+    calculationItem 'PY'
+        formula:
+            CALCULATE(
+                SELECTEDMEASURE(),
+                SAMEPERIODLASTYEAR('DimDate'[Date])
+            )
+
+    calculationItem 'Growth %'
+        formula:
+            VAR Current = SELECTEDMEASURE()
+            VAR Prior = CALCULATE(SELECTEDMEASURE(), SAMEPERIODLASTYEAR('DimDate'[Date]))
+            RETURN
+                DIVIDE(Current - Prior, Prior)
+
+    /// Precedence matters: a measure used on a fiscal slicer should not have a
+    /// calendar YTD silently applied to it. Rows higher in this list are
+    /// evaluated first, and the first one that returns a value wins.
+    preemptionPriority: 1
+
+/// =============================================================================
+/// Currency Conversion
+///
+/// A second, orthogonal axis. Combining it with Time Intelligence means a
+/// report can show current-currency YTD figures without any base measure
+/// knowing about either concept.
+///
+/// This is the pattern that shows why calculation groups compose: Time
+/// Intelligence and Currency Conversion are independent, and the model
+/// supports all four combinations without a single duplicated measure.
+/// =============================================================================
+
+calculationGroup 'Currency'
+    formatStringDefinition: "$#,##0.00"
+
+    calculationItem 'Reporting Currency'
+        formula:
+            VAR Rate =
+                CALCULATE(
+                    MAX('DimCurrency'[Rate]),
+                    'DimCurrency'[Currency Code] = SELECTEDVALUE('DimCurrency'[Currency Code], "USD")
+                )
+            VAR Amount = SELECTEDMEASURE()
+            RETURN
+                IF(ISBLANK(Rate), Amount, Amount * Rate)
+
+    /// Left blank, the group does nothing, so a report with no currency slicer
+    /// shows the base measure untouched.
+    calculationItem 'Base'
+        formula:
+            SELECTEDMEASURE()
+
+    preemptionPriority: 2
+
+/// =============================================================================
+/// Notes
+/// =============================================================================
+///
+/// 1. A calculation group applies to every numeric measure in scope, including
+///    measures on other fact tables. Scope it with a FormatStringDefinition
+///    and, where a group must not touch a particular measure, exclude that
+///    measure explicitly.
+///
+/// 2. SELECTEDMEASURE() returns the measure currently in context. A calculation
+///    item that does not use it will return the same value regardless of which
+///    measure is displayed, which is almost always a mistake.
+///
+/// 3. Time intelligence applied to a non-additive measure such as
+///    [Closing Units On Hand] is meaningless. Calculation groups do not know
+///    which measures are additive, so this must be handled by measure design:
+///    keep non-additive measures in a separate display folder and do not put
+///    them in scope for the group.
+///
+/// 4. Test calculation groups in Desktop with *View as > Calculation group* to
+///    confirm each item behaves as intended before publishing.
+///
+/// 5. After adding a calculation group, re-check existing reports. A measure
+///    that was already a measure can now be reached through the group, and
+///    conditional formatting or field parameters that referenced it may need
+///    updating.

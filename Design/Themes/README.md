@@ -1,3 +1,11 @@
+---
+title: Power BI Themes
+tags: [design, themes]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Power BI Themes
 
 JSON theme files for consistent report styling.
@@ -19,6 +27,7 @@ JSON theme files for consistent report styling.
 ## Theme Contents
 
 Each theme defines:
+
 - **Data colors**: 10 coordinated chart colors
 - **Sentiment colors**: Good (green), Neutral (yellow), Bad (red)
 - **Background/Foreground**: Page and text colors
@@ -28,6 +37,7 @@ Each theme defines:
 ## Customization
 
 Edit the JSON to customize:
+
 ```json
 {
     "name": "Your Custom Theme",
@@ -40,5 +50,5 @@ Edit the JSON to customize:
 
 ## Resources
 
-- [Microsoft Theme Documentation](https://docs.microsoft.com/power-bi/create-reports/desktop-report-themes)
+- [Microsoft Theme Documentation](https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes)
 - [Theme Generator Tools](https://powerbi.tips/tools/report-theme-generator-v3/)

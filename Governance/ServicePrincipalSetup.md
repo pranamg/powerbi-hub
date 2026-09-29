@@ -1,3 +1,11 @@
+---
+title: Service Principal Setup Guide
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Service Principal Setup Guide
 
 > **Purpose:** Configure Azure AD service principals for Power BI automation and CI/CD
@@ -7,6 +15,7 @@
 ## Overview
 
 Service principals enable automated, unattended access to Power BI APIs for:
+
 - CI/CD deployments
 - Automated refreshes
 - Embedding scenarios
@@ -88,6 +97,7 @@ Write-Host "Client Secret: $($secret.Value)"
 ```
 
 **In Azure Portal:**
+
 1. Go to App registration > **Certificates & secrets**
 2. Click **New client secret**
 3. Set description and expiration
@@ -477,7 +487,3 @@ catch {
 - [Deployment Pipelines](../Deployment/Pipelines/README.md)
 - [PowerShell Scripts](../Scripts/PowerShell/README.md)
 - [Audit Procedures](./AuditProcedures.md)
-
----
-
-*Last Updated: December 2024*

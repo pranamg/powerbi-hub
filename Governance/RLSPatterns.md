@@ -1,3 +1,11 @@
+---
+title: Row-Level Security (RLS) Patterns
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Row-Level Security (RLS) Patterns
 
 > Common patterns and best practices for implementing RLS in Power BI
@@ -59,6 +67,7 @@ UserSecurity Table:
 ```
 
 DAX Filter (on Geography):
+
 ```dax
 [Region] IN 
 CALCULATETABLE(
@@ -81,6 +90,7 @@ EmployeeHierarchy Table:
 ```
 
 DAX Filter (on Employee):
+
 ```dax
 VAR CurrentUser = USERPRINCIPALNAME()
 VAR UserEmployeeID = 
@@ -123,6 +133,7 @@ Limit access to recent data:
 ```
 
 Or dynamically:
+
 ```dax
 // Last 2 years only
 [OrderDate] >= DATE(YEAR(TODAY()) - 2, 1, 1)
@@ -166,6 +177,7 @@ TRUE()
 ```
 
 Or combined with regular users:
+
 ```dax
 // Role: Combined
 // Table: Sales
@@ -241,11 +253,13 @@ in
 ### Step 4: Test Thoroughly
 
 **In Desktop:**
+
 ```
 Modeling → View as Roles → Select role → Enter username
 ```
 
 **Automated Testing:**
+
 ```dax
 // Test query - run as different users
 EVALUATE
@@ -336,5 +350,5 @@ For hiding entire tables/columns (Premium only):
 ## Related Resources
 
 - [Development Standards](./DevelopmentStandards.md)
-- [Security Templates](../Templates/)
+- [Security Templates](../Scripts/TMDL/RLS_Template.tmdl)
 - [Microsoft RLS Documentation](https://learn.microsoft.com/power-bi/admin/service-admin-rls)

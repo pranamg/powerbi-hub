@@ -7,16 +7,58 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  docs:
+    name: Validate documentation
     runs-on: ubuntu-latest
 
     steps:
     - uses: actions/checkout@v4
-    - name: Set up PowerShell
-      uses: actions/setup-powershell@v2
-    - name: Run PowerShell Script
-      run: |
-        Write-Host "Hello, PowerShell CI!"
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
 
-    - name: Lint Markdown Files
-      uses: github/super-linter@v4
+    # Documentation is the product here, so it gets real checks rather than
+    # a placeholder. Each script exits non-zero on failure.
+    - name: Check every file has frontmatter
+      run: python .github/scripts/add_frontmatter.py --check
+
+    - name: Check frontmatter values
+      run: python .github/scripts/check_frontmatter.py
+
+    - name: Check the topic index is up to date
+      run: python .github/scripts/build_index.py --check
+
+    - name: Check relative links resolve
+      run: python .github/scripts/check_links.py
+
+    - name: Check code and data assets
+      run: python .github/scripts/check_assets.py
+
+  external-links:
+    name: Check external links
+    runs-on: ubuntu-latest
+
+    # Scheduled rather than per-push: a rate-limited or briefly unavailable
+    # host should not fail a build for work unrelated to it.
+    on:
+      schedule:
+        - cron: '0 6 * * 1'   # Mondays 06:00 UTC
+      workflow_dispatch:
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+    - name: Check external URLs resolve
+      run: python .github/scripts/check_external_links.py
+
+  lint:
+    name: Lint Markdown
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - uses: github/super-linter/slim@v6
+      with:
+        validate_marketplace: false

@@ -1,3 +1,11 @@
+---
+title: AI-Assisted Measure Development
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # AI-Assisted Measure Development
 
 > Create, validate, and optimize DAX measures with AI assistance via MCP
@@ -11,12 +19,14 @@ The Power BI MCP Server enables AI to understand your model structure and help c
 ### Workflow 1: Describe What You Need
 
 **Prompt:**
+
 ```
 "Create a measure that calculates the average order value, 
 excluding returns and orders under $10"
 ```
 
 **AI Process:**
+
 1. Queries model for relevant tables (Orders, Returns)
 2. Identifies Amount and OrderType columns
 3. Generates context-aware DAX:
@@ -36,11 +46,13 @@ RETURN
 ### Workflow 2: Start from Similar Measure
 
 **Prompt:**
+
 ```
 "Create a measure like [Total Sales] but for the previous year"
 ```
 
 **AI Process:**
+
 1. Retrieves [Total Sales] definition
 2. Wraps with time intelligence:
 
@@ -55,6 +67,7 @@ CALCULATE(
 ### Workflow 3: Convert SQL to DAX
 
 **Prompt:**
+
 ```
 "Convert this SQL to a DAX measure:
 SELECT SUM(CASE WHEN status = 'Complete' THEN amount ELSE 0 END) / SUM(amount)
@@ -62,6 +75,7 @@ FROM orders"
 ```
 
 **Generated DAX:**
+
 ```dax
 Completion Rate = 
 DIVIDE(
@@ -78,12 +92,14 @@ DIVIDE(
 ### Test Against Known Values
 
 **Prompt:**
+
 ```
 "Validate my [Profit Margin %] measure returns approximately 23% 
 for product category 'Electronics' in 2024"
 ```
 
 **AI executes:**
+
 ```dax
 EVALUATE
 ROW(
@@ -102,11 +118,13 @@ ROW(
 ### Edge Case Testing
 
 **Prompt:**
+
 ```
 "Test my [YoY Growth %] measure for division by zero scenarios"
 ```
 
 **AI generates test suite:**
+
 ```dax
 -- Test 1: Normal scenario
 EVALUATE
@@ -131,6 +149,7 @@ ROW(
 ### Compare Two Measure Versions
 
 **Prompt:**
+
 ```
 "Compare my old [Sales Growth] measure with the new optimized version 
 across all regions"
@@ -152,11 +171,13 @@ ADDCOLUMNS(
 ### Identify Performance Issues
 
 **Prompt:**
+
 ```
 "Analyze my [Complex Calculation] measure for performance issues"
 ```
 
 **AI examines:**
+
 1. Nested CALCULATE usage
 2. Iterator function efficiency
 3. Filter context complexity
@@ -189,6 +210,7 @@ RETURN
 ### Simplify Complex Logic
 
 **Prompt:**
+
 ```
 "Simplify this measure while keeping the same result:
 [measure definition]"
@@ -197,6 +219,7 @@ RETURN
 ## Measure Documentation Generation
 
 **Prompt:**
+
 ```
 "Document the [Customer Lifetime Value] measure including:
 - Business definition
@@ -206,6 +229,7 @@ RETURN
 ```
 
 **AI generates:**
+
 ```markdown
 ## Customer Lifetime Value
 
@@ -230,14 +254,17 @@ CALCULATE(
 ```
 
 ### Dependencies
+
 - Tables: Sales, Customer
 - Columns: Sales[OrderDate], Sales[Amount], Sales[CustomerID], Customer[CustomerID]
 - Other Measures: None
 
 ### Usage Examples
+
 - Segment customers by CLV tiers (Low/Medium/High)
 - Compare CLV across acquisition channels
 - Track CLV trends over time
+
 ```
 
 ## Common Measure Patterns
@@ -246,8 +273,10 @@ CALCULATE(
 
 **Prompt:**
 ```
+
 "Create a time intelligence measure set for [Revenue] including:
 YTD, QTD, MTD, YoY, and rolling 12 months"
+
 ```
 
 **AI generates complete set:**
@@ -277,6 +306,7 @@ CALCULATE(
 ## Best Practices
 
 ### 1. Provide Context
+
 ```
 Good: "Create a margin measure for our retail model where 
       Cost is in the Product table and Revenue is in Sales"
@@ -284,17 +314,20 @@ Bad: "Create a margin measure"
 ```
 
 ### 2. Specify Edge Cases
+
 ```
 "Create a growth measure that returns BLANK() instead of 
 error when previous period is zero"
 ```
 
 ### 3. Request Validation
+
 ```
 "Create the measure AND a test query to validate it"
 ```
 
 ### 4. Ask for Alternatives
+
 ```
 "Show me two approaches to calculate customer retention rate - 
 one using CALCULATE and one using window functions"

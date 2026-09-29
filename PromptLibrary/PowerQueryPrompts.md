@@ -1,3 +1,11 @@
+---
+title: Power Query / M Language Prompts
+tags: [prompts, power-query, ai]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Power Query / M Language Prompts
 
 Use these prompts with AI assistants for Power Query development.
@@ -5,6 +13,7 @@ Use these prompts with AI assistants for Power Query development.
 ## Data Transformation
 
 ### Basic Transformations
+
 ```
 Write Power Query M code to:
 1. Load data from [source type]
@@ -25,6 +34,7 @@ handling cases with middle names, suffixes (Jr, Sr), and single names.
 ```
 
 ### Date/Time Operations
+
 ```
 Generate a complete date table in Power Query from [StartDate] to [EndDate] with:
 - Year, Quarter, Month, Week columns
@@ -40,6 +50,7 @@ accounting for timezone [timezone].
 ```
 
 ### Merging & Appending
+
 ```
 Write M code to merge [Table1] with [Table2] using a fuzzy match on [Column],
 with a similarity threshold of [X]%.
@@ -161,6 +172,7 @@ Create a web scraping query for [website] that:
 ## Tips for Better Prompts
 
 Include when asking:
+
 1. Source type (SQL, Excel, API, etc.)
 2. Sample data structure (column names, types)
 3. Expected output format

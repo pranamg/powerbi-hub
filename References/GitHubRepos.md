@@ -1,3 +1,11 @@
+---
+title: Power BI GitHub Repositories
+tags: [references, tooling]
+audience: [developer]
+difficulty: reference
+last_verified: 2026-09-29
+---
+
 # Power BI GitHub Repositories
 
 Curated list of valuable GitHub repositories for Power BI development.
@@ -7,7 +15,7 @@ Curated list of valuable GitHub repositories for Power BI development.
 | Repository | Description |
 |------------|-------------|
 | [microsoft/powerbi-desktop-samples](https://github.com/microsoft/powerbi-desktop-samples) | Official sample PBIX files |
-| [microsoft/PowerBI-visuals](https://github.com/microsoft/PowerBI-visuals) | Custom visuals SDK |
+| [microsoft/PowerBI-visuals](https://github.com/PowerBi-Projects/PowerBI-visuals) | Custom visuals SDK |
 | [microsoft/PowerBI-JavaScript](https://github.com/microsoft/PowerBI-JavaScript) | Embedded JS SDK |
 | [microsoft/powerbi-powershell](https://github.com/microsoft/powerbi-powershell) | PowerShell cmdlets |
 | [microsoft/Analysis-Services](https://github.com/microsoft/Analysis-Services) | Tabular models, tools |
@@ -35,14 +43,14 @@ Curated list of valuable GitHub repositories for Power BI development.
 
 | Repository | Description |
 |------------|-------------|
-| [Power Query Connectors](https://github.com/microsoft/PowerQuery-Connectors) | Custom connector development |
+| [Power Query Connectors](https://learn.microsoft.com/en-us/power-query/connectors/) | Custom connector development |
 | [PowerQueryExtensions](https://github.com/ImkeF/M) | ImkeF's M function library |
 
 ## Custom Visuals Development
 
 | Repository | Description |
 |------------|-------------|
-| [powerbi-visuals-tools](https://github.com/microsoft/PowerBI-visuals-tools) | pbiviz development tools |
+| [powerbi-visuals-tools](https://github.com/PowerBi-Projects/PowerBI-visuals-tools) | pbiviz development tools |
 | [powerbi-visuals-utils](https://github.com/microsoft/powerbi-visuals-utils-chartutils) | Chart utilities |
 | [D3.js](https://github.com/d3/d3) | Visualization library |
 
@@ -51,7 +59,7 @@ Curated list of valuable GitHub repositories for Power BI development.
 | Repository | Description |
 |------------|-------------|
 | [powerbi-desktop-samples](https://github.com/microsoft/powerbi-desktop-samples) | Official samples |
-| [PowerBIThemes](https://github.com/deldersveld/PowerBIThemes) | Community themes |
+| [Power BI Themes](https://github.com/alisonpezzott/PowerBI-Themes) | Community JSON themes. This hub also ships its own light and dark themes in [Design/Themes/](../Design/Themes/README.md) |
 
 ## Automation & DevOps
 
@@ -65,4 +73,4 @@ Curated list of valuable GitHub repositories for Power BI development.
 | Repository | Description |
 |------------|-------------|
 | [DAX Patterns](https://www.daxpatterns.com) | Pattern reference (website) |
-| [powerbi-docs](https://github.com/MicrosoftDocs/powerbi-docs) | Documentation source |
+| [powerbi-docs](https://learn.microsoft.com/en-us/power-bi/) | Documentation source |

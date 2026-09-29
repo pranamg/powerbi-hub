@@ -1,3 +1,11 @@
+---
+title: Team Collaboration Patterns
+tags: [collaboration, workspaces]
+audience: [bi-admin]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Team Collaboration Patterns
 
 > **Purpose:** Best practices for Power BI team development, version control, and collaboration workflows
@@ -7,6 +15,7 @@
 ## Overview
 
 Effective team collaboration in Power BI development requires clear processes for:
+
 - Version control and branching
 - Code review and quality gates
 - Environment management
@@ -45,6 +54,7 @@ main (production)
 ```
 
 **Branch Purposes:**
+
 | Branch | Purpose | Merges To |
 |--------|---------|-----------|
 | `main` | Production-ready code | - |
@@ -64,6 +74,7 @@ main ─────●─────●─────●─────●─
 ```
 
 **Best for:**
+
 - Small teams (2-4 developers)
 - Continuous deployment
 - High automation maturity
@@ -83,6 +94,7 @@ main ─────●─────●─────●─────●─
 ```
 
 **Workflow:**
+
 1. Developers work in `dev` branch
 2. Auto-deploy to Dev workspace
 3. PR to `test` for QA
@@ -115,6 +127,7 @@ docs/JIRA-101-update-readme
 ```
 
 **Types:**
+
 | Type | Description |
 |------|-------------|
 | `feat` | New feature (measure, visual, report) |
@@ -126,6 +139,7 @@ docs/JIRA-101-update-readme
 | `test` | Adding tests |
 
 **Examples:**
+
 ```
 feat(measures): add YTD sales with fiscal year support
 
@@ -192,6 +206,7 @@ Closes #
 ### Review Checklist
 
 **For Data Model Changes:**
+
 - [ ] Relationships are correct (cardinality, direction)
 - [ ] No circular dependencies
 - [ ] Column data types appropriate
@@ -199,6 +214,7 @@ Closes #
 - [ ] Naming conventions followed
 
 **For DAX Measures:**
+
 - [ ] Logic is correct
 - [ ] Handles edge cases (blanks, zeros)
 - [ ] Performance acceptable
@@ -207,6 +223,7 @@ Closes #
 - [ ] Folder organization correct
 
 **For Reports:**
+
 - [ ] Visuals render correctly
 - [ ] Filters work as expected
 - [ ] Mobile layout (if required)
@@ -237,6 +254,7 @@ Developer                    Reviewer                    Approver
 ### Avoiding Conflicts
 
 **Model.bim / TMDL Conflicts:**
+
 1. **Divide by area** - Different developers own different tables/measures
 2. **Feature flags** - Develop in separate measure groups, merge later
 3. **Short-lived branches** - Reduce merge window
@@ -245,6 +263,7 @@ Developer                    Reviewer                    Approver
 ### Work Division Strategies
 
 **By Functional Area:**
+
 ```
 Developer A: Sales measures, Sales report pages
 Developer B: Inventory measures, Inventory reports
@@ -252,6 +271,7 @@ Developer C: Finance measures, Finance reports
 ```
 
 **By Layer:**
+
 ```
 Data Engineer: Data model, relationships, base tables
 DAX Developer: Measures, calculation groups
@@ -259,6 +279,7 @@ Report Developer: Visualizations, UX
 ```
 
 **By Feature:**
+
 ```
 Sprint 1:
 - Dev A: Feature X (end-to-end)
@@ -269,6 +290,7 @@ Sprint 1:
 ### Handling Merge Conflicts
 
 **TMDL Conflicts:**
+
 ```bash
 # When conflicts occur in .tmdl files
 git checkout --theirs Tables/DimDate.tmdl  # Take their version
@@ -411,6 +433,7 @@ stages:
 ### Definition of Done
 
 A feature is complete when:
+
 - [ ] Code reviewed and approved
 - [ ] All automated checks pass
 - [ ] Manual testing completed
@@ -499,7 +522,3 @@ A feature is complete when:
 - [Fabric Git Integration](./FabricGitIntegration.md)
 - [Deployment Pipelines](../../Deployment/Pipelines/README.md)
 - [Change Management](../../Governance/ChangeManagement.md)
-
----
-
-*Last Updated: December 2024*

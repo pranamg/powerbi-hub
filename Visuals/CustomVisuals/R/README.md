@@ -1,3 +1,11 @@
+---
+title: R Visual Templates
+tags: [visuals, development]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # R Visual Templates
 
 > **Purpose:** R scripts for creating custom visualizations in Power BI
@@ -7,17 +15,21 @@
 ## Prerequisites
 
 ### Tenant Settings
+
 1. Go to Admin Portal > Tenant Settings
 2. Enable "R visuals"
 
 ### Local Setup
+
 1. Install R 3.4+ (CRAN or Microsoft R Open)
 2. Install required packages:
+
 ```r
 install.packages(c("ggplot2", "dplyr", "treemap", "igraph", "ggrepel"))
 ```
 
 ### Power BI Desktop
+
 1. File > Options > R scripting
 2. Set R home directory
 3. Restart Power BI Desktop
@@ -57,11 +69,13 @@ install.packages(c("ggplot2", "dplyr", "treemap", "igraph", "ggrepel"))
 ## Tips
 
 ### Field Names
+
 - Power BI converts field names to valid R names
 - Spaces become periods
 - Special chars are removed
 - Example: "Sales Amount" → "Sales.Amount"
 
 ### Performance
+
 - Pre-aggregate data when possible
 - Limit rows to <100,000 for complex visuals

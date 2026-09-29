@@ -1,3 +1,11 @@
+---
+title: Power BI PowerShell Scripts
+tags: [automation, powershell, devops]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI PowerShell Scripts
 
 > Automation scripts for Power BI administration, deployment, and management
@@ -5,6 +13,7 @@
 ## Prerequisites
 
 ### Required Modules
+
 ```powershell
 # Install Power BI Management Module
 Install-Module -Name MicrosoftPowerBIMgmt -Scope CurrentUser
@@ -17,6 +26,7 @@ Get-Module -Name MicrosoftPowerBIMgmt -ListAvailable
 ```
 
 ### Authentication
+
 ```powershell
 # Interactive login
 Connect-PowerBIServiceAccount
@@ -35,21 +45,23 @@ Connect-PowerBIServiceAccount -ServicePrincipal -Credential $credential -TenantI
 | [Dataset/](./Dataset/) | Refresh, parameters, credentials |
 | [Gateway/](./Gateway/) | Gateway management and data sources |
 | [Admin/](./Admin/) | Tenant-wide administration |
-| [Reports/](./Reports/) | Report deployment and management |
 
 ## Quick Start
 
 ### Get All Workspaces
+
 ```powershell
 Get-PowerBIWorkspace -Scope Organization -All | Format-Table Name, Id, Type
 ```
 
 ### Refresh a Dataset
+
 ```powershell
 Invoke-PowerBIRestMethod -Url "groups/{workspaceId}/datasets/{datasetId}/refreshes" -Method Post
 ```
 
 ### Export Report
+
 ```powershell
 Export-PowerBIReport -WorkspaceId $workspaceId -Id $reportId -OutFile "report.pbix"
 ```
@@ -57,6 +69,7 @@ Export-PowerBIReport -WorkspaceId $workspaceId -Id $reportId -OutFile "report.pb
 ## Environment Variables
 
 Set these for unattended scripts:
+
 ```powershell
 $env:PBI_TENANT_ID = "your-tenant-id"
 $env:PBI_APP_ID = "your-app-id"
@@ -66,6 +79,7 @@ $env:PBI_APP_SECRET = "your-client-secret"
 ## Error Handling Pattern
 
 All scripts use this pattern:
+
 ```powershell
 try {
     Connect-PowerBIServiceAccount -ErrorAction Stop

@@ -1,3 +1,11 @@
+---
+title: Microsoft Fabric Git Integration Guide
+tags: [fabric, git, ci-cd]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Microsoft Fabric Git Integration Guide
 
 > **Purpose:** Step-by-step guide for setting up Git integration with Microsoft Fabric workspaces
@@ -7,6 +15,7 @@
 ## Overview
 
 Git integration in Microsoft Fabric enables source control for workspace items including:
+
 - Semantic models (datasets)
 - Reports
 - Notebooks
@@ -15,6 +24,7 @@ Git integration in Microsoft Fabric enables source control for workspace items i
 - Warehouses
 
 ### Supported Git Providers
+
 - **Azure DevOps** (Azure Repos)
 - **GitHub** (including GitHub Enterprise)
 
@@ -23,15 +33,18 @@ Git integration in Microsoft Fabric enables source control for workspace items i
 ## Prerequisites
 
 ### Tenant Requirements
+
 1. Fabric capacity (F64 or higher) or Power BI Premium
 2. Tenant admin must enable Git integration in admin portal
 
 ### User Requirements
+
 - Workspace Admin or Member role
 - Git repository access (read/write)
 - Azure DevOps or GitHub account
 
 ### Repository Setup
+
 ```
 my-fabric-repo/
 ├── .gitignore
@@ -49,6 +62,7 @@ my-fabric-repo/
 ### Step 1: Enable Git Integration (Admin)
 
 **In Power BI Admin Portal:**
+
 1. Go to **Admin Portal** > **Tenant Settings**
 2. Find **Git Integration** section
 3. Enable "Users can synchronize workspace items with their Git repositories"
@@ -58,6 +72,7 @@ my-fabric-repo/
 ### Step 2: Connect Workspace to Repository
 
 **In Fabric Portal:**
+
 1. Open workspace settings (gear icon)
 2. Select **Git Integration** tab
 3. Click **Connect**
@@ -65,6 +80,7 @@ my-fabric-repo/
 5. Authenticate and authorize
 
 **Azure DevOps Configuration:**
+
 ```
 Organization: https://dev.azure.com/your-org
 Project: YourProject
@@ -74,6 +90,7 @@ Folder: /workspaces/workspace-name
 ```
 
 **GitHub Configuration:**
+
 ```
 Repository: your-org/fabric-workspace
 Branch: main
@@ -83,6 +100,7 @@ Folder: /workspaces/workspace-name
 ### Step 3: Initial Sync
 
 After connecting:
+
 1. Choose sync direction:
    - **Commit to Git**: Push current workspace items to repository
    - **Update from Git**: Pull items from repository to workspace
@@ -114,6 +132,7 @@ Developer Workflow:
 5. Click **Commit**
 
 **Best Practices for Commits:**
+
 ```
 # Good commit messages
 ✓ "Add YTD sales measure to Sales Model"
@@ -129,6 +148,7 @@ Developer Workflow:
 ### Update from Git
 
 Pull changes made by team members:
+
 1. Click **Source Control** in workspace
 2. Click **Update**
 3. Review incoming changes
@@ -137,6 +157,7 @@ Pull changes made by team members:
 ### Handle Conflicts
 
 When conflicts occur:
+
 1. Fabric shows conflicting items
 2. Choose resolution:
    - **Accept yours**: Keep workspace version
@@ -168,18 +189,21 @@ main (production)
 ### Working with Branches
 
 **Create Feature Branch:**
+
 ```bash
 git checkout develop
 git checkout -b feature/new-sales-report
 ```
 
 **In Fabric:**
+
 1. Disconnect workspace from current branch
 2. Reconnect to feature branch
 3. Make changes
 4. Commit to feature branch
 
 **Merge via Pull Request:**
+
 ```bash
 # Create PR in Azure DevOps/GitHub
 # After review and approval, merge to develop
@@ -413,20 +437,24 @@ Thumbs.db
 ### Common Issues
 
 **"Unable to connect to Git"**
+
 - Verify Git provider is enabled in tenant settings
 - Check repository URL format
 - Ensure authentication is valid
 
 **"Sync failed"**
+
 - Check for merge conflicts
 - Verify workspace permissions
 - Review item-specific errors in sync log
 
 **"Item not supported"**
+
 - Some legacy items don't support Git integration
 - Convert to supported format if possible
 
 **"Changes not appearing"**
+
 - Refresh workspace view
 - Check branch is correct
 - Verify commit was successful
@@ -435,7 +463,7 @@ Thumbs.db
 
 - [Microsoft Fabric Git Integration Docs](https://learn.microsoft.com/fabric/cicd/git-integration/intro-to-git-integration)
 - [Fabric REST API Reference](https://learn.microsoft.com/rest/api/fabric/)
-- [Azure DevOps Integration Guide](https://learn.microsoft.com/fabric/cicd/git-integration/git-integration-with-azure-devops)
+- [Azure DevOps Integration Guide](https://learn.microsoft.com/en-us/fabric/cicd/git-integration/source-code-format)
 
 ---
 
@@ -444,7 +472,3 @@ Thumbs.db
 - [TMDL View Guide](./TMDLView.md)
 - [Deployment Pipelines](../../Deployment/Pipelines/README.md)
 - [Development Standards](../../Governance/DevelopmentStandards.md)
-
----
-
-*Last Updated: December 2024*

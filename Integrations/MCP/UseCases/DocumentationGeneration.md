@@ -1,3 +1,11 @@
+---
+title: Documentation Generation via MCP
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Documentation Generation via MCP
 
 > Auto-generate comprehensive model documentation using AI assistants
@@ -11,6 +19,7 @@ Manual documentation of Power BI semantic models is time-consuming and often out
 ### 1. Model Overview Document
 
 **Prompt:**
+
 ```
 "Generate a complete documentation overview of this semantic model including:
 - All tables with row counts
@@ -20,6 +29,7 @@ Manual documentation of Power BI semantic models is time-consuming and often out
 ```
 
 **AI generates queries and compiles:**
+
 ```dax
 -- Get tables
 EVALUATE 
@@ -41,6 +51,7 @@ GROUPBY(
 ```
 
 **Output:**
+
 ```markdown
 # Sales Analytics Model Documentation
 
@@ -67,12 +78,14 @@ GROUPBY(
 ### 2. Measure Dictionary
 
 **Prompt:**
+
 ```
 "Create a complete measure dictionary with categories, 
 definitions, and DAX expressions for all measures"
 ```
 
 **AI queries and organizes:**
+
 ```dax
 EVALUATE
 SELECTCOLUMNS(
@@ -87,6 +100,7 @@ SELECTCOLUMNS(
 ```
 
 **Output:**
+
 ```markdown
 # Measure Dictionary
 
@@ -99,28 +113,35 @@ SELECTCOLUMNS(
   ```dax
   Total Sales = SUM(Sales[Amount])
   ```
+
 - **Dependencies:** Sales[Amount]
 - **Used In:** Dashboard KPIs, Regional Analysis
 
 ### Sales YTD
+
 - **Category:** Time Intelligence
 - **Format:** Currency
 - **Expression:**
+
   ```dax
   Sales YTD = TOTALYTD([Total Sales], 'Date'[Date])
   ```
+
 - **Dependencies:** [Total Sales], Date[Date]
 - **Used In:** Executive Summary, YoY Comparisons
 
 [... continues for all measures ...]
+
 ```
 
 ### 3. Column Documentation
 
 **Prompt:**
 ```
+
 "Document all columns in the Customer table including data types,
 sample values, and any calculated columns"
+
 ```
 
 **AI explores and documents:**
@@ -159,16 +180,20 @@ sample values, and any calculated columns"
       "SMB"
   )
   ```
+
 - **Distinct Values:** 3
 - **Distribution:** Enterprise (5%), Mid-Market (25%), SMB (70%)
+
 ```
 
 ### 4. Data Lineage Document
 
 **Prompt:**
 ```
-"Generate data lineage documentation showing how measures 
+
+"Generate data lineage documentation showing how measures
 depend on each other and which tables/columns they use"
+
 ```
 
 **Output:**
@@ -179,23 +204,27 @@ depend on each other and which tables/columns they use"
 
 ### [Profit Margin %]
 ```
+
 [Profit Margin %]
 ├── [Total Profit]
-│   ├── [Total Revenue] 
+│   ├── [Total Revenue]
 │   │   └── Sales[Amount]
 │   └── [Total Cost]
 │       └── Sales[Cost]
 └── [Total Revenue]
     └── Sales[Amount]
+
 ```
 
 ### [Customer Lifetime Value]
 ```
+
 [Customer Lifetime Value]
 ├── Sales[Amount]
 ├── Sales[OrderDate]
 ├── Sales[CustomerID]
 └── Customer[CustomerID]
+
 ```
 
 ## Column Usage Matrix
@@ -211,12 +240,14 @@ depend on each other and which tables/columns they use"
 ### 5. Relationship Documentation
 
 **Prompt:**
+
 ```
 "Document all relationships including cardinality, 
 cross-filter direction, and any inactive relationships"
 ```
 
 **Output:**
+
 ```markdown
 # Model Relationships
 
@@ -247,6 +278,7 @@ The Date table has 3 relationships to Sales:
 ### Weekly Documentation Update
 
 **Prompt:**
+
 ```
 "Generate a changelog comparing the current model state to last week:
 - New measures added
@@ -258,6 +290,7 @@ The Date table has 3 relationships to Sales:
 ### Pre-Deployment Documentation
 
 **Prompt:**
+
 ```
 "Create deployment documentation for the changes in this model version:
 - List all modified objects
@@ -268,6 +301,7 @@ The Date table has 3 relationships to Sales:
 ### Onboarding Guide
 
 **Prompt:**
+
 ```
 "Create a new user onboarding guide for this model:
 - Key business metrics and their definitions
@@ -281,21 +315,25 @@ The Date table has 3 relationships to Sales:
 AI can generate documentation in multiple formats:
 
 ### Markdown (Default)
+
 ```
 "Document all measures in Markdown format"
 ```
 
 ### HTML
+
 ```
 "Generate an HTML documentation page with navigation"
 ```
 
 ### JSON (for systems integration)
+
 ```
 "Export measure definitions as JSON for our documentation system"
 ```
 
 ### Wiki Format
+
 ```
 "Format documentation for Confluence/SharePoint wiki"
 ```
@@ -303,24 +341,28 @@ AI can generate documentation in multiple formats:
 ## Best Practices
 
 ### 1. Schedule Regular Updates
+
 ```
 "Generate updated documentation and highlight what changed 
 since the last version from December 1st"
 ```
 
 ### 2. Include Business Context
+
 ```
 "Document measures with both technical details AND 
 business explanations for non-technical users"
 ```
 
 ### 3. Add Usage Examples
+
 ```
 "For each measure, include 2-3 example use cases 
 and recommended visual types"
 ```
 
 ### 4. Cross-Reference Related Items
+
 ```
 "When documenting a measure, link to related measures 
 and the reports that use it"

@@ -1,3 +1,11 @@
+---
+title: Object-Level Security (OLS) Configuration
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Object-Level Security (OLS) Configuration
 
 > **Purpose:** Templates and patterns for implementing Object-Level Security in Power BI
@@ -113,6 +121,7 @@ role PIIAccess
 ```
 
 **Role Assignment:**
+
 | Role | Users | Access |
 |------|-------|--------|
 | GeneralUser | Most users | No PII |
@@ -412,15 +421,18 @@ SUMMARIZECOLUMNS(
 ### Common Issues
 
 **"Column not found" errors in reports**
+
 - Expected behavior when OLS hides columns
 - Update reports to handle missing columns gracefully
 
 **OLS not applying**
+
 - Verify user is in correct security role
 - Check role is assigned in Power BI service
 - Ensure dataset is refreshed after changes
 
 **Can still see hidden columns in Desktop**
+
 - Use "View as Role" feature
 - Or test with actual restricted user account
 
@@ -431,7 +443,3 @@ SUMMARIZECOLUMNS(
 - [RLS Patterns](./RLSPatterns.md)
 - [Data Classification](./DataClassification.md)
 - [Audit Procedures](./AuditProcedures.md)
-
----
-
-*Last Updated: December 2024*

@@ -1,3 +1,11 @@
+---
+title: Power Query Custom Functions
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Power Query Custom Functions
 
 Reusable M functions for common data transformation tasks.

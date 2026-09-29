@@ -1,3 +1,11 @@
+---
+title: DAX Measures Library
+tags: [dax]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # DAX Measures Library
 
 Reusable DAX measure templates organized by category.
@@ -16,6 +24,7 @@ Reusable DAX measure templates organized by category.
 The `WindowFunctions.dax` file contains examples of the new DAX window functions introduced in 2024:
 
 ### Core Functions
+
 - **INDEX** - Access a row by position in a table
 - **OFFSET** - Access a row relative to current row
 - **WINDOW** - Define a window frame for calculations
@@ -23,6 +32,7 @@ The `WindowFunctions.dax` file contains examples of the new DAX window functions
 - **ROWNUMBER** - Assign sequential numbers to rows
 
 ### Common Patterns Included
+
 - Moving averages (3-month, 12-month)
 - Running totals with partitions
 - Year-over-year using OFFSET
@@ -31,6 +41,7 @@ The `WindowFunctions.dax` file contains examples of the new DAX window functions
 - Percentile rankings
 
 ### Key Syntax Pattern
+
 ```dax
 INDEX(
     <position>,
@@ -55,6 +66,7 @@ See `WindowFunctions.dax` for complete examples with detailed comments.
 ## Naming Convention
 
 Measures follow this pattern:
+
 ```
 [Base Measure] [Time Intelligence] [Comparison]
 
@@ -68,6 +80,7 @@ Examples:
 ## Prerequisites
 
 Most Time Intelligence measures require:
+
 - A properly configured Date table
 - The Date table marked as a Date table in the model
 - Active relationships between Date and fact tables

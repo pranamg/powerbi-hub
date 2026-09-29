@@ -1,108 +1,98 @@
+---
+title: Power BI MCP (Model Context Protocol)
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI MCP (Model Context Protocol)
 
-Connect AI assistants to your Power BI semantic models.
+MCP lets an AI agent call tools on your Power BI semantic model — read its
+metadata, run DAX against it, and change its objects.
 
-> **Released:** November 2025  
-> **Status:** Generally Available
+> **Start here:** [Server Guide](./ServerGuide.md) — which server to use, and
+> how to set it up. This page covers what the pieces in this folder are for.
 
-## What is MCP?
+## There are now three MCP options
 
-The Model Context Protocol (MCP) enables AI assistants (Claude, ChatGPT, Copilot, etc.) to directly interact with Power BI semantic models. This allows:
+The landscape was restructured recently, and older tutorials describe a
+different setup. The short version:
 
-- Querying your data model through natural language
-- Getting AI assistance for measure creation
-- Model documentation generation
-- Data exploration and analysis
+| You want | Use |
+|---|---|
+| **Author** — create or change model objects | Power BI **Authoring** MCP server (local is GA; hosted is preview) |
+| **Consume** — answer business questions in natural language | **Fabric IQ** |
+| Maintain an existing consumption integration | Legacy Power BI Consumption MCP server |
 
-## Quick Start
+Microsoft's guidance is explicit: **do not use the Authoring server for
+consumption.** It can run DAX to validate a model you are building, but it is
+not designed to answer end-user questions.
 
-### Prerequisites
-
-1. Power BI Desktop (November 2025 or later)
-2. VS Code with Claude/Copilot extension
-3. Node.js (for MCP server)
-
-### Installation
-
-```bash
-# Install the official Power BI MCP server
-npm install -g @anthropic/powerbi-mcp
-
-# Or using npx (no install)
-npx @anthropic/powerbi-mcp
-```
-
-### VS Code Configuration
-
-Add to your VS Code `settings.json`:
-
-```json
-{
-    "mcp.servers": {
-        "powerbi": {
-            "command": "npx",
-            "args": ["@anthropic/powerbi-mcp"],
-            "env": {
-                "POWERBI_DESKTOP_PATH": "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe"
-            }
-        }
-    }
-}
-```
-
-### Connecting to a Model
-
-1. Open your PBIX file in Power BI Desktop
-2. Start MCP server in VS Code
-3. The AI assistant now has access to your model
-
-## Capabilities
-
-| Feature | Description |
-|---------|-------------|
-| Model Exploration | Query tables, columns, measures, relationships |
-| DAX Assistance | Get help writing or optimizing DAX |
-| Documentation | Auto-generate model documentation |
-| Data Queries | Run DAX queries through natural language |
-| Measure Creation | Create and modify measures via AI |
-
-## Example Prompts
-
-```
-"What tables are in my model?"
-
-"Show me the DAX for the Sales YTD measure"
-
-"Create a measure that calculates year-over-year growth"
-
-"What relationships does the Sales table have?"
-
-"Optimize this measure for better performance: [paste measure]"
-
-"Document all measures in the Revenue folder"
-```
-
-## Security Considerations
-
-- MCP runs locally - data doesn't leave your machine
-- Only accessible while Power BI Desktop is open
-- No cloud data transmission unless explicitly configured
-- Use with appropriate data governance policies
-
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Connection fails | Ensure PBIX file is open in Desktop |
-| Model not found | Check Desktop path in settings |
-| Slow responses | Large models may need more time |
-
-## Resources
-
-- [Official Power BI MCP Documentation](https://powerbi.microsoft.com/blog/)
-- [MCP Protocol Specification](https://modelcontextprotocol.io)
-- [VS Code MCP Extension](https://marketplace.visualstudio.com/items?itemName=anthropic.mcp)
+Full comparison, configuration, permissions, and troubleshooting are in
+[Server Guide](./ServerGuide.md).
 
 ---
 
-*See setup guides in this folder for detailed configuration instructions.*
+## Documents in this folder
+
+| Document | Covers |
+|---|---|
+| [Server Guide](./ServerGuide.md) | **Which server, hosted vs local, permissions, config, security, troubleshooting** |
+| [Setup Guide](./Setup_Guide.md) | Step-by-step local setup and connection |
+| [VS Code Integration](./VSCode_Integration.md) | Copilot as an MCP host in VS Code |
+| [Use Cases](./UseCases/README.md) | Worked agent workflows against a model |
+
+## What an agent can do
+
+| Capability | Example |
+|---|---|
+| Explore the model | "List the tables and measures, grouped by display folder" |
+| Understand relationships | "Which relationships are active, and which are inactive?" |
+| Run DAX | "Evaluate this measure for 2026 and show the result" |
+| Create and modify objects | "Add a measure for net revenue after returns" |
+| Bulk operations | "Standardise column names across all fact tables" |
+| Apply best practices | "Audit this model and report findings by severity" |
+| Generate documentation | "Document every measure in plain business language" |
+| Work with source files | Edit TMDL in a PBIP project, with changes flowing through Git |
+
+Worked examples for each of these are in [Use Cases](./UseCases/README.md).
+
+---
+
+## Prerequisites
+
+| Requirement | Detail |
+|---|---|
+| Node.js 18+ | Only for the local server |
+| An MCP client in agent mode | GitHub Copilot in VS Code. **"MCP servers in Copilot" is off by default on enterprise accounts** |
+| **Write** permission on the model | Build alone permits DAX queries but no changes |
+| XMLA endpoint Read Write | Local server against a Fabric workspace |
+| A deep-reasoning model | Model choice materially affects result quality |
+
+---
+
+## Operating safely
+
+An agent writes to your model, and its changes may be irreversible.
+
+1. **Back up before you start.**
+2. **Work in PBIP under Git.** Plain-text files give you a reviewable diff and
+   a way to revert — the strongest safeguard available. See
+   [Fabric Git Integration](../../Documentation/UserGuides/FabricGitIntegration.md).
+3. **Verify with a read-only request first.** "List the tables" before "rename
+   everything".
+4. **Mind what reaches the LLM provider.** Metadata and query results enter the
+   conversation and go to whichever provider your client is configured with.
+
+---
+
+## Related
+
+- [Agent Skills](../../AgenticDevelopment/AgentSkills/README.md) — Microsoft's
+  plugin bundles the Authoring server and the skills that drive it
+- [pbir-cli](../../AgenticDevelopment/AgentSkills/pbir-cli.md) — the report layer
+- [Preparing a Semantic Model for AI](../../Data/AIReadiness/PrepForAI.md)
+- [MCP Prompts](../../PromptLibrary/MCPPrompts.md)
+- [Service Principal Setup](../../Governance/ServicePrincipalSetup.md) — CI auth
+- [Microsoft Learn — MCP servers](https://learn.microsoft.com/en-us/power-bi/developer/mcp)

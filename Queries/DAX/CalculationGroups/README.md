@@ -1,3 +1,11 @@
+---
+title: Calculation Groups
+tags: [dax, advanced, modeling]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Calculation Groups
 
 > Reusable calculation logic that can be applied to any measure
@@ -94,6 +102,7 @@ Lower precedence = Inner calculation
 ```
 
 Example:
+
 - Currency Conversion (precedence: 2) - Applied outer
 - Time Calculation (precedence: 1) - Applied inner
 
@@ -110,6 +119,7 @@ calculationItem 'YoY %' =
 ```
 
 Common formats:
+
 | Format | Example |
 |--------|---------|
 | `#,##0` | 1,234 |
@@ -120,12 +130,14 @@ Common formats:
 ## Best Practices
 
 ### Do's
+
 - Use for repetitive calculations across many measures
 - Set appropriate precedence for multiple groups
 - Include a "Current" item for unmodified values
 - Document each calculation item
 
 ### Don'ts
+
 - Don't create calculation groups for single measures
 - Don't overcomplicate with too many items
 - Don't forget to handle BLANK values

@@ -1,3 +1,11 @@
+---
+title: Code of Conduct
+tags: [contributing, meta]
+audience: [all]
+difficulty: reference
+last_verified: 2026-09-29
+---
+
 # Code of Conduct
 
 ## Our Pledge
@@ -58,4 +66,3 @@ Community leaders will follow these Community Impact Guidelines in determining t
 ---
 
 Thank you for helping to make the **PowerBI-Hub** a welcoming and productive community!
-

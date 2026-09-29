@@ -1,0 +1,153 @@
+/// =============================================================================
+/// DimCustomer
+///
+/// A dimension joined to FactSales on a surrogate key.
+///
+/// Demonstrates
+/// ------------
+///   - A column whose summarisation is explicitly set to "none". Default
+///     summarisation on a text column is slow and rarely what you want; the
+///     explicit setting makes the intent visible and reviewable.
+///   - Geography held in a single table rather than split across Country,
+///     Region, and City tables. A single dimension avoids a snowflake and the
+///     ambiguity it introduces.
+/// =============================================================================
+
+table 'DimCustomer'
+    lineageTag: model1-dimcustomer
+    description: "Customer dimension, grain: one row per customer"
+
+    column 'CustomerID'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        summarizeBy: none
+        description: "Surrogate key. Not a business-facing identifier."
+        lineageTag: model1-cust-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'Customer Name'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Display name for the customer"
+        lineageTag: model1-cust-col-002
+        annotation SummarizationSetBy = Automatic
+
+    column 'Segment'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Commercial segment, for example Enterprise or SMB"
+        lineageTag: model1-cust-col-003
+        annotation SummarizationSetBy = Automatic
+
+    column 'Country'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Customer country"
+        lineageTag: model1-cust-col-004
+        annotation SummarizationSetBy = Automatic
+
+    column 'City'
+        dataType: string
+        isNullable: false
+        summarizeBy: none
+        description: "Customer city"
+        lineageTag: model1-cust-col-005
+        annotation SummarizationSetBy = Automatic
+
+    /// Email is retained for RLS, where the user's identity is matched against
+    /// it. It is hidden so it does not clutter the field list, and it is not
+    /// used as a relationship key.
+    ///
+    /// In a real model, protect this column with object-level security rather
+    /// than relying on hiding it. See Governance/OLSConfiguration.md.
+    column 'Email'
+        dataType: string
+        isNullable: true
+        isHidden: true
+        summarizeBy: none
+        description: "Used for RLS role matching. Protect with object-level security."
+        lineageTag: model1-cust-col-006
+        annotation SummarizationSetBy = Automatic
+
+    column 'First Order Date'
+        dataType: dateTime
+        formatString: Short Date
+        isNullable: true
+        summarizeBy: none
+        description: "Date of the customer's first order, used for cohort analysis"
+        lineageTag: model1-cust-col-007
+        annotation SummarizationSetBy = Automatic
+
+    /// Summary measures on the dimension, so they appear beside the customer
+    /// fields rather than buried with the fact table measures.
+    measure 'Customer Count' =
+        COUNTROWS('DimCustomer')
+        formatString: #,##0
+        displayFolder: Customer Summary
+        description: "Number of customers in the current filter context"
+        lineageTag: model1-cust-mea-001
+
+    measure 'Customers With Orders' =
+        CALCULATE(
+            COUNTROWS('DimCustomer'),
+            CROSSFILTER('DimCustomer'[CustomerID], 'FactSales'[CustomerID], BOTH)
+        )
+        formatString: #,##0
+        displayFolder: Customer Summary
+        description: "Customers that have at least one matching sales row"
+        lineageTag: model1-cust-mea-002
+
+    hierarchy 'Customer Geography Hierarchy'
+        lineageTag: model1-cust-hier-001
+
+        level 'Country'
+            lineageTag: model1-cust-hier-lvl-001
+            column: 'Country'
+
+        level 'City'
+            lineageTag: model1-cust-hier-lvl-002
+            column: 'City'
+
+        level 'Customer Name'
+            lineageTag: model1-cust-hier-lvl-003
+            column: 'Customer Name'
+
+    /// =====================================================================
+    /// Partition
+    /// =====================================================================
+    ///
+    /// PLACEHOLDER SOURCE. Replace the path and column list with a real
+    /// connection before loading.
+
+    partition 'DimCustomer' = m
+        mode: import
+        source =
+            let
+                // TODO: Replace with your real source.
+                Source = Csv.Document(
+                    File.Contents("C:\Data\dim_customer.csv"),
+                    [Delimiter = ",", Columns = 7, Encoding = 65001, QuoteStyle = QuoteStyle.None]
+                ),
+                PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+                Renamed = Table.RenameColumns(
+                    PromotedHeaders,
+                    {{"CustomerName", "Customer Name"}, {"FirstOrderDate", "First Order Date"}}
+                ),
+                Typed = Table.TransformColumnTypes(
+                    Renamed,
+                    {
+                        {"CustomerID", Int64.Type},
+                        {"Customer Name", type text},
+                        {"Segment", type text},
+                        {"Country", type text},
+                        {"City", type text},
+                        {"Email", type text},
+                        {"First Order Date", type date}
+                    }
+                )
+            in
+                Typed

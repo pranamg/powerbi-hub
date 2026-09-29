@@ -1,0 +1,343 @@
+/// =============================================================================
+/// FactSales
+///
+/// The fact table. Grain: one row per order line.
+///
+/// Demonstrates
+/// ------------
+///   - The grain stated in the table description. Most model problems trace
+///     back to an unstated grain, so it goes in the metadata where a reader
+///     will see it.
+///   - The foreign key columns are hidden. They are join keys, not something
+///     a report author should drag onto a visual.
+///   - VAR binding of the filter context before iterating. This is the single
+///     most important performance habit in DAX; see Sales % of Total below.
+///   - DIVIDE everywhere a ratio is calculated, so a zero denominator returns
+///     blank rather than an error or a misleading zero.
+///   - Time intelligence written out explicitly, because this is a minimal
+///     model. See CalculationGroups in Model2 for the alternative.
+/// =============================================================================
+
+table 'FactSales'
+    lineageTag: model1-factsales
+    description: "Sales transactions. GRAIN: one row per order line."
+
+    /// ===================
+    /// Keys
+    /// ===================
+    ///
+    /// Hidden because they exist to support the relationships. A report author
+    /// filtering by CustomerID is usually solving the wrong problem; they want
+    /// Customer Name.
+
+    column 'SalesID'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Surrogate key for the sales line"
+        lineageTag: model1-fact-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'OrderID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Foreign key to the order header; lines roll up to orders"
+        lineageTag: model1-fact-col-002
+        annotation SummarizationSetBy = Automatic
+
+    column 'DateKey'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Foreign key to DimDate[Date]. Integer rather than a date column, so the relationship stays lightweight."
+        lineageTag: model1-fact-col-003
+        annotation SummarizationSetBy = Automatic
+
+    column 'CustomerID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Foreign key to DimCustomer[CustomerID]"
+        lineageTag: model1-fact-col-004
+        annotation SummarizationSetBy = Automatic
+
+    column 'ProductID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Foreign key to DimProduct[ProductID]"
+        lineageTag: model1-fact-col-005
+        annotation SummarizationSetBy = Automatic
+
+    /// ===================
+    /// Measures
+    /// ===================
+
+    column 'Amount'
+        dataType: decimal
+        isNullable: false
+        formatString: $#,##0.00
+        summarizeBy: sum
+        description: "Extended sales value, Quantity multiplied by Unit Price"
+        lineageTag: model1-fact-col-010
+        annotation SummarizationSetBy = Automatic
+
+    column 'Quantity'
+        dataType: int64
+        isNullable: false
+        formatString: #,##0
+        summarizeBy: sum
+        description: "Units sold on the line"
+        lineageTag: model1-fact-col-011
+        annotation SummarizationSetBy = Automatic
+
+    /// --- Core aggregations -------------------------------------------
+    ///
+    /// Always read FactSales[Amount] with an explicit SUM. An unqualified
+    /// reference such as [Amount] is ambiguous and will break if a column of
+    /// the same name is added elsewhere.
+
+    measure 'Total Sales' =
+        SUM('FactSales'[Amount])
+        formatString: $#,##0.00
+        displayFolder: Core Metrics
+        description: "Total sales value across all order lines"
+        lineageTag: model1-mea-001
+
+    measure 'Total Quantity' =
+        SUM('FactSales'[Quantity])
+        formatString: #,##0
+        displayFolder: Core Metrics
+        description: "Total units sold"
+        lineageTag: model1-mea-002
+
+    measure 'Order Count' =
+        DISTINCTCOUNT('FactSales'[OrderID])
+        formatString: #,##0
+        displayFolder: Core Metrics
+        description: "Number of distinct orders. Uses OrderID rather than row count, because the grain is one row per line."
+        lineageTag: model1-mea-003
+
+    measure 'Line Count' =
+        COUNTROWS('FactSales')
+        formatString: #,##0
+        displayFolder: Core Metrics
+        description: "Number of order lines. Equals row count at the stated grain."
+        lineageTag: model1-mea-004
+
+    /// --- Derived ratios -----------------------------------------------
+    ///
+    /// A variable bound outside the iteration is the important part: without
+    /// it, the context transition repeats the whole expression per row.
+
+    measure 'Average Order Value' =
+        VAR TotalAmount = SUM('FactSales'[Amount])
+        VAR DistinctOrders = DISTINCTCOUNT('FactSales'[OrderID])
+        RETURN
+            DIVIDE(TotalAmount, DistinctOrders)
+        formatString: $#,##0.00
+        displayFolder: Core Metrics
+        description: "Average value per order. Variables are bound before division so the context transition happens once."
+        lineageTag: model1-mea-005
+
+    measure 'Average Selling Price' =
+        VAR TotalAmount = SUM('FactSales'[Amount])
+        VAR TotalUnits = SUM('FactSales'[Quantity])
+        RETURN
+            DIVIDE(TotalAmount, TotalUnits)
+        formatString: $#,##0.00
+        displayFolder: Core Metrics
+        description: "Weighted average selling price across all units sold"
+        lineageTag: model1-mea-006
+
+    /// Percentage of grand total. ALL removes the current filter on the
+    /// specified columns only, leaving date and any other slicer in place.
+    measure 'Sales % of Total' =
+        VAR CurrentSales = [Total Sales]
+        VAR GrandTotal =
+            CALCULATE(
+                [Total Sales],
+                REMOVEFILTERS('DimProduct')
+            )
+        RETURN
+            DIVIDE(CurrentSales, GrandTotal)
+        formatString: 0.0%
+        displayFolder: Percentages
+        description: "Share of total sales excluding the current product filter, but respecting the date context"
+        lineageTag: model1-mea-007
+
+    /// --- Time intelligence --------------------------------------------
+    ///
+    /// Written out explicitly rather than with calculation groups, because
+    /// this model is meant to be minimal and readable. See Model2 for the
+    /// calculation-group alternative.
+
+    measure 'Sales YTD' =
+        CALCULATE(
+            [Total Sales],
+            DATESYTD('DimDate'[Date])
+        )
+        formatString: $#,##0.00
+        displayFolder: Time Intelligence
+        description: "Sales from 1 January to the end of the current period"
+        lineageTag: model1-mea-010
+
+    measure 'Sales PY' =
+        CALCULATE(
+            [Total Sales],
+            SAMEPERIODLASTYEAR('DimDate'[Date])
+        )
+        formatString: $#,##0.00
+        displayFolder: Time Intelligence
+        description: "Sales in the equivalent period of the previous year"
+        lineageTag: model1-mea-011
+
+    measure 'Sales YoY' =
+        VAR Current = [Total Sales]
+        VAR Prior = [Sales PY]
+        RETURN
+            Current - Prior
+        formatString: $#,##0.00
+        displayFolder: Time Intelligence
+        description: "Absolute change against the same period last year"
+        lineageTag: model1-mea-012
+
+    measure 'Sales YoY %' =
+        VAR Current = [Total Sales]
+        VAR Prior = [Sales PY]
+        RETURN
+            DIVIDE(Current - Prior, Prior)
+        formatString: 0.0%;-0.0%;0.0%
+        displayFolder: Time Intelligence
+        description: "Percentage change against the same period last year. BLANK when there is no prior-year data, which is honest rather than showing 0%."
+        lineageTag: model1-mea-013
+
+    measure 'Sales Rolling 12M' =
+        CALCULATE(
+            [Total Sales],
+            DATESINPERIOD('DimDate'[Date], MAX('DimDate'[Date]), -12, MONTH)
+        )
+        formatString: $#,##0.00
+        displayFolder: Time Intelligence
+        description: "Trailing twelve months ending at the latest date in context"
+        lineageTag: model1-mea-014
+
+    /// --- Movement -------------------------------------------------
+    ///
+    /// WINDOW respects the ALLSELECTED context, so a month selected in a
+    /// slicer still shows movement relative to its neighbours. INDEX-based
+    /// alternatives ignore the slicer and are a common source of confusion.
+
+    measure 'Sales MoM %' =
+        VAR Current = [Total Sales]
+        VAR Prior =
+            CALCULATE(
+                [Total Sales],
+                OFFSET(-1, ALLSELECTED('DimDate'[Year-Month]), ORDERBY('DimDate'[Year-Month]))
+            )
+        RETURN
+            DIVIDE(Current - Prior, Prior)
+        formatString: 0.0%;-0.0%;0.0%
+        displayFolder: Movement
+        description: "Change against the previous month in the current selection"
+        lineageTag: model1-mea-020
+
+    /// --- Ranking --------------------------------------------------
+
+    measure 'Product Rank' =
+        RANK(
+            ALLSELECTED('DimProduct'[Product Name]),
+            ORDERBY([Total Sales], DESC)
+        )
+        formatString: 0
+        displayFolder: Ranking
+        description: "Rank by sales within the current selection. Ties share a rank."
+        lineageTag: model1-mea-030
+
+    measure 'Top Products (N)' =
+        VAR N = 10
+        RETURN
+            CALCULATE(
+                [Total Sales],
+                TOPN(N, ALLSELECTED('DimProduct'[Product Name]), [Total Sales], DESC)
+            )
+        formatString: $#,##0.00
+        displayFolder: Ranking
+        description: "Sales for the top N products in the current selection"
+        lineageTag: model1-mea-031
+
+    /// --- Formatting helpers ------------------------------------------
+    ///
+    /// Returning a colour or an icon as a measure keeps the formatting logic
+    /// in the model, where it is reviewable, rather than scattered across
+    /// conditional formatting rules on individual visuals.
+
+    measure 'Sales Trend' =
+        VAR Change = [Sales YoY %]
+        RETURN
+            SWITCH(
+                TRUE(),
+                ISBLANK(Change), "No prior data",
+                Change > 0.05, "Improving",
+                Change < -0.05, "Declining",
+                "Stable"
+            )
+        formatString: @
+        displayFolder: Formatting
+        description: "Plain-language status for use as a card label or tooltip"
+        lineageTag: model1-mea-040
+
+    /// ===================
+    /// Partition
+    /// ===================
+    ///
+    /// PLACEHOLDER SOURCE. Replace the path and column list with a real
+    /// connection before loading.
+    ///
+    /// Note the filter on the date column. Restricting the extract at the
+    /// source, rather than in the model, is usually the single largest refresh
+    /// improvement available.
+
+    partition 'FactSales' = m
+        mode: import
+        source =
+            let
+                // TODO: Replace with your real source.
+                Source = Csv.Document(
+                    File.Contents("C:\Data\fact_sales.csv"),
+                    [Delimiter = ",", Columns = 7, Encoding = 65001, QuoteStyle = QuoteStyle.None]
+                ),
+                PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+                Typed = Table.TransformColumnTypes(
+                    PromotedHeaders,
+                    {
+                        {"SalesID", Int64.Type},
+                        {"OrderID", Int64.Type},
+                        {"DateKey", type date},
+                        {"CustomerID", Int64.Type},
+                        {"ProductID", Int64.Type},
+                        {"Quantity", Int64.Type},
+                        {"Amount", Currency.Type}
+                    }
+                ),
+                // The source stores a real date; the model stores an integer
+                // key so the relationship to DimDate stays lightweight.
+                AddedDateKey = Table.AddColumn(
+                    Typed,
+                    "DateKey",
+                    Date.ToInt32([DateKey]),
+                    type Int64.Type
+                ),
+                Reordered = Table.SelectColumns(
+                    AddedDateKey,
+                    {"SalesID", "OrderID", "DateKey", "CustomerID", "ProductID", "Quantity", "Amount"}
+                )
+            in
+                Reordered

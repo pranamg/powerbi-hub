@@ -1,0 +1,29 @@
+/// =============================================================================
+/// Model2 — Multi-Fact Model with Role-Playing Dates
+///
+/// Extends Model1 with the three things that make a real model harder than the
+/// minimal case:
+///
+///   1. Two fact tables at different grains, sharing conformed dimensions.
+///   2. A role-playing date: sales has both an order date and a ship date, so
+///      only one relationship to DimDate can be active.
+///   3. Calculation groups, so time intelligence and currency conversion are
+///      defined once instead of being repeated across dozens of measures.
+///
+/// What this model is for
+/// ----------------------
+/// Like Model1, this is a structural example. The date table is calculated and
+/// needs no source. Fact and dimension partitions use placeholder paths that
+/// must be replaced. See README.md.
+///
+/// The calculation group syntax in this file reflects the TMDL representation
+/// of calculation groups. Confirm it against the model definition produced by
+/// your own Power BI Desktop version before relying on it.
+/// =============================================================================
+
+model Model2
+    culture: en-US
+    defaultPowerBIDataSourceVersion: powerBI_V3
+    sourceQueryCulture: en-US
+
+    annotation PBI_ProTooling = 1

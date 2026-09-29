@@ -1,0 +1,147 @@
+/// =============================================================================
+/// DimDate
+///
+/// A calculated date table. Because it is calculated rather than loaded, it
+/// needs no data source and is immediately usable.
+///
+/// The most important property here is the `__PBI_LocalDateTable` annotation.
+/// Without it, Power BI uses whichever date column it finds and time
+/// intelligence silently behaves unexpectedly once a second date column
+/// appears in the fact table.
+/// =============================================================================
+
+table 'DimDate'
+    lineageTag: model1-dimdate
+    dataCategory: Time
+    description: "Contiguous date dimension with calendar and fiscal periods"
+
+    /// This is what makes it the model's date table.
+    annotation __PBI_LocalDateTable = true
+
+    /// ===================
+    /// Key and sort columns
+    /// ===================
+
+    column 'Date'
+        dataType: dateTime
+        isKey: true
+        isNullable: false
+        formatString: Short Date
+        summarizeBy: none
+        description: "Calendar date, one row per day with no gaps"
+        lineageTag: model1-date-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'Year'
+        dataType: int64
+        isNullable: false
+        formatString: 0
+        summarizeBy: none
+        description: "Calendar year"
+        lineageTag: model1-date-col-002
+
+    column 'Year-Month'
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Year-Month Number'
+        summarizeBy: none
+        description: "Sortable year-month label, for example 2026-01"
+        lineageTag: model1-date-col-003
+
+    column 'Year-Month Number'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Sort key behind Year-Month"
+        lineageTag: model1-date-col-004
+
+    column 'Quarter'
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Quarter Number'
+        summarizeBy: none
+        description: "Calendar quarter label, for example Q1"
+        lineageTag: model1-date-col-005
+
+    column 'Quarter Number'
+        dataType: int64
+        isNullable: false
+        summarizeBy: none
+        description: "Calendar quarter 1-4, used for sorting"
+        lineageTag: model1-date-col-006
+
+    column 'Month'
+        dataType: string
+        isNullable: false
+        sortByColumn: 'Month Number'
+        summarizeBy: none
+        description: "Full month name"
+        lineageTag: model1-date-col-007
+
+    column 'Month Number'
+        dataType: int64
+        isNullable: false
+        summarizeBy: none
+        description: "Month 1-12, used for sorting"
+        lineageTag: model1-date-col-008
+
+    /// ===================
+    /// Relative date flags
+    /// ===================
+
+    column 'Is Current Month'
+        dataType: boolean
+        isNullable: false
+        summarizeBy: none
+        description: "True for days in the current month; useful for highlighting the latest period"
+        lineageTag: model1-date-col-020
+
+    /// ===================
+    /// Hierarchy
+    /// ===================
+
+    hierarchy 'Calendar Hierarchy'
+        lineageTag: model1-date-hier-001
+
+        level 'Year'
+            lineageTag: model1-date-hier-lvl-001
+            column: 'Year'
+
+        level 'Quarter'
+            lineageTag: model1-date-hier-lvl-002
+            column: 'Quarter'
+
+        level 'Month'
+            lineageTag: model1-date-hier-lvl-003
+            column: 'Month'
+
+        level 'Date'
+            lineageTag: model1-date-hier-lvl-004
+            column: 'Date'
+
+    /// ===================
+    /// Calculated table definition
+    /// ===================
+    ///
+    /// A calculated table, so there is no data source to configure. Widen
+    /// StartDate and EndDate to cover the data you load.
+
+    partition 'DimDate' = calculated
+        mode: import
+        source =
+            VAR StartDate = DATE(2020, 1, 1)
+            VAR EndDate = DATE(2030, 12, 31)
+            RETURN
+            ADDCOLUMNS(
+                CALENDAR(StartDate, EndDate),
+                "Year", YEAR([Date]),
+                "Year-Month", FORMAT([Date], "YYYY-MM"),
+                "Year-Month Number", YEAR([Date]) * 100 + MONTH([Date]),
+                "Quarter", "Q" & QUARTER([Date]),
+                "Quarter Number", QUARTER([Date]),
+                "Month", FORMAT([Date], "MMMM"),
+                "Month Number", MONTH([Date]),
+                "Is Current Month",
+                    YEAR([Date]) = YEAR(TODAY()) && MONTH([Date]) = MONTH(TODAY())
+            )

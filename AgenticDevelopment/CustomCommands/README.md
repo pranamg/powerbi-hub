@@ -1,3 +1,11 @@
+---
+title: Custom Commands: Reusable Workflow Automation
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Custom Commands: Reusable Workflow Automation
 
 > Command-line tools and scripts for automated semantic model management
@@ -104,7 +112,7 @@ AgenticDevelopment/
 
 Include in your AGENTS.md:
 
-```markdown
+````markdown
 ## Available Scripts
 
 ### TabularEditor CLI
@@ -129,7 +137,7 @@ Location: TabularEditor.exe (in PATH)
    ```bash
    TabularEditor.exe "Model.bim" -D "server" "database" -O
    ```
-```
+````
 
 ## Creating Custom Commands
 

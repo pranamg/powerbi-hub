@@ -1,3 +1,11 @@
+---
+title: Power BI Deployment Pipelines
+tags: [deployment, ci-cd]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI Deployment Pipelines
 
 > CI/CD templates for automated Power BI deployments
@@ -14,17 +22,20 @@
 ### Service Principal Setup
 
 1. **Register an App in Azure AD:**
+
    ```
    Azure Portal → App registrations → New registration
    Name: "Power BI Deployment SP"
    ```
 
 2. **Create Client Secret:**
+
    ```
    App → Certificates & secrets → New client secret
    ```
 
 3. **Grant Power BI Permissions:**
+
    ```
    Power BI Admin Portal → Tenant settings → 
    Service principals can use Fabric APIs → Enable
@@ -32,6 +43,7 @@
    ```
 
 4. **Add SP to Workspaces:**
+
    ```
    Workspace → Manage access → Add service principal as Admin/Member
    ```
@@ -39,7 +51,9 @@
 ### Required Secrets
 
 #### Azure DevOps
+
 Create a variable group named `powerbi-{environment}`:
+
 | Variable | Description |
 |----------|-------------|
 | `PBI_TENANT_ID` | Azure AD tenant ID |
@@ -49,7 +63,9 @@ Create a variable group named `powerbi-{environment}`:
 | `PBI_DATASET_ID` | Dataset ID for refresh (optional) |
 
 #### GitHub Actions
+
 Add repository secrets:
+
 - `PBI_TENANT_ID`
 - `PBI_APP_ID`
 - `PBI_CLIENT_SECRET`
@@ -63,6 +79,7 @@ Add repository secrets:
 ### 1. TMDL-Based (Recommended)
 
 Deploy semantic models as TMDL folders:
+
 ```
 models/
 ├── model.tmdl
@@ -77,6 +94,7 @@ Uses XMLA endpoint for deployment (requires Premium/Fabric).
 ### 2. PBIX-Based
 
 Deploy complete .pbix files:
+
 ```
 reports/
 ├── SalesDashboard.pbix
@@ -165,6 +183,7 @@ For TMDL deployment, add Tabular Editor CLI:
 ## Best Practices
 
 ### 1. Use Separate Workspaces per Environment
+
 ```
 ├── Sales Analytics - DEV
 ├── Sales Analytics - TEST
@@ -172,22 +191,27 @@ For TMDL deployment, add Tabular Editor CLI:
 ```
 
 ### 2. Parameter-Driven Connections
+
 Don't hardcode connection strings. Use parameters:
+
 ```dax
 expression ServerName = "prod-server" meta [IsParameterQuery=true]
 ```
 
 ### 3. Pre-Deployment Validation
+
 - TMDL syntax check
 - Secrets/credential scan
 - Best Practice Analyzer rules
 
 ### 4. Post-Deployment Verification
+
 - Trigger test refresh
 - Validate data connectivity
 - Check row counts match expectations
 
 ### 5. Rollback Strategy
+
 - Keep previous PBIX versions in storage
 - Tag Git releases
 - Document rollback procedures

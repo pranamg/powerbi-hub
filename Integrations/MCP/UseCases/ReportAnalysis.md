@@ -1,3 +1,11 @@
+---
+title: Report Analysis via MCP
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Report Analysis via MCP
 
 > Analyze, optimize, and enhance Power BI reports using AI assistants
@@ -11,6 +19,7 @@ AI assistants with MCP access can help analyze report performance, suggest impro
 ### Workflow 1: Performance Analysis
 
 **Prompt:**
+
 ```
 "Analyze the performance of my Sales Dashboard report. 
 Identify slow queries and optimization opportunities."
@@ -19,33 +28,36 @@ Identify slow queries and optimization opportunities."
 **AI Investigation:**
 
 1. **Query DAX Studio Log (if available):**
-```dax
--- Check measure complexity
-EVALUATE
-SELECTCOLUMNS(
-    INFO.MEASURES(),
-    "Measure", [Name],
-    "Expression Length", LEN([Expression]),
-    "Has CALCULATE", CONTAINSSTRING([Expression], "CALCULATE"),
-    "Has Iterator", 
-        CONTAINSSTRING([Expression], "SUMX") || 
-        CONTAINSSTRING([Expression], "AVERAGEX") ||
-        CONTAINSSTRING([Expression], "MAXX")
-)
-ORDER BY [Expression Length] DESC
-```
+
+   ```dax
+   -- Check measure complexity
+   EVALUATE
+   SELECTCOLUMNS(
+       INFO.MEASURES(),
+       "Measure", [Name],
+       "Expression Length", LEN([Expression]),
+       "Has CALCULATE", CONTAINSSTRING([Expression], "CALCULATE"),
+       "Has Iterator",
+           CONTAINSSTRING([Expression], "SUMX") ||
+           CONTAINSSTRING([Expression], "AVERAGEX") ||
+           CONTAINSSTRING([Expression], "MAXX")
+   )
+   ORDER BY [Expression Length] DESC
+   ```
 
 2. **Identify expensive patterns:**
-```dax
-EVALUATE
-FILTER(
-    INFO.MEASURES(),
-    CONTAINSSTRING([Expression], "FILTER(") &&
-    CONTAINSSTRING([Expression], "ALL(")
-)
-```
+
+   ```dax
+   EVALUATE
+   FILTER(
+       INFO.MEASURES(),
+       CONTAINSSTRING([Expression], "FILTER(") &&
+       CONTAINSSTRING([Expression], "ALL(")
+   )
+   ```
 
 **AI Response:**
+
 ```markdown
 ## Performance Analysis: Sales Dashboard
 
@@ -73,11 +85,13 @@ Implementing recommendations could improve load time by 40-60%
 ### Workflow 2: Measure Usage Analysis
 
 **Prompt:**
+
 ```
 "Which measures are used in reports and which are orphaned?"
 ```
 
 **AI Analysis:**
+
 ```markdown
 ## Measure Usage Report
 
@@ -105,12 +119,14 @@ Implementing recommendations could improve load time by 40-60%
 ### Workflow 3: Filter Analysis
 
 **Prompt:**
+
 ```
 "Analyze how filters are being used across the report. 
 Are there any conflicting or redundant filters?"
 ```
 
 **AI Analysis:**
+
 ```markdown
 ## Filter Analysis
 
@@ -149,11 +165,13 @@ Are there any conflicting or redundant filters?"
 ### Workflow 4: Data Quality Check
 
 **Prompt:**
+
 ```
 "Check for data quality issues in the model that might affect report accuracy"
 ```
 
 **AI Investigation:**
+
 ```dax
 -- Check for nulls in key columns
 EVALUATE
@@ -189,6 +207,7 @@ ROW(
 ```
 
 **AI Response:**
+
 ```markdown
 ## Data Quality Report
 
@@ -213,11 +232,13 @@ ROW(
 ### Workflow 5: Accessibility Analysis
 
 **Prompt:**
+
 ```
 "Analyze my report for accessibility issues"
 ```
 
 **AI Analysis:**
+
 ```markdown
 ## Accessibility Report
 
@@ -255,11 +276,13 @@ ROW(
 ### Workflow 6: Best Practice Audit
 
 **Prompt:**
+
 ```
 "Audit this report against Power BI best practices"
 ```
 
 **AI Audit:**
+
 ```markdown
 ## Best Practice Audit
 
@@ -296,12 +319,14 @@ Potential after fixes: 3.1 seconds
 ### Visual Recommendations
 
 **Prompt:**
+
 ```
 "Based on the data in this model, suggest better visualization 
 choices for the Sales Overview page"
 ```
 
 **AI Response:**
+
 ```markdown
 ## Visualization Recommendations
 

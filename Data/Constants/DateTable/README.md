@@ -1,3 +1,11 @@
+---
+title: Date Table Templates
+tags: [modeling, dax, dates]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Date Table Templates
 
 DAX-based date table generators for Power BI data models.

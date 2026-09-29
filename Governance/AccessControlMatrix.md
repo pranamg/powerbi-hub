@@ -1,3 +1,11 @@
+---
+title: Access Control Matrix
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Access Control Matrix
 
 > **Purpose:** Define and document access permissions across Power BI content
@@ -276,6 +284,7 @@ $accessReport | Export-Csv "access-report-$(Get-Date -Format 'yyyyMMdd').csv"
 ### Audit Evidence
 
 Maintain evidence of:
+
 - Access request forms
 - Approval emails
 - Review completion
@@ -289,8 +298,3 @@ Maintain evidence of:
 - [Audit Procedures](./AuditProcedures.md)
 - [RLS Patterns](./RLSPatterns.md)
 - [OLS Configuration](./OLSConfiguration.md)
-
----
-
-*Last Updated: December 2024*
-*Next Review: March 2025*

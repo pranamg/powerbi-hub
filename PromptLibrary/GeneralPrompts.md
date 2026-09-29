@@ -1,3 +1,11 @@
+---
+title: General Power BI Prompts
+tags: [prompts, ai]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # General Power BI Prompts
 
 Prompts for architecture, administration, troubleshooting, and general Power BI tasks.
@@ -117,6 +125,7 @@ Include topics, exercises, and resources.
 ## Prompt Tips
 
 For general Power BI questions, include:
+
 1. Organization context (size, industry)
 2. Technical environment (cloud/on-prem, licensing)
 3. Current state and desired state

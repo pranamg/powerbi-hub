@@ -1,3 +1,11 @@
+---
+title: MCP Server Prompts
+tags: [prompts, mcp, ai]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # MCP Server Prompts
 
 > Specialized prompts for AI assistants connected to Power BI via MCP Server
@@ -5,6 +13,7 @@
 ## Model Discovery
 
 ### Initial Exploration
+
 ```
 I've connected to a Power BI model. Give me a complete overview:
 1. List all tables with row counts
@@ -15,6 +24,7 @@ I've connected to a Power BI model. Give me a complete overview:
 ```
 
 ### Table Deep Dive
+
 ```
 Analyze the [TableName] table in detail:
 - All columns with data types
@@ -25,6 +35,7 @@ Analyze the [TableName] table in detail:
 ```
 
 ### Measure Inventory
+
 ```
 Create a measure inventory:
 1. List all measures organized by display folder
@@ -34,6 +45,7 @@ Create a measure inventory:
 ```
 
 ### Relationship Analysis
+
 ```
 Map all relationships in this model:
 - From table/column to table/column
@@ -46,6 +58,7 @@ Map all relationships in this model:
 ## Query Assistance
 
 ### Natural Language to DAX
+
 ```
 Translate to DAX and execute: "[Natural language question]"
 Show me:
@@ -55,6 +68,7 @@ Show me:
 ```
 
 ### Complex Analysis
+
 ```
 Help me answer this business question by running appropriate queries:
 "[Complex question like: Which customer segments are growing fastest 
@@ -63,6 +77,7 @@ Break it down into steps and show intermediate results.
 ```
 
 ### Comparative Analysis
+
 ```
 Compare [Dimension A values] vs [Dimension B values] for [Metric]:
 1. Side-by-side comparison
@@ -74,6 +89,7 @@ Compare [Dimension A values] vs [Dimension B values] for [Metric]:
 ## Measure Development
 
 ### Create with Context
+
 ```
 I need a measure that calculates [requirement].
 Using the connected model:
@@ -85,6 +101,7 @@ Using the connected model:
 ```
 
 ### Measure Testing Suite
+
 ```
 For the measure [MeasureName]:
 1. Show the current DAX expression
@@ -96,6 +113,7 @@ For the measure [MeasureName]:
 ```
 
 ### Optimize Existing Measure
+
 ```
 Optimize [MeasureName]:
 1. Show current expression
@@ -109,6 +127,7 @@ Optimize [MeasureName]:
 ## Documentation
 
 ### Model Documentation
+
 ```
 Generate comprehensive model documentation:
 
@@ -130,6 +149,7 @@ Export as markdown.
 ```
 
 ### Measure Documentation
+
 ```
 Document all measures in [TableName] with:
 - Name
@@ -141,6 +161,7 @@ Document all measures in [TableName] with:
 ```
 
 ### Data Dictionary
+
 ```
 Create a data dictionary for [TableName]:
 - Column name
@@ -153,6 +174,7 @@ Create a data dictionary for [TableName]:
 ## Data Quality
 
 ### Validation Checks
+
 ```
 Run data quality checks:
 1. Null/blank values in key columns
@@ -164,6 +186,7 @@ Report issues found with counts and examples.
 ```
 
 ### Anomaly Detection
+
 ```
 Detect anomalies in [Metric]:
 1. Calculate statistical bounds (mean, std dev)
@@ -173,6 +196,7 @@ Detect anomalies in [Metric]:
 ```
 
 ### Data Profiling
+
 ```
 Profile [TableName]:
 - Total rows
@@ -185,6 +209,7 @@ Profile [TableName]:
 ## Performance Analysis
 
 ### Query Performance
+
 ```
 Analyze query performance:
 1. Execute: [DAX query]
@@ -195,6 +220,7 @@ Analyze query performance:
 ```
 
 ### Measure Complexity
+
 ```
 Rank measures by complexity:
 1. List all measures
@@ -206,6 +232,7 @@ Rank measures by complexity:
 ## Report Analysis
 
 ### Usage Patterns
+
 ```
 Analyze measure usage:
 - Which measures are used together frequently?
@@ -214,6 +241,7 @@ Analyze measure usage:
 ```
 
 ### Visual Optimization
+
 ```
 For a report with [describe visuals]:
 1. Query the underlying data
@@ -225,6 +253,7 @@ For a report with [describe visuals]:
 ## Prompt Templates
 
 ### Standard Format
+
 ```
 Context: [Brief context about what you're trying to achieve]
 Model: Connected via MCP
@@ -233,6 +262,7 @@ Output: [Desired format - table, markdown, JSON, etc.]
 ```
 
 ### Iterative Analysis
+
 ```
 Session goal: [High-level objective]
 Step 1: [First question]
@@ -242,6 +272,7 @@ Step 2: Based on above, [follow-up question]
 ```
 
 ### Comparison Template
+
 ```
 Compare:
 - A: [First item/period/dimension]
@@ -253,6 +284,7 @@ Format: [Side-by-side table / chart description / narrative]
 ## Best Practices
 
 ### Effective Prompting
+
 1. **Be specific** - Use exact table/column names when known
 2. **Set expectations** - Specify output format desired
 3. **Iterate** - Start broad, then drill down
@@ -260,6 +292,7 @@ Format: [Side-by-side table / chart description / narrative]
 5. **Document** - Request documentation alongside code
 
 ### Security Reminders
+
 - Don't expose sensitive column names in shared prompts
 - Be aware data results flow through AI service
 - MCP respects your Power BI permissions

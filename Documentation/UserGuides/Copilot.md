@@ -1,3 +1,11 @@
+---
+title: Microsoft Copilot in Power BI
+tags: [copilot, ai, reports]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Microsoft Copilot in Power BI
 
 > Complete guide to using AI-powered assistance in Power BI
@@ -20,11 +28,13 @@ Microsoft Copilot integrates generative AI directly into Power BI, enabling natu
 ## Prerequisites
 
 ### Licensing Requirements
+
 - Power BI Premium capacity (P1+) or Fabric capacity (F64+)
 - OR Power BI Pro with Copilot add-on
 - Microsoft 365 Copilot license (for some features)
 
 ### Admin Settings
+
 Copilot must be enabled by your Power BI admin:
 
 1. **Admin Portal** → Settings → Copilot
@@ -33,6 +43,7 @@ Copilot must be enabled by your Power BI admin:
 4. Set up audit logging (recommended)
 
 ### Data Requirements
+
 - Data must be in a supported region
 - Semantic model must be in a workspace on Premium/Fabric capacity
 - Direct Lake and Import modes supported
@@ -58,6 +69,7 @@ Copilot must be enabled by your Power BI admin:
 ### Effective Prompts for Report Creation
 
 **Basic Structure:**
+
 ```
 "Create a [report type] showing [metrics] by [dimensions] for [time period]"
 ```
@@ -82,6 +94,7 @@ Copilot must be enabled by your Power BI admin:
 ### Report Customization Prompts
 
 After initial generation:
+
 ```
 "Add a slicer for product category"
 "Change the bar chart to show top 5 instead of top 10"
@@ -97,11 +110,13 @@ After initial generation:
 Click in DAX formula bar, then use Copilot:
 
 **Prompt:**
+
 ```
 "Create a measure that calculates year-over-year sales growth percentage"
 ```
 
 **Copilot Response:**
+
 ```dax
 Sales YoY Growth % = 
 VAR CurrentSales = [Total Sales]
@@ -120,6 +135,7 @@ DIVIDE(
 ### DAX Prompt Patterns
 
 **Time Intelligence:**
+
 ```
 "Calculate [metric] for year-to-date/quarter-to-date/month-to-date"
 "Show [metric] compared to same period last year"
@@ -127,6 +143,7 @@ DIVIDE(
 ```
 
 **Rankings:**
+
 ```
 "Rank products by [metric] within each category"
 "Show top N items by [metric]"
@@ -134,12 +151,14 @@ DIVIDE(
 ```
 
 **Conditional Logic:**
+
 ```
 "Create a measure that returns [A] if [condition], otherwise [B]"
 "Classify customers as High/Medium/Low based on [metric] thresholds"
 ```
 
 **Complex Calculations:**
+
 ```
 "Calculate weighted average of [metric] by [weight column]"
 "Show running total of [metric] by [date column]"
@@ -149,6 +168,7 @@ DIVIDE(
 ### Explaining Existing DAX
 
 Select a measure and ask:
+
 ```
 "Explain what this measure does"
 "Why might this measure be slow?"
@@ -167,12 +187,14 @@ Select a measure and ask:
 
 **Default Generation:**
 Copilot automatically identifies:
+
 - Key metrics and trends
 - Significant changes
 - Outliers and anomalies
 - Comparisons
 
 **Custom Prompts:**
+
 ```
 "Summarize the key insights focusing on profit margin"
 "Write an executive summary for stakeholders"
@@ -183,6 +205,7 @@ Copilot automatically identifies:
 ### Narrative Templates
 
 **Executive Summary:**
+
 ```
 "Generate a 3-paragraph executive summary covering:
 1. Overall performance against targets
@@ -191,12 +214,14 @@ Copilot automatically identifies:
 ```
 
 **Trend Analysis:**
+
 ```
 "Describe the sales trend over the past 12 months,
 noting any seasonal patterns or anomalies"
 ```
 
 **Comparative Analysis:**
+
 ```
 "Compare performance across regions, highlighting 
 the best and worst performers with specific numbers"
@@ -209,6 +234,7 @@ the best and worst performers with specific numbers"
 In Q&A visual or search box:
 
 **Basic Questions:**
+
 ```
 "What were total sales last month?"
 "Which product category is most profitable?"
@@ -216,6 +242,7 @@ In Q&A visual or search box:
 ```
 
 **Complex Questions:**
+
 ```
 "Why did sales drop in March?"
 "What factors correlate with high customer retention?"
@@ -236,6 +263,7 @@ In Q&A visual or search box:
 Right-click on visual → **Summarize with Copilot**
 
 **Outputs:**
+
 - Key statistics
 - Trend description
 - Notable patterns
@@ -244,6 +272,7 @@ Right-click on visual → **Summarize with Copilot**
 ### Dataset Overview
 
 In Model view:
+
 ```
 "Describe this dataset"
 "What are the main entities and relationships?"
@@ -255,18 +284,21 @@ In Model view:
 ### Prompt Engineering
 
 1. **Be Specific**
+
    ```
    ✓ "Show monthly revenue for 2024 by product category as a stacked bar chart"
    ✗ "Show me data"
    ```
 
 2. **Provide Context**
+
    ```
    ✓ "Our fiscal year starts in April. Show FY24 sales by quarter."
    ✗ "Show yearly sales"
    ```
 
 3. **Iterate Incrementally**
+
    ```
    Step 1: "Create a basic sales report"
    Step 2: "Add a filter for region"
@@ -274,6 +306,7 @@ In Model view:
    ```
 
 4. **Ask for Alternatives**
+
    ```
    "Show me 3 different ways to visualize this data"
    "What other measures would be useful here?"
@@ -301,21 +334,25 @@ In Model view:
 ### Common Issues
 
 **"Copilot is not available"**
+
 - Check licensing and admin settings
 - Verify capacity assignment
 - Ensure data is in supported region
 
 **"I don't understand that request"**
+
 - Simplify prompt
 - Use column/measure names from model
 - Check synonyms setup in Q&A
 
 **Incorrect Results**
+
 - Verify measure definitions
 - Check filter context
 - Use more specific terminology
 
 **Slow Responses**
+
 - Reduce data volume with filters
 - Optimize underlying model
 - Check capacity utilization
@@ -323,6 +360,7 @@ In Model view:
 ### Feedback Loop
 
 When results aren't right:
+
 1. Click thumbs down
 2. Provide correction: "Actually, [correct interpretation]"
 3. Copilot learns from feedback
@@ -339,6 +377,7 @@ Copilot in Power BI Service complements MCP:
 | Consumer-friendly | Developer-oriented |
 
 **Workflow Combination:**
+
 1. Use Copilot for quick report mockups
 2. Use MCP + VS Code for complex DAX development
 3. Use Copilot narratives for business summaries
@@ -356,7 +395,7 @@ Copilot in Power BI Service complements MCP:
 ## Resources
 
 - [Microsoft Copilot Documentation](https://learn.microsoft.com/power-bi/create-reports/copilot-introduction)
-- [DAX Copilot Tips](https://learn.microsoft.com/power-bi/transform-model/copilot-dax)
+- [DAX Copilot Tips](https://learn.microsoft.com/en-us/power-bi/create-reports/copilot-reports-overview)
 - [Q&A Best Practices](https://learn.microsoft.com/power-bi/natural-language/q-and-a-best-practices)
 
 ## Related Resources

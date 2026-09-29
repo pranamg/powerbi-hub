@@ -1,3 +1,11 @@
+---
+title: TMDL (Tabular Model Definition Language) Scripts
+tags: [tmdl, modeling, templates]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # TMDL (Tabular Model Definition Language) Scripts
 
 > **TMDL** is a human-readable, text-based format for defining tabular data models in Power BI and Analysis Services.
@@ -34,6 +42,7 @@ model/
 ## TMDL Syntax Reference
 
 ### Table Definition
+
 ```tmdl
 table Sales
     lineageTag: abc123-def456
@@ -55,6 +64,7 @@ table Sales
 ```
 
 ### Measure Definition
+
 ```tmdl
 measure 'YTD Sales' = 
     CALCULATE(
@@ -67,6 +77,7 @@ measure 'YTD Sales' =
 ```
 
 ### Relationship Definition
+
 ```tmdl
 relationship rel_Sales_Date
     fromColumn: Sales.'Order Date'
@@ -76,6 +87,7 @@ relationship rel_Sales_Date
 ```
 
 ### Calculated Table
+
 ```tmdl
 table 'Date Table' = 
     CALENDAR(DATE(2020, 1, 1), DATE(2025, 12, 31))
@@ -88,6 +100,7 @@ table 'Date Table' =
 ```
 
 ### Role-Level Security
+
 ```tmdl
 role Reader
     modelPermission: read
@@ -132,6 +145,7 @@ role Reader
 ## Best Practices
 
 ### 1. Consistent Naming
+
 ```tmdl
 // Use descriptive names
 measure 'Sales YTD' = ...
@@ -140,19 +154,23 @@ measure 'Sales vs PY' = ...
 ```
 
 ### 2. Use Display Folders
+
 ```tmdl
 measure 'Growth %' = ...
     displayFolder: KPIs\Growth
 ```
 
 ### 3. Add Descriptions
+
 ```tmdl
 measure 'Revenue' = SUM(Sales[Amount])
     description: "Total revenue from all sales transactions"
 ```
 
 ### 4. Maintain LineageTags
+
 LineageTags enable Power BI to track object identity across changes:
+
 ```tmdl
 column 'Product Name'
     lineageTag: 7f8e9d0c-1234-5678-abcd-ef0123456789
@@ -161,12 +179,14 @@ column 'Product Name'
 ## Integration with External Tools
 
 ### Tabular Editor
+
 ```bash
 # Open TMDL folder in Tabular Editor
 TabularEditor.exe "C:\Models\MyModel\model.tmdl"
 ```
 
 ### Git Workflow
+
 ```bash
 # Export model as TMDL
 pbi-tools extract -pbixPath "Report.pbix" -extractFolder "model/"
@@ -177,6 +197,7 @@ git commit -m "Updated sales measures"
 ```
 
 ### Azure DevOps / GitHub Actions
+
 ```yaml
 # Deploy TMDL model
 - task: PowerPlatformDeployPackage@2

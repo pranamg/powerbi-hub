@@ -1,3 +1,11 @@
+---
+title: Tabular Editor CLI Reference
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Tabular Editor CLI Reference
 
 > Complete command-line options for semantic model automation
@@ -316,4 +324,4 @@ TabularEditor.exe "Model.bim" -S "ClearConnections.cs" -D "prodserver" "SalesMod
 
 - [Official Documentation](https://docs.tabulareditor.com/te2/Command-line-Options.html)
 - [Tabular Editor GitHub](https://github.com/TabularEditor/TabularEditor)
-- [Azure DevOps Integration](https://tabulareditor.github.io/2019/10/08/DevOps3.html)
+- [Azure DevOps Integration](https://tabulareditor.com/blog/)

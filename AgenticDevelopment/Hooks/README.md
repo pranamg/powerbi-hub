@@ -1,3 +1,11 @@
+---
+title: Hooks: Automated Triggers and Quality Gates
+tags: [agentic, ci-cd, automation]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Hooks: Automated Triggers and Quality Gates
 
 > Integrate validation and automation into your agentic development workflow
@@ -211,4 +219,4 @@ foreach(var c in Model.AllColumns.Where(c => c.IsReferenced == false && !c.IsKey
 
 - [Tabular Editor CLI Options](../CustomCommands/TabularEditorCLI.md)
 - [Best Practice Analyzer Documentation](https://docs.tabulareditor.com/te2/Best-Practice-Analyzer.html)
-- [Azure DevOps Integration Guide](https://tabulareditor.github.io/2019/10/08/DevOps3.html)
+- [Azure DevOps Integration Guide](https://tabulareditor.com/blog/)

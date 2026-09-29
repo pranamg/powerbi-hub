@@ -1,3 +1,11 @@
+---
+title: Deneb Vega-Lite Templates
+tags: [visuals, development]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Deneb Vega-Lite Templates
 
 > **Purpose:** Vega-Lite specifications for Deneb custom visual in Power BI
@@ -39,13 +47,16 @@ Deneb is a certified custom visual that lets you create visualizations using Veg
 ## Tips
 
 ### Performance
+
 - Limit data to <10,000 rows for complex specs
 - Use aggregations before Deneb when possible
 
 ### Debugging
+
 - Use browser dev tools (F12) to see errors
 - Test specs in Vega Editor first
 
 ### Cross-Filtering
+
 - Add selection parameters for interactivity
 - Use signals for dynamic behavior

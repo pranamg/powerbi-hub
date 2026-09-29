@@ -1,3 +1,11 @@
+---
+title: Change Management Process
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Change Management Process
 
 > **Purpose:** Define procedures for managing changes to Power BI content across environments
@@ -105,15 +113,18 @@ _Summary of testing outcomes:_
 ### Step 2: Review and Approval
 
 **Standard Changes:**
+
 - Auto-approved if meets criteria
 - Document in change log
 
 **Normal Changes:**
+
 - Technical review by peer
 - Business review by data owner
 - CAB approval for production
 
 **Emergency Changes:**
+
 - Implement immediately
 - Document within 24 hours
 - Post-implementation review
@@ -129,6 +140,7 @@ Development → Test → Production
 ### Step 4: Verification
 
 Post-deployment checks:
+
 - [ ] Reports render correctly
 - [ ] Data refreshes successfully
 - [ ] RLS functions as expected
@@ -180,11 +192,13 @@ Pre-approved changes that don't require individual approval:
 ### Development to Test
 
 **Triggers:**
+
 - Developer completes changes
 - Unit testing passed
 - Code review completed
 
 **Process:**
+
 1. Create deployment pipeline artifact
 2. Run automated tests
 3. Deploy to Test workspace
@@ -193,11 +207,13 @@ Pre-approved changes that don't require individual approval:
 ### Test to Production
 
 **Triggers:**
+
 - QA testing passed
 - User acceptance approved
 - Change request approved
 
 **Process:**
+
 1. Schedule deployment window
 2. Notify stakeholders
 3. Execute deployment
@@ -245,6 +261,7 @@ Pre-approved changes that don't require individual approval:
    - Document symptoms
 
 2. **Execute Rollback**
+
    ```powershell
    # Using deployment pipeline
    # Revert to previous stage
@@ -277,6 +294,7 @@ No production changes during:
 | Major events | As announced | Business critical |
 
 **Emergency Exception:**
+
 - Requires VP-level approval
 - Must be security or compliance related
 
@@ -373,8 +391,3 @@ BI Team
 - [Development Standards](./DevelopmentStandards.md)
 - [Deployment Pipelines](../Deployment/Pipelines/README.md)
 - [Audit Procedures](./AuditProcedures.md)
-
----
-
-*Last Updated: December 2024*
-*Review Date: March 2025*

@@ -1,3 +1,11 @@
+---
+title: Semantic Model Agents
+tags: [agentic, ai, tooling]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Semantic Model Agents
 
 > Understanding agents that query vs agents that modify semantic models
@@ -22,11 +30,13 @@ Query agents explore metadata and generate queries to retrieve information and a
 ```
 
 **Examples:**
+
 - Copilot in Power BI ("Ask data questions")
 - Data agents in Microsoft Fabric
 - Custom chatbots with semantic model context
 
 **Capabilities:**
+
 - Read model metadata (tables, columns, measures)
 - Generate DAX queries
 - Execute queries against the model
@@ -51,11 +61,13 @@ Modify agents read and modify semantic model metadata, either directly or progra
 ```
 
 **Examples:**
+
 - Claude Code with MCP server
 - GitHub Copilot editing TMDL files
 - Scripts executed by agents via CLI
 
 **Capabilities:**
+
 - Read and write model metadata
 - Create, modify, delete model objects
 - Deploy models to workspaces

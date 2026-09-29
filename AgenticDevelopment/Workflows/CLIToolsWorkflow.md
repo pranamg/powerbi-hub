@@ -1,3 +1,11 @@
+---
+title: CLI Tools Workflow
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # CLI Tools Workflow
 
 > Using Tabular Editor CLI and other command-line tools with agents

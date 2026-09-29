@@ -1,3 +1,11 @@
+---
+title: C# Script Examples for Tabular Editor
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # C# Script Examples for Tabular Editor
 
 > Ready-to-use scripts for agentic development workflows

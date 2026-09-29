@@ -1,0 +1,450 @@
+/// =============================================================================
+/// Model2 fact tables
+///
+/// Two fact tables at different grains:
+///
+///   FactSales    — one row per order line
+///   FactInventory — one row per product per store per day
+///
+/// What this demonstrates
+/// ----------------------
+///   - **Different grains.** Inventory is a snapshot; sales is a transaction
+///     log. They are not additive across each other, and a slicer that
+///     filters one while summing the other produces numbers that look
+///     meaningful and are not.
+///   - **Role-playing dates.** FactSales has both OrderDateKey and
+///     ShipDateKey. Only one relationship to DimDate can be active, so the
+///     other is inactive and reached with USERELATIONSHIP.
+///   - **Conformed dimensions.** Product and Store are shared, so one slicer
+///     filters both fact tables.
+///   - **Non-additive measures.** Inventory on hand is a balance, not a sum.
+///     Summing a balance across days is wrong, so the measure reports an
+///     average or a point-in-time value instead.
+/// =============================================================================
+
+table 'FactSales'
+    lineageTag: model2-factsales
+    description: "Sales transactions. GRAIN: one row per order line. Snapshot-free; rows are additive over time."
+
+    column 'SalesID'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        lineageTag: model2-fact-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'OrderID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        lineageTag: model2-fact-col-002
+        annotation SummarizationSetBy = Automatic
+
+    /// The active date relationship. Order date is the usual default because
+    /// revenue is recognised when the order is placed.
+    column 'OrderDateKey'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Foreign key to DimDate[Date] for the order date. Active relationship."
+        lineageTag: model2-fact-col-003
+        annotation SummarizationSetBy = Automatic
+
+    /// The inactive date relationship. Reached with USERELATIONSHIP; see the
+    /// Shipped Sales measure below.
+    column 'ShipDateKey'
+        dataType: int64
+        isNullable: true
+        isHidden: true
+        summarizeBy: none
+        description: "Foreign key to DimDate[Date] for the ship date. Inactive relationship; nullable because an unshipped order has no ship date."
+        lineageTag: model2-fact-col-004
+        annotation SummarizationSetBy = Automatic
+
+    column 'ProductID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        lineageTag: model2-fact-col-005
+        annotation SummarizationSetBy = Automatic
+
+    column 'StoreID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        lineageTag: model2-fact-col-006
+        annotation SummarizationSetBy = Automatic
+
+    /// Historical unit cost, stored on the transaction rather than read from
+    /// DimProduct. Without it, margin analysis silently restates when the
+    /// product's current cost changes.
+    column 'Unit Cost'
+        dataType: decimal
+        isNullable: false
+        formatString: $#,##0.00
+        isHidden: true
+        summarizeBy: sum
+        description: "Cost at time of sale, recorded on the transaction. Deliberately not a dimension attribute."
+        lineageTag: model2-fact-col-010
+        annotation SummarizationSetBy = Automatic
+
+    column 'Amount'
+        dataType: decimal
+        isNullable: false
+        formatString: $#,##0.00
+        summarizeBy: sum
+        description: "Extended sales value, Quantity multiplied by Unit Price"
+        lineageTag: model2-fact-col-011
+        annotation SummarizationSetBy = Automatic
+
+    column 'Quantity'
+        dataType: int64
+        isNullable: false
+        formatString: #,##0
+        summarizeBy: sum
+        lineageTag: model2-fact-col-012
+        annotation SummarizationSetBy = Automatic
+
+    column 'Discount'
+        dataType: decimal
+        isNullable: false
+        formatString: $#,##0.00
+        summarizeBy: sum
+        description: "Discount value applied to the line"
+        lineageTag: model2-fact-col-013
+        annotation SummarizationSetBy = Automatic
+
+    /// --- Base measures ---------------------------------------------
+    ///
+    /// Only the unadorned measures are defined here. This is the point of the
+    /// calculation groups in CalculationGroups.tmdl: [Total Sales] is defined
+    /// once, and YTD, prior year, and growth measures are applied to it by the
+    /// calculation group rather than written out per measure.
+
+    measure 'Total Sales' =
+        SUM('FactSales'[Amount])
+        formatString: $#,##0.00
+        displayFolder: Core Metrics
+        description: "Total sales value. Time intelligence is applied by the Time Intelligence calculation group rather than duplicated per measure."
+        lineageTag: model2-mea-001
+
+    measure 'Total Quantity' =
+        SUM('FactSales'[Quantity])
+        formatString: #,##0
+        displayFolder: Core Metrics
+        lineageTag: model2-mea-002
+
+    measure 'Order Count' =
+        DISTINCTCOUNT('FactSales'[OrderID])
+        formatString: #,##0
+        displayFolder: Core Metrics
+        description: "Distinct orders. Not the row count, because the grain is one row per line."
+        lineageTag: model2-mea-003
+
+    /// --- Margin ----------------------------------------------------
+    ///
+    /// Gross margin uses the transaction's Unit Cost, not the dimension's
+    /// current Standard Cost. Using the dimension attribute here is a subtle
+    /// error: the figures look plausible and only diverge after a cost change.
+
+    measure 'Total Cost' =
+        SUMX(
+            'FactSales',
+            'FactSales'[Unit Cost] * 'FactSales'[Quantity]
+        )
+        formatString: $#,##0.00
+        displayFolder: Profitability
+        description: "Cost of goods sold at the cost recorded at time of sale"
+        lineageTag: model2-mea-010
+
+    measure 'Gross Margin' =
+        VAR Sales = [Total Sales]
+        VAR Cost = [Total Cost]
+        RETURN
+            Sales - Cost
+        formatString: $#,##0.00
+        displayFolder: Profitability
+        description: "Sales less cost of goods sold"
+        lineageTag: model2-mea-011
+
+    measure 'Gross Margin %' =
+        VAR Margin = [Gross Margin]
+        VAR Sales = [Total Sales]
+        RETURN
+            DIVIDE(Margin, Sales)
+        formatString: 0.0%
+        displayFolder: Profitability
+        description: "Gross margin as a share of sales"
+        lineageTag: model2-mea-012
+
+    /// --- Role-playing date -------------------------------------------
+    ///
+    /// USERELATIONSHIP activates the inactive ship-date relationship. Both
+    /// measures below produce the same result; the first is explicit, the
+    /// second switches on the user's date-role selection. The explicit form
+    /// is easier to review, so prefer it unless a slicer genuinely needs to
+    /// drive the choice.
+
+    measure 'Sales by Ship Date' =
+        CALCULATE(
+            [Total Sales],
+            USERELATIONSHIP('FactSales'[ShipDateKey], 'DimDate'[Date])
+        )
+        formatString: $#,##0.00
+        displayFolder: Date Role
+        description: "Sales attributed to the ship date rather than the order date"
+        lineageTag: model2-mea-020
+
+    /// SWITCH over a single column is the readable way to express a
+    /// conditional branch, and is used in preference to nested IF throughout
+    /// this repository.
+    measure 'Sales by Selected Date Role' =
+        VAR SelectedRole = SELECTEDVALUE('DimDateRole'[Role], "Order Date")
+        RETURN
+            SWITCH(
+                SelectedRole,
+                "Order Date", [Total Sales],
+                "Ship Date",
+                    CALCULATE(
+                        [Total Sales],
+                        USERELATIONSHIP('FactSales'[ShipDateKey], 'DimDate'[Date])
+                    ),
+                [Total Sales]
+            )
+        formatString: $#,##0.00
+        displayFolder: Date Role
+        description: "Sales attributed to whichever date role the user selected, defaulting to Order Date"
+        lineageTag: model2-mea-021
+
+    /// Days between order and ship. Returned as a measure rather than a
+    /// calculated column because it is an average over a set, and a
+    /// calculated column would be materialised at refresh with no context.
+    measure 'Average Days to Ship' =
+        VAR OrderDates = VALUES('FactSales'[OrderDateKey])
+        RETURN
+            AVERAGEX(
+                FILTER('FactSales', NOT ISBLANK('FactSales'[ShipDateKey])),
+                DATEDIFF(
+                    'FactSales'[OrderDateKey],
+                    'FactSales'[ShipDateKey],
+                    DAY
+                )
+            )
+        formatString: 0.0
+        displayFolder: Operations
+        description: "Average days between order and ship, excluding unshipped lines"
+        lineageTag: model2-mea-022
+
+    partition 'FactSales' = m
+        mode: import
+        source =
+            let
+                // TODO: Replace with your real source.
+                Source = Csv.Document(
+                    File.Contents("C:\Data\fact_sales.csv"),
+                    [Delimiter = ",", Columns = 9, Encoding = 65001, QuoteStyle = QuoteStyle.None]
+                ),
+                PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+                Renamed = Table.RenameColumns(
+                    PromotedHeaders,
+                    {
+                        {"OrderDate", "OrderDateKey"},
+                        {"ShipDate", "ShipDateKey"},
+                        {"UnitCost", "Unit Cost"}
+                    }
+                ),
+                Typed = Table.TransformColumnTypes(
+                    Renamed,
+                    {
+                        {"SalesID", Int64.Type},
+                        {"OrderID", Int64.Type},
+                        {"OrderDateKey", type date},
+                        {"ShipDateKey", type date},
+                        {"ProductID", Int64.Type},
+                        {"StoreID", Int64.Type},
+                        {"Unit Cost", Currency.Type},
+                        {"Amount", Currency.Type},
+                        {"Quantity", Int64.Type}
+                    }
+                ),
+                // Nullable ship date: Date.ToInt32 on a blank would error, so
+                // the null is preserved explicitly rather than coalesced to an
+                // arbitrary date.
+                AddedOrderKey = Table.AddColumn(Typed, "OrderDateKeyInt", Date.ToInt32([OrderDateKey]), Int64.Type),
+                AddedShipKey = Table.AddColumn(
+                    Typed,
+                    "ShipDateKeyInt",
+                    IF([ShipDateKey] = null, BLANK(), Date.ToInt32([ShipDateKey])),
+                    Int64.Type
+                ),
+                Final = Table.SelectColumns(
+                    AddedOrderKey,
+                    {"SalesID", "OrderID", "ProductID", "StoreID", "Unit Cost", "Amount", "Quantity"},
+                    {"OrderDateKeyInt", "OrderDateKey"},
+                    {"ShipDateKeyInt", "ShipDateKey"}
+                )
+            in
+                Final
+
+table 'FactInventory'
+    lineageTag: model2-factinventory
+    description: "Daily inventory snapshot. GRAIN: one row per product per store per day. NOT additive over time."
+
+    column 'InventoryID'
+        dataType: int64
+        isKey: true
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        lineageTag: model2-inv-col-001
+        annotation SummarizationSetBy = Automatic
+
+    column 'DateKey'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        description: "Foreign key to DimDate[Date]. This fact table has a single date, so its relationship is active."
+        lineageTag: model2-inv-col-002
+        annotation SummarizationSetBy = Automatic
+
+    column 'ProductID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        lineageTag: model2-inv-col-003
+        annotation SummarizationSetBy = Automatic
+
+    column 'StoreID'
+        dataType: int64
+        isNullable: false
+        isHidden: true
+        summarizeBy: none
+        lineageTag: model2-inv-col-004
+        annotation SummarizationSetBy = Automatic
+
+    column 'Units On Hand'
+        dataType: int64
+        isNullable: false
+        formatString: #,##0
+        summarizeBy: sum
+        description: "Stock held at the snapshot date. A balance, not a flow: summing across dates double-counts the same units."
+        lineageTag: model2-inv-col-010
+        annotation SummarizationSetBy = Automatic
+
+    column 'Stock Value'
+        dataType: decimal
+        isNullable: false
+        formatString: $#,##0.00
+        summarizeBy: sum
+        description: "Units on hand valued at standard cost"
+        lineageTag: model2-inv-col-011
+        annotation SummarizationSetBy = Automatic
+
+    /// --- Non-additive measures ---------------------------------------
+    ///
+    /// These are the measures that make a snapshot fact table different from a
+    /// transaction fact table. [Total Sales] above is additive and can be
+    /// summed across any date range. These cannot.
+
+    /// Taking the last value in the period rather than the sum. A running
+    /// "sum of units on hand" over a month is meaningless; the number the
+    /// business wants is the closing position.
+    measure 'Closing Units On Hand' =
+        VAR LastDate = MAX('FactInventory'[DateKey])
+        RETURN
+            CALCULATE(
+                SUM('FactInventory'[Units On Hand]),
+                REMOVEFILTERS('FactInventory'[DateKey]),
+                'FactInventory'[DateKey] = LastDate
+            )
+        formatString: #,##0
+        displayFolder: Inventory
+        description: "Units on hand at the latest date in the current period. Reports the closing position, not a sum of daily snapshots."
+        lineageTag: model2-inv-mea-001
+
+    measure 'Closing Stock Value' =
+        VAR LastDate = MAX('FactInventory'[DateKey])
+        RETURN
+            CALCULATE(
+                SUM('FactInventory'[Stock Value]),
+                REMOVEFILTERS('FactInventory'[DateKey]),
+                'FactInventory'[DateKey] = LastDate
+            )
+        formatString: $#,##0.00
+        displayFolder: Inventory
+        description: "Stock value at the latest date in the current period"
+        lineageTag: model2-inv-mea-002
+
+    /// Averaging a balance across the period is defensible where a sum is not,
+    /// and is the standard way to show typical inventory level.
+    measure 'Average Units On Hand' =
+        AVERAGEX(
+            VALUES('FactInventory'[DateKey]),
+            CALCULATE(SUM('FactInventory'[Units On Hand]))
+        )
+        formatString: #,##0.0
+        displayFolder: Inventory
+        description: "Average daily units on hand across the selected period"
+        lineageTag: model2-inv-mea-003
+
+    /// Days of cover, an inventory measure expressed against a sales measure.
+    /// Note it references [Total Sales] from the *other* fact table: the two
+    /// are at different grains, so this deliberately does not sum across both.
+    measure 'Days of Cover' =
+        VAR AverageOnHand = [Average Units On Hand]
+        VAR SalesPerDay =
+            CALCULATE(
+                DIVIDE([Total Sales], [Order Count])
+            )
+        RETURN
+            DIVIDE(AverageOnHand, SalesPerDay)
+        formatString: 0.0
+        displayFolder: Inventory
+        description: "Average units on hand divided by average units sold per order. Treat as indicative: the two measures come from different fact tables at different grains."
+        lineageTag: model2-inv-mea-004
+
+    partition 'FactInventory' = m
+        mode: import
+        source =
+            let
+                // TODO: Replace with your real source.
+                Source = Csv.Document(
+                    File.Contents("C:\Data\fact_inventory.csv"),
+                    [Delimiter = ",", Columns = 6, Encoding = 65001, QuoteStyle = QuoteStyle.None]
+                ),
+                PromotedHeaders = Table.PromoteHeaders(Source, [PromoteAllScalars = true]),
+                Renamed = Table.RenameColumns(
+                    PromotedHeaders,
+                    {
+                        {"SnapshotDate", "DateKey"},
+                        {"UnitsOnHand", "Units On Hand"},
+                        {"StockValue", "Stock Value"}
+                    }
+                ),
+                Typed = Table.TransformColumnTypes(
+                    Renamed,
+                    {
+                        {"InventoryID", Int64.Type},
+                        {"DateKey", type date},
+                        {"ProductID", Int64.Type},
+                        {"StoreID", Int64.Type},
+                        {"Units On Hand", Int64.Type},
+                        {"Stock Value", Currency.Type}
+                    }
+                ),
+                AddedDateKey = Table.AddColumn(Typed, "DateKeyInt", Date.ToInt32([DateKey]), Int64.Type),
+                Final = Table.SelectColumns(
+                    AddedDateKey,
+                    {"InventoryID", "ProductID", "StoreID", "Units On Hand", "Stock Value"},
+                    {"DateKeyInt", "DateKey"}
+                )
+            in
+                Final

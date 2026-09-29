@@ -1,3 +1,11 @@
+---
+title: Dataflow Gen2 Patterns
+tags: [fabric, data-connections]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Dataflow Gen2 Patterns
 
 > **Purpose:** Templates and patterns for Power Query transformations in Dataflow Gen2
@@ -29,6 +37,7 @@ External Source → Dataflow Gen2 → Lakehouse Table → Direct Lake Model
 ```
 
 **M Code Template:**
+
 ```powerquery
 let
     // Connect to source
@@ -197,6 +206,7 @@ in
 ### Enable Staging
 
 Always enable staging for better performance:
+
 1. Right-click query
 2. Enable "Enable staging"
 3. Data loads to OneLake first, then transforms
@@ -204,6 +214,7 @@ Always enable staging for better performance:
 ### Query Folding
 
 Ensure transformations fold to source:
+
 ```powerquery
 let
     // Foldable - pushed to SQL
@@ -281,7 +292,3 @@ in
 - [Lakehouse Patterns](./Lakehouse.md)
 - [Direct Lake Setup](./DirectLake.md)
 - [Power Query Functions](../../Queries/PowerQuery/CustomFunctions/README.md)
-
----
-
-*Last Updated: December 2024*

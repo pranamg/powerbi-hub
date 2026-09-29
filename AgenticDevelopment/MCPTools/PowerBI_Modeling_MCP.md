@@ -1,243 +1,273 @@
-# Power BI Modeling MCP Server
+---
+title: "Power BI Authoring MCP Server"
+tags: [agentic, mcp, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
 
-> Microsoft's official MCP server for semantic model development
+# Power BI Authoring MCP Server
 
-## Overview
+The Microsoft server that gives an AI agent the tools to read and write Power BI
+semantic models.
 
-The `powerbi-modeling-mcp` server from Microsoft provides comprehensive tools for AI agents to interact with Power BI semantic models through the Tabular Object Model (TOM).
+> **Renamed.** This was the "Power BI Modeling MCP server". It is now the
+> **Authoring** server, and it has two deployment options. The npm package
+> retains the old name (`@microsoft/powerbi-modeling-mcp`) because the registry
+> entry predates the rename.
+>
+> For hosted vs local, the Fabric IQ consumption boundary, and permissions,
+> see [Server Guide](../../Integrations/MCP/ServerGuide.md). This page is the
+> reference for the server itself.
 
-**Repository:** [github.com/microsoft/powerbi-modeling-mcp](https://github.com/microsoft/powerbi-modeling-mcp)
+---
 
-## Prerequisites
+## What it does
 
-- Windows 10/11 (TOM libraries require Windows)
-- Power BI Desktop (November 2024 or later)
-- .NET Runtime
-- AI application with MCP support (Claude Code, VS Code, etc.)
+| Capability | Notes |
+|---|---|
+| Author models in natural language | Tables, columns, measures, relationships, hierarchies, calculation groups, perspectives, partitions, security roles |
+| Bulk operations | Renames, refactors, translations, security rules — hundreds of objects, with transaction support |
+| Apply modeling best practices | Evaluate a model and implement the fixes |
+| Pair with agent skills | Tools are the *what*; skills are the *how* |
+| Agentic development workflows | Works with TMDL and PBIP files, so changes flow through source control |
+| Write and validate DAX | Execute queries to test measures and explore data |
 
-## Installation
+It performs **modeling operations only**. It cannot change report pages, visual
+definitions, or semantic model diagram layouts — see
+[pbir-cli](../AgentSkills/pbir-cli.md) for the report layer.
 
-### Option 1: VS Code Extension
+---
 
-1. Install the Power BI Modeling MCP extension from VS Code Marketplace
-2. Extension includes the MCP server executable
-3. Configure in VS Code settings
+## Tools
 
-### Option 2: Manual Download
+The server exposes tools **grouped by object type**. You do not normally call
+these by name; the agent selects them. To see what is available in your
+session, ask:
 
-1. Download from GitHub releases
-2. Extract `powerbi-modeling-mcp.exe`
-3. Note the path for configuration
-
-### Option 3: Build from Source
-
-```bash
-git clone https://github.com/microsoft/powerbi-modeling-mcp.git
-cd powerbi-modeling-mcp
-dotnet build
+```text
+Tell me with some examples what I can do with the Power BI Authoring MCP server
 ```
 
-## Available Tools
+| Group | Covers |
+|---|---|
+| `connection_operations` | Connect to Power BI Desktop or Fabric workspaces |
+| `database_operations` | Connect, create, update, list; import/export TMDL folders; deploy |
+| `transaction_operations` | Begin, commit, rollback, status |
+| `model_operations` | Get, create, update, refresh, stats, rename |
+| `table_operations` | Create, update, delete, get, list, refresh, rename |
+| `column_operations` | Create, update, delete, get, list, rename |
+| `measure_operations` | Create, update, delete, get, list, rename, move between tables |
+| `relationship_operations` | Create, update, delete, activate/deactivate, find |
+| `dax_query_operations` | Execute and validate DAX against the model |
+| `trace_operations` | Capture and analyse Analysis Services events |
+| `partition_operations` | Create, update, delete, refresh specific partitions |
+| `user_hierarchy_operations` | Create, update, delete levels, reorder |
+| `calculation_group_operations` | Calculation groups and items |
+| `security_role_operations` | Security roles and RLS table permissions |
+| `perspective_operations` | Filtered views of the model for different audiences |
+| `named_expression_operations` | Named expressions and Power Query parameters |
+| `function_operations` | DAX user-defined functions |
+| `culture_operations` | Cultures for multi-language support |
+| `object_translation_operations` | Translations per culture |
+| `calendar_operations` | Calendar objects and time intelligence column groups |
+| `query_group_operations` | Query groups for Power Query expressions |
 
-### Connection Tools
+---
 
-| Tool | Description |
-|------|-------------|
-| `connect_desktop` | Connect to Power BI Desktop instance |
-| `connect_service` | Connect to published model via XMLA |
-| `connect_tmdl` | Connect to local TMDL folder |
-| `disconnect` | Close current connection |
-| `get_connection_info` | Show current connection status |
+## Built-in prompts
 
-### Model Exploration
+Available via `/` in VS Code.
 
-| Tool | Description |
-|------|-------------|
-| `list_tables` | List all tables in the model |
-| `list_measures` | List measures (optionally filtered by table) |
-| `list_columns` | List columns in a table |
-| `list_relationships` | Show all relationships |
-| `get_measure` | Get measure details including DAX |
-| `get_table` | Get table details |
+| Prompt | Purpose |
+|---|---|
+| `CreateDAXQuery` | Builds a query from a natural-language question, attaching DAX context |
+| `RunDAXQueryWithMetrics` | Runs the query, optionally clearing cache, returning metrics only |
+| `AnalyzeDAXQuery` | Analyses query performance with a cleared cache |
+| `ConnectToPowerBIDesktop` | Finds and connects to the Desktop instance matching a filename |
+| `ConnectToFabric` | Connects to a semantic model in a Fabric workspace |
+| `ConnectToPBIP` | Loads TMDL from a Power BI Project, attaching PBIP context |
 
-### Model Modification
+---
 
-| Tool | Description |
-|------|-------------|
-| `add_measure` | Create a new measure |
-| `update_measure` | Modify existing measure |
-| `delete_measure` | Remove a measure |
-| `add_calculated_column` | Create calculated column |
-| `set_property` | Set any object property |
-| `set_display_folder` | Organize objects in folders |
-| `set_description` | Add/update descriptions |
+## Install
 
-### DAX Operations
-
-| Tool | Description |
-|------|-------------|
-| `execute_dax` | Run a DAX query |
-| `validate_dax` | Check DAX syntax without executing |
-| `format_dax` | Format DAX expression |
-
-### Bulk Operations
-
-| Tool | Description |
-|------|-------------|
-| `bulk_set_property` | Set property on multiple objects |
-| `bulk_add_measures` | Create multiple measures |
-| `apply_pattern` | Apply DAX pattern to measures |
-
-## Resources
-
-The MCP server provides these resources for agent context:
-
-| Resource | Content |
-|----------|---------|
-| `dax_functions` | DAX function reference with syntax |
-| `model_schema` | Current model structure |
-| `best_practices` | BPA rules and guidelines |
-| `time_intelligence` | TI patterns and calendars |
-| `format_strings` | Common format string patterns |
-
-## Example Tool Usage
-
-### List Tables
+Requires **Node.js 18+**. See
+[Setup Guide](../../Integrations/MCP/Setup_Guide.md) for the full walkthrough.
 
 ```json
 {
-  "tool": "list_tables",
-  "arguments": {}
-}
-
-// Response
-{
-  "tables": [
-    {"name": "Sales", "type": "Table", "rows": 1000000},
-    {"name": "Products", "type": "Table", "rows": 500},
-    {"name": "Date", "type": "CalculatedTable", "rows": 3652}
-  ]
-}
-```
-
-### Add Measure
-
-```json
-{
-  "tool": "add_measure",
-  "arguments": {
-    "table": "Sales",
-    "name": "Total Revenue YTD",
-    "expression": "TOTALYTD([Total Revenue], 'Date'[Date])",
-    "displayFolder": "Time Intelligence",
-    "formatString": "$#,##0.00",
-    "description": "Year-to-date total revenue"
-  }
-}
-```
-
-### Execute DAX Query
-
-```json
-{
-  "tool": "execute_dax",
-  "arguments": {
-    "query": "EVALUATE SUMMARIZECOLUMNS('Date'[Year], \"Revenue\", [Total Revenue])"
-  }
-}
-
-// Response
-{
-  "results": [
-    {"Year": 2023, "Revenue": 1500000},
-    {"Year": 2024, "Revenue": 1800000}
-  ]
-}
-```
-
-## Configuration
-
-### Claude Code
-
-```bash
-claude mcp add powerbi-modeling-mcp \
-  --transport stdio \
-  --env PBI_MODELING_MCP_CLIENT_ID=ea0616ba-638b-4df5-95b9-636659ae5121 \
-  -- "C:/path/to/powerbi-modeling-mcp.exe" --start
-```
-
-### VS Code Settings
-
-```json
-{
-  "mcp.servers": {
-    "powerbi-modeling": {
-      "command": "C:/path/to/powerbi-modeling-mcp.exe",
-      "args": ["--start"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121"
-      }
+  "servers": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start"]
     }
   }
 }
 ```
 
-### Claude Desktop
+### Accept the EULA
+
+The server is under a dedicated
+[EULA](https://github.com/microsoft/powerbi-modeling-mcp/blob/main/EULA.txt)
+and **blocks all other tool calls until it is accepted**. In an interactive
+session the agent can call `accept_eula` on your behalf once you authorise it,
+and the acceptance is stored locally so you are not asked again.
+
+For unattended execution, accept it explicitly — only after you have read it:
 
 ```json
 {
-  "mcpServers": {
-    "powerbi-modeling": {
-      "command": "C:/path/to/powerbi-modeling-mcp.exe",
-      "args": ["--start"],
-      "env": {
-        "PBI_MODELING_MCP_CLIENT_ID": "ea0616ba-638b-4df5-95b9-636659ae5121"
-      }
+  "servers": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start", "--accepteula"],
+      "env": { "PBI_MODELING_MCP_ACCEPT_EULA": "true" }
     }
   }
 }
 ```
 
-## Context Window Usage
+If the tools do not appear and you cannot find an EULA prompt, this is why.
 
-The Power BI Modeling MCP consumes approximately **29% of the context window** with all tools and resources loaded.
+---
 
-### Optimization Tips
+## Settings
 
-1. **Disable unused resources**: If you don't need time intelligence patterns, disable that resource
-2. **Limit tool scope**: Some tools can be disabled if not needed
-3. **Use sessions wisely**: Start fresh sessions for different tasks
-4. **Combine with TMDL**: Use direct file editing for simple changes, MCP for bulk
+### Command-line options
 
-## Guardrails
+| Option | Default | Purpose |
+|---|---|---|
+| `--start` | — | Required for MCP client registration |
+| `--readwrite` | on | Write operations enabled, with a confirmation prompt once per database |
+| `--readonly` | off | Safe mode; prevents all writes |
+| `--compatibility` | `PowerBI` | Set to `Full` to target Azure Analysis Services databases |
+| `--authmode` | `interactive` | Or `serviceprincipal` |
+| `--accepteula` | off | Accept the EULA for unattended runs |
 
-The MCP server includes safety features:
+`--readonly` is worth knowing: it is the cheapest way to let an agent explore a
+production model without any risk of change.
 
-| Guardrail | Description |
-|-----------|-------------|
-| DAX validation | Validates DAX before applying changes |
-| Naming check | Warns about non-standard names |
-| Dependency check | Warns when deleting referenced objects |
-| Backup suggestion | Reminds to save/commit before bulk changes |
+### Environment variables
+
+| Variable | Purpose |
+|---|---|
+| `AZURE_CLIENT_ID` | Service principal app ID (`--authmode=serviceprincipal`) |
+| `AZURE_TENANT_ID` | Tenant ID, for service principal or forcing a tenant interactively |
+| `AZURE_CLIENT_SECRET` | Client secret auth |
+| `AZURE_CLIENT_CERTIFICATE_PATH` | PFX/PEM certificate instead of a secret |
+| `AZURE_CLIENT_CERTIFICATE_PASSWORD` | Password for that certificate |
+| `PBI_MODELING_MCP_ACCEPT_EULA` | `true` to accept the EULA unattended |
+| `PBI_MODELING_MCP_ALLOWED_CONNECTION_HOSTS` | Comma-separated allowlist of trusted XMLA hostnames |
+
+### The connection host allowlist
+
+To connect to a non-Power BI endpoint — Azure Analysis Services, for example —
+its hostname must be in `PBI_MODELING_MCP_ALLOWED_CONNECTION_HOSTS`:
+
+```json
+{
+  "env": {
+    "PBI_MODELING_MCP_ALLOWED_CONNECTION_HOSTS": "xmla.contoso.example,sqlserver_01:8373"
+  }
+}
+```
+
+Restart the server after changing it.
+
+**Access tokens are sent to these hosts on connect.** Only add hostnames your
+organisation operates and trusts; do not add one merely to clear a validation
+error. The allowlist is a credential control, not a convenience.
+
+In VS Code, set options and variables in user settings by searching
+`@ext:Microsoft.powerbi-modeling-mcp`.
+
+---
+
+## Connect to a model
+
+```text
+Connect to semantic model 'SalesModel' in Fabric workspace 'SalesAnalytics'
+```
+
+```text
+Connect to 'AdventureWorks' in Power BI Desktop
+```
+
+```text
+Open semantic model from PBIP folder './MyModel.SemanticModel/definition'
+```
+
+Verify with a read-only request before asking for a change:
+
+```text
+List the tables and measures in this model
+```
+
+---
+
+## Example scenarios
+
+| Scenario | Prompt |
+|---|---|
+| Naming conventions | `Analyze the naming convention of the 'Sales' table and apply the same pattern across the entire model.` |
+| Documentation | `Add descriptions to all measures, columns, and tables that explain their purpose and the logic behind the DAX code in plain business terms.` |
+| Translation | `Generate a French translation for my model including tables, columns and measures.` |
+| Refactor to calculation groups | `Refactor measures 'Sales Amount 12M Avg' and 'Sales Amount 6M Avg' into a calculation group and include new variants: 24M and 3M.` |
+| Parameterise sources | `Analyze the Power Query code for all tables, identify the data source configuration, and create semantic model parameters to enable easy switching of the data source location.` |
+| Benchmark models | `Connect to semantic model 'V1' and 'V2', and benchmark the following DAX query against both.` |
+| Document the model | `Generate a Markdown document (.md) providing complete documentation, with a mermaid diagram of table relationships, each measure with its DAX and business logic, RLS filters, and the data sources inferred from the Power Query code.` |
+
+That last one is worth knowing: it produces genuinely useful model
+documentation. See
+[Documentation Generation](../../Integrations/MCP/UseCases/DocumentationGeneration.md).
+
+---
+
+## Security and privacy
+
+The server runs locally and uses your existing credentials. **It does not
+bypass Power BI security.** But:
+
+> AI assistance does not expand data access — it may **transmit** accessed
+> data. Metadata, schemas, and query results go to the MCP client and may be
+> forwarded to the configured LLM provider as conversation context.
+
+Govern that through your organisation's AI data-handling policy and the
+provider's terms, not through Power BI controls alone. Tokens are handled
+through the official Azure Identity SDK; the server does not store them.
+
+The server itself collects telemetry, which Microsoft may use to improve the
+service. See the [repository](https://github.com/microsoft/powerbi-modeling-mcp)
+for the full data collection notice.
+
+**Permissions and risk.** MCP clients act with the signed-in user's Fabric
+RBAC permissions. An autonomous or misconfigured client may perform destructive
+actions, and the MCP specification has no standardised flag for blocking them.
+Apply least privilege, and use `--readonly` where you only need exploration.
+
+---
 
 ## Limitations
 
-1. **Windows Only**: TOM libraries require Windows
-2. **Single Connection**: One model at a time
-3. **No Direct Service Write**: Can't write directly to Power BI Service (use deployment instead)
-4. **Context Heavy**: Uses significant context window
+- Modeling operations only — not report pages, visuals, or diagram layouts
+- **Write** permission required; with Build you can query but not change
+- DAX execution caps at 100,000 rows
+- Local server does not support macOS
+- Follows the same rules and behaviours as External Tools modeling operations
+- No tenant setting blocks it specifically — it connects via the XMLA endpoint,
+  so blocking it means disabling the XMLA endpoint, which blocks every tool
+  that relies on XMLA
 
-## Troubleshooting
-
-| Issue | Solution |
-|-------|----------|
-| Connection fails | Ensure Power BI Desktop is open with a model |
-| Tools not appearing | Check MCP server is running |
-| Slow responses | Large models take longer; increase timeout |
-| DAX errors | Use validate_dax before add_measure |
+---
 
 ## Related
 
-- [MCP Configuration Examples](./ConfigurationExamples.md)
-- [MCP Overview](./README.md)
-- [Existing MCP Setup](../../Integrations/MCP/Setup_Guide.md)
+- [Server Guide](../../Integrations/MCP/ServerGuide.md) — hosted vs local, Fabric IQ
+- [Setup Guide](../../Integrations/MCP/Setup_Guide.md)
+- [Agent Skills](../AgentSkills/README.md) — the plugin that bundles this server
+- [Use Cases](../../Integrations/MCP/UseCases/README.md)
+- [Repository](https://github.com/microsoft/powerbi-modeling-mcp) ·
+  [npm](https://www.npmjs.com/package/@microsoft/powerbi-modeling-mcp)

@@ -1,3 +1,11 @@
+---
+title: Audit Procedures
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Audit Procedures
 
 > **Purpose:** Define procedures for auditing Power BI content, access, and compliance
@@ -19,6 +27,7 @@ Regular audits ensure Power BI content meets security, compliance, and quality s
 **Frequency:** Monthly (Confidential), Quarterly (Internal)
 
 **Scope:**
+
 - Workspace membership
 - Report permissions
 - Dataset permissions
@@ -31,6 +40,7 @@ Regular audits ensure Power BI content meets security, compliance, and quality s
 **Frequency:** Quarterly
 
 **Scope:**
+
 - RLS configurations
 - OLS configurations
 - Sensitivity labels
@@ -44,6 +54,7 @@ Regular audits ensure Power BI content meets security, compliance, and quality s
 **Frequency:** Semi-annually
 
 **Scope:**
+
 - Naming conventions
 - Documentation completeness
 - Data model best practices
@@ -56,6 +67,7 @@ Regular audits ensure Power BI content meets security, compliance, and quality s
 **Frequency:** Annually (or as required)
 
 **Scope:**
+
 - Data classification accuracy
 - Retention compliance
 - Privacy requirements
@@ -252,6 +264,7 @@ Run BPA rules against all production datasets:
 ### Data Classification Verification
 
 For each dataset, verify:
+
 1. Classification is documented
 2. Classification is accurate
 3. Controls match classification level
@@ -412,8 +425,3 @@ $results = Invoke-PowerBIRestMethod -Url $scannerUrl -Method Post -Body $body
 - [Data Classification](./DataClassification.md)
 - [Access Control Matrix](./AccessControlMatrix.md)
 - [Development Standards](./DevelopmentStandards.md)
-
----
-
-*Last Updated: December 2024*
-*Review Date: March 2025*

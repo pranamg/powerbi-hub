@@ -1,3 +1,11 @@
+---
+title: MCP Server Workflow
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # MCP Server Workflow
 
 > Using MCP servers for bulk operations and validated changes
@@ -72,10 +80,12 @@ claude mcp add powerbi-modeling-mcp \
 
 ### Verify Connection
 
-```
-User: List all tables in the model
+Always confirm with a read-only request before asking for a change.
 
-Agent: [Calls list_tables tool]
+```
+User: List the tables and measures in this model
+
+Agent: [Uses table_operations and measure_operations]
 
 Tables in the model:
 - Sales (1,000,000 rows)

@@ -1,3 +1,11 @@
+---
+title: Querying Semantic Models via MCP
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Querying Semantic Models via MCP
 
 > Use natural language to query Power BI semantic models through AI assistants
@@ -9,12 +17,15 @@ The Power BI MCP Server allows AI assistants to execute DAX queries directly aga
 ## Basic Queries
 
 ### Example 1: Simple Aggregation
+
 **Prompt:**
+
 ```
 "What are the total sales for 2024?"
 ```
 
 **AI generates and executes:**
+
 ```dax
 EVALUATE
 ROW(
@@ -27,12 +38,15 @@ ROW(
 ```
 
 ### Example 2: Grouped Data
+
 **Prompt:**
+
 ```
 "Show me sales by product category, sorted highest to lowest"
 ```
 
 **Generated DAX:**
+
 ```dax
 EVALUATE
 TOPN(
@@ -46,12 +60,15 @@ TOPN(
 ```
 
 ### Example 3: Time Comparison
+
 **Prompt:**
+
 ```
 "Compare this month's sales to last month"
 ```
 
 **Generated DAX:**
+
 ```dax
 EVALUATE
 ROW(
@@ -65,13 +82,16 @@ ROW(
 ## Advanced Queries
 
 ### Example 4: Multi-Filter Analysis
+
 **Prompt:**
+
 ```
 "What were the top 10 products by profit margin in North America 
 for customers with Gold membership status?"
 ```
 
 **Generated DAX:**
+
 ```dax
 EVALUATE
 TOPN(
@@ -92,12 +112,15 @@ TOPN(
 ```
 
 ### Example 5: Period-over-Period with Ranking
+
 **Prompt:**
+
 ```
 "Show year-over-year growth by region and rank them"
 ```
 
 **Generated DAX:**
+
 ```dax
 EVALUATE
 ADDCOLUMNS(
@@ -120,12 +143,15 @@ ORDER BY [Rank]
 ```
 
 ### Example 6: Running Totals with Partitions
+
 **Prompt:**
+
 ```
 "Show cumulative sales by month within each product category"
 ```
 
 **Generated DAX:**
+
 ```dax
 EVALUATE
 ADDCOLUMNS(
@@ -154,18 +180,23 @@ ORDER BY 'Product'[Category], 'Date'[Year Month]
 ## Schema Discovery Queries
 
 ### List Tables
+
 **Prompt:**
+
 ```
 "What tables are in this model?"
 ```
 
 **AI uses INFO functions:**
+
 ```dax
 EVALUATE INFO.TABLES()
 ```
 
 ### List Measures
+
 **Prompt:**
+
 ```
 "Show me all measures in the Sales table"
 ```
@@ -179,7 +210,9 @@ FILTER(
 ```
 
 ### Show Relationships
+
 **Prompt:**
+
 ```
 "What are the relationships in this model?"
 ```
@@ -191,7 +224,9 @@ EVALUATE INFO.RELATIONSHIPS()
 ## Query Optimization Tips
 
 ### Use TOPN for Large Results
+
 Instead of returning all rows, limit results:
+
 ```dax
 -- Bad: Can return millions of rows
 EVALUATE 'Sales'
@@ -201,6 +236,7 @@ EVALUATE TOPN(1000, 'Sales', 'Sales'[Date], DESC)
 ```
 
 ### Prefer Measures Over Calculated Columns
+
 ```dax
 -- Efficient: Use existing measure
 EVALUATE
@@ -218,6 +254,7 @@ SUMMARIZECOLUMNS(
 ```
 
 ### Filter Early
+
 ```dax
 -- Better: Filter in CALCULATETABLE
 EVALUATE
@@ -233,24 +270,28 @@ CALCULATETABLE(
 ## Prompt Engineering Tips
 
 ### Be Specific About Columns
+
 ```
 Good: "Show sales by the 'Product Category' column"
 Bad: "Show sales by category"
 ```
 
 ### Specify Time Periods
+
 ```
 Good: "Sales for fiscal year 2024 (starts April)"
 Bad: "Last year's sales"
 ```
 
 ### Indicate Sort Order
+
 ```
 Good: "Top 10 customers by revenue, highest first"
 Bad: "Show top customers"
 ```
 
 ### Request Format When Needed
+
 ```
 "Show profit margin as a percentage with 2 decimal places"
 ```

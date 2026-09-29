@@ -1,3 +1,11 @@
+---
+title: Data Classification Policy
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Data Classification Policy
 
 > **Purpose:** Define data classification levels and handling requirements for Power BI content
@@ -98,6 +106,7 @@ Workspaces by Classification:
 ### Naming Conventions
 
 Include classification in workspace names:
+
 - `[PUBLIC] Marketing Metrics`
 - `[INT] Sales Operations`
 - `[CONF] Customer Analytics`
@@ -116,6 +125,7 @@ Power BI Admin Portal:
 ```
 
 **Label Configuration:**
+
 | Label | Color | Encryption | Watermark |
 |-------|-------|------------|-----------|
 | Public | Green | None | None |
@@ -199,12 +209,14 @@ _Explain the classification decision:_
 ### Reclassification
 
 Data may need reclassification when:
+
 - Data sources change
 - Business requirements change
 - Regulatory requirements change
 - Security incidents occur
 
 **Process:**
+
 1. Submit reclassification request
 2. Data steward review
 3. Update controls if approved
@@ -227,21 +239,25 @@ Data may need reclassification when:
 ## Responsibilities
 
 ### Data Owners
+
 - Classify data appropriately
 - Review access quarterly
 - Report incidents immediately
 
 ### Report Developers
+
 - Implement required security controls
 - Apply sensitivity labels
 - Document data lineage
 
 ### Workspace Admins
+
 - Enforce classification controls
 - Review workspace membership
 - Monitor usage and access
 
 ### BI Administrators
+
 - Configure tenant-level policies
 - Monitor compliance
 - Conduct audits
@@ -265,8 +281,3 @@ Data may need reclassification when:
 - [RLS Patterns](./RLSPatterns.md)
 - [OLS Configuration](./OLSConfiguration.md)
 - [Access Control Matrix](./AccessControlMatrix.md)
-
----
-
-*Last Updated: December 2024*
-*Review Date: March 2025*

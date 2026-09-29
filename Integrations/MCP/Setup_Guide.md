@@ -1,445 +1,296 @@
-# Power BI MCP Server - Detailed Setup Guide
+---
+title: "Power BI Authoring MCP Server — Local Setup"
+tags: [mcp, agentic, ai, setup]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
 
-> Complete step-by-step instructions for setting up the Power BI Model Context Protocol server.
+# Power BI Authoring MCP Server — Local Setup
 
-## Table of Contents
+Step-by-step setup for the **local** Power BI Authoring MCP server, which lets
+an AI agent read and change semantic models in Power BI Desktop, on disk as
+PBIP/TMDL, or in a Fabric workspace.
 
-1. [Prerequisites](#prerequisites)
-2. [Installation Methods](#installation-methods)
-3. [Configuration](#configuration)
-4. [Connecting to Power BI](#connecting-to-power-bi)
-5. [Testing the Connection](#testing-the-connection)
-6. [Advanced Configuration](#advanced-configuration)
-7. [Troubleshooting](#troubleshooting)
+> **Choose your deployment first.** The local server is the right choice when
+> you need Power BI Desktop, PBIP files on disk, service principal auth in CI,
+> transactions, or traces. If you only need Fabric workspaces, the **hosted**
+> server requires no install at all. See [Server Guide](./ServerGuide.md) for
+> the comparison — and note that you should register **one**, never both.
 
 ---
 
 ## Prerequisites
 
-### Required Software
+| Requirement | Detail |
+|---|---|
+| **Node.js 18+** | With npm and npx |
+| An MCP client in agent mode | GitHub Copilot in VS Code is the common choice |
+| **Write** permission on the model | With only **Build**, the agent can run DAX but cannot change anything |
+| XMLA endpoint **Read Write** | Required on the capacity when the model is in a Fabric workspace |
+| A deep-reasoning model | GPT-5 or Claude Sonnet-class. Model choice materially affects output quality |
 
-| Software | Minimum Version | Download |
-|----------|----------------|----------|
-| Power BI Desktop | November 2024+ | [Download](https://powerbi.microsoft.com/desktop/) |
-| Node.js | 18.0+ | [Download](https://nodejs.org/) |
-| VS Code | Latest | [Download](https://code.visualstudio.com/) |
-| Git | Latest | [Download](https://git-scm.com/) |
+**macOS:** the local server is not supported. Use the
+[hosted server](./ServerGuide.md#1-power-bi-authoring-mcp-server) instead.
 
-### Verify Prerequisites
+Verify Node:
 
 ```bash
-# Check Node.js version
-node --version
-# Should show v18.x or higher
-
-# Check npm version
+node --version    # v18.0.0 or higher
 npm --version
-# Should show 9.x or higher
-
-# Check VS Code CLI (optional)
-code --version
-```
-
-### Windows Specific
-- Windows 10/11 with 64-bit
-- Administrator access for initial setup
-- Windows Terminal (recommended)
-
-### macOS Specific
-- macOS 12+ (Monterey or later)
-- Power BI Desktop via Parallels or Windows VM
-- Homebrew for Node.js installation
-
----
-
-## Installation Methods
-
-### Method 1: NPX (Recommended - No Install)
-
-Best for trying out or occasional use:
-
-```bash
-# Run directly without installing
-npx @anthropic/powerbi-mcp
-```
-
-### Method 2: Global NPM Install
-
-Best for frequent use:
-
-```bash
-# Install globally
-npm install -g @anthropic/powerbi-mcp
-
-# Run from anywhere
-powerbi-mcp
-```
-
-### Method 3: Local Project Install
-
-Best for version control and team consistency:
-
-```bash
-# Create project directory
-mkdir powerbi-mcp-setup
-cd powerbi-mcp-setup
-
-# Initialize npm project
-npm init -y
-
-# Install as dependency
-npm install @anthropic/powerbi-mcp
-
-# Run via npx
-npx powerbi-mcp
-```
-
-### Method 4: Build from Source
-
-For developers who want to customize:
-
-```bash
-# Clone the repository
-git clone https://github.com/anthropics/powerbi-mcp.git
-cd powerbi-mcp
-
-# Install dependencies
-npm install
-
-# Build the project
-npm run build
-
-# Link globally
-npm link
+npx --version
 ```
 
 ---
 
-## Configuration
+## Method 1 — VS Code extension (easiest)
 
-### Locate Power BI Desktop Path
+If you are using GitHub Copilot in VS Code, install the extension and skip the
+config file entirely.
 
-Find your Power BI Desktop executable:
+1. Install [VS Code](https://code.visualstudio.com/download) and the GitHub
+   Copilot Chat extension
+2. Install the
+   [Power BI Modeling MCP extension](https://marketplace.visualstudio.com/items?itemName=analysis-services.powerbi-modeling-mcp)
+3. Open Copilot chat and confirm `powerbi-modeling-mcp` appears in the tool list
 
-**Default Locations:**
+> If the server is missing, check that **MCP servers in Copilot** is enabled in
+> your GitHub settings. It is **off by default on enterprise accounts** and an
+> administrator has to turn it on.
 
-```
-# Microsoft Store Version
-C:\Program Files\WindowsApps\Microsoft.MicrosoftPowerBIDesktop_<version>\bin\PBIDesktop.exe
+## Method 2 — npx (no install)
 
-# MSI Installer Version
-C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe
+Node downloads the package on first run, so there is nothing to install
+permanently.
 
-# 32-bit (rare)
-C:\Program Files (x86)\Microsoft Power BI Desktop\bin\PBIDesktop.exe
-```
-
-**Find via PowerShell:**
-
-```powershell
-# Find Power BI Desktop
-Get-ChildItem -Path "C:\Program Files*" -Filter "PBIDesktop.exe" -Recurse -ErrorAction SilentlyContinue | Select-Object FullName
-```
-
-### Environment Variables
-
-Set up environment variables for the MCP server:
-
-**Windows (PowerShell):**
-```powershell
-# Set for current session
-$env:POWERBI_DESKTOP_PATH = "C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe"
-
-# Set permanently (user level)
-[Environment]::SetEnvironmentVariable("POWERBI_DESKTOP_PATH", "C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe", "User")
-```
-
-**Windows (Command Prompt):**
-```cmd
-set POWERBI_DESKTOP_PATH=C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe
-```
-
-**macOS/Linux (if using remote):**
-```bash
-export POWERBI_DESKTOP_PATH="/path/to/PBIDesktop.exe"
-```
-
-### Configuration File
-
-Create a configuration file for persistent settings:
-
-**`mcp-config.json`:**
 ```json
 {
-    "powerbi": {
-        "desktopPath": "C:\\Program Files\\Microsoft Power BI Desktop\\bin\\PBIDesktop.exe",
-        "port": 8765,
-        "timeout": 30000,
-        "debug": false
-    },
-    "server": {
-        "host": "localhost",
-        "port": 3000,
-        "cors": true
-    },
-    "security": {
-        "allowRemoteConnections": false,
-        "requireAuth": false
+  "servers": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@latest", "--start"]
     }
+  }
 }
 ```
 
+> **Config root key depends on the client.** VS Code and Visual Studio use
+> `servers`. Other MCP clients use `mcpServers`.
+
+## Method 3 — npm install
+
+For a pinned, reproducible setup — worth doing in CI:
+
+```bash
+npm install -g @microsoft/powerbi-modeling-mcp
+```
+
+Or as a project dependency, which is the better choice for a team:
+
+```bash
+npm install @microsoft/powerbi-modeling-mcp
+```
+
+Then point the config at the pinned version:
+
+```json
+{
+  "servers": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
+      "command": "npx",
+      "args": ["-y", "@microsoft/powerbi-modeling-mcp@<pinned-version>", "--start"]
+    }
+  }
+}
+```
+
+Pinning matters in CI: `@latest` means your pipeline can change behaviour
+without a commit explaining why.
+
+## Method 4 — standalone executable
+
+The repository publishes a standalone binary if you would rather avoid Node
+entirely:
+
+```json
+{
+  "servers": {
+    "powerbi-authoring-local": {
+      "type": "stdio",
+      "command": "C:\\MCPServers\\PowerBIModelingMCP\\powerbi-modeling-mcp.exe",
+      "args": ["--start"]
+    }
+  }
+}
+```
+
+See the [repository README](https://github.com/microsoft/powerbi-modeling-mcp)
+for download and service principal configuration.
+
 ---
 
-## Connecting to Power BI
+## Enable external tools in Power BI Desktop
 
-### Step 1: Open Power BI Desktop
+The server reaches a local Desktop instance through the external tools
+interface, which must be enabled:
 
-1. Launch Power BI Desktop
-2. Open your `.pbix` file
-3. Wait for the model to fully load
-4. Keep Desktop open (MCP connects to running instance)
-
-### Step 2: Enable External Tools (if needed)
-
-Power BI Desktop may require external tools to be enabled:
-
-1. File → Options and Settings → Options
-2. Security → Enable "Allow external tools to access semantic model"
+1. Power BI Desktop → **File → Options and settings → Options**
+2. **Security** → enable **Allow external tools to access semantic model**
 3. Restart Power BI Desktop
 
-### Step 3: Start MCP Server
-
-Open a terminal and run:
-
-```bash
-# Using npx
-npx @anthropic/powerbi-mcp
-
-# Or if globally installed
-powerbi-mcp
-
-# With custom config
-powerbi-mcp --config ./mcp-config.json
-
-# With debug output
-powerbi-mcp --debug
-```
-
-**Expected Output:**
-```
-Power BI MCP Server v1.0.0
-Connecting to Power BI Desktop...
-✓ Connected to model: SalesAnalysis.pbix
-✓ Server running on localhost:3000
-Ready to accept connections
-```
-
-### Step 4: Connect AI Assistant
-
-Configure your AI tool to use the MCP server. See [VSCode_Integration.md](./VSCode_Integration.md) for VS Code setup.
+Without this, the server starts but cannot find your model.
 
 ---
 
-## Testing the Connection
+## Connect to a semantic model
 
-### Quick Test via CLI
+The server must be told which model to work on before it can do anything.
 
-```bash
-# Test connection (requires jq for JSON formatting)
-curl -X POST http://localhost:3000/api/query \
-  -H "Content-Type: application/json" \
-  -d '{"query": "list tables"}' | jq
+**Fabric workspace:**
+
+```text
+Connect to semantic model 'SalesModel' in Fabric workspace 'SalesAnalytics'
 ```
 
-### Test via Built-in Health Check
+**Power BI Desktop (local server only):**
 
-```bash
-curl http://localhost:3000/health
-# Expected: {"status": "healthy", "model": "SalesAnalysis.pbix"}
+```text
+Connect to 'AdventureWorks' in Power BI Desktop
 ```
 
-### Test Commands
+**PBIP project on disk (local server only):**
 
-Try these in your AI assistant:
+```text
+Open semantic model from PBIP folder './MyModel.SemanticModel/definition'
+```
 
-```
-"List all tables in the model"
-"Show me the measures in the Sales table"
-"What relationships exist in this model?"
-"Run DAX: EVALUATE ROW(\"Test\", 1)"
-```
+For PBIP, the PBIR-enabled format is what you want — see
+[PBIR](../../Documentation/UserGuides/PBIR.md).
 
 ---
 
-## Advanced Configuration
+## Verify with a read-only request
 
-### Multiple Models
+Always confirm the connection before asking for a change:
 
-Support multiple open PBIX files:
-
-```json
-{
-    "powerbi": {
-        "multiModel": true,
-        "defaultModel": "Sales.pbix"
-    }
-}
+```text
+List the tables and measures in this model
 ```
 
-Switch models in conversation:
-```
-"Switch to the Finance.pbix model"
-```
+If that returns a sensible inventory, the server is connected and you have the
+permissions you think you have. If it fails, fix that before proceeding.
 
-### Custom Port
+Then check your write access:
 
-Change server port if 3000 is in use:
-
-```bash
-powerbi-mcp --port 8080
+```text
+Create a measure called '__PermissionTest' that returns 1
 ```
 
-Or in config:
-```json
-{
-    "server": {
-        "port": 8080
-    }
-}
-```
+If that succeeds but the agent reports changes failing elsewhere, the problem
+is usually Write permission or the XMLA endpoint setting rather than the
+connection.
 
-### Logging
+---
 
-Enable detailed logging for troubleshooting:
+## Permissions that decide what works
 
-```bash
-# Debug mode
-powerbi-mcp --debug --log-file ./mcp-debug.log
+| You have | The agent can |
+|---|---|
+| **Build** | Read metadata, run DAX queries |
+| **Write** | Also create and change model objects |
 
-# Log levels: error, warn, info, debug
-powerbi-mcp --log-level debug
-```
+A Fabric workspace model additionally needs the capacity's **XMLA endpoint set
+to Read Write**. Without it, every write fails even with Write permission.
 
-### Performance Tuning
+The symptom — reads succeed, writes fail — has exactly two causes. Check them
+in that order.
 
-For large models, adjust timeouts:
+---
 
-```json
-{
-    "powerbi": {
-        "queryTimeout": 60000,
-        "connectionRetries": 3,
-        "retryDelay": 2000
-    }
-}
-```
+## First things to try
 
-### Proxy Configuration
+| Task | Prompt |
+|---|---|
+| Inventory | `List the tables and measures, grouped by display folder` |
+| Relationships | `Which relationships are active and which are inactive, and why?` |
+| Audit | `Analyze the model against best practices and report findings by severity` |
+| Documentation | `Add descriptions to all measures explaining their business purpose in plain language` |
+| Naming | `Analyze the naming convention of the 'Sales' table and apply the same pattern model-wide` |
+| Calculation groups | `Refactor 'Sales Amount 12M Avg' and '6M Avg' into a calculation group, adding 24M and 3M` |
+| DAX | `Evaluate [Sales Amount] for 2026 and show the result` |
 
-If behind a corporate proxy:
+The full [Use Cases](./UseCases/README.md) cover these in depth.
 
-```json
-{
-    "proxy": {
-        "http": "http://proxy.company.com:8080",
-        "https": "https://proxy.company.com:8080",
-        "bypass": ["localhost", "127.0.0.1"]
-    }
-}
-```
+---
+
+## Working safely
+
+The server writes to your model and changes may be irreversible.
+
+1. **Back up first.** A language model can produce unexpected results.
+2. **Work in PBIP under Git.** Files are plain text, so you get a reviewable
+   diff and a revert. This is the strongest safeguard available — see
+   [Fabric Git Integration](../../Documentation/UserGuides/FabricGitIntegration.md).
+3. **Start small.** One measure, verify, then widen the scope.
+4. **Mind what reaches the LLM provider.** Model metadata and query results
+   enter the conversation and go to whichever provider your client is
+   configured with.
+5. **For CI, use least privilege** and a service principal — see
+   [Service Principal Setup](../../Governance/ServicePrincipalSetup.md).
+
+---
+
+## Known limitations
+
+- **No macOS support.** Use the hosted server.
+- **Modeling operations only.** It cannot change report pages, visual
+  definitions, or semantic model diagram layouts. The report layer needs
+  [`pbir`](../../AgenticDevelopment/AgentSkills/pbir-cli.md) or the report
+  authoring skill.
+- **DAX execution caps at 100,000 rows.**
+- **No tenant setting blocks it.** It connects through the XMLA endpoint, so
+  blocking it means disabling the XMLA endpoint — which blocks every tool that
+  depends on XMLA.
 
 ---
 
 ## Troubleshooting
 
-### Connection Issues
+| Symptom | Cause | Fix |
+|---|---|---|
+| Server not in the tool list | Client not in agent mode, or Copilot's MCP setting is off | Enable **MCP servers in Copilot** in GitHub settings |
+| Cannot find the model | External tools disabled, or Desktop not open | Enable the security option and restart Desktop; open the model |
+| Reads work, writes fail | Build instead of Write; or read-only XMLA endpoint | Request Write; set the capacity's XMLA endpoint to Read Write |
+| Server will not start on macOS | Not supported | Use the hosted server |
+| Agent makes wrong changes or stalls | Model or prompt granularity | Use a deep-reasoning model; break the request into smaller steps |
+| Changes are wrong and hard to undo | No version control | Work in PBIP under Git |
 
-| Error | Cause | Solution |
-|-------|-------|----------|
-| `Cannot find Power BI Desktop` | Wrong path | Verify POWERBI_DESKTOP_PATH |
-| `No model loaded` | PBIX not open | Open a PBIX file in Desktop |
-| `Connection refused` | Desktop not ready | Wait for model to fully load |
-| `Timeout` | Large model | Increase timeout in config |
-
-### Common Fixes
-
-**Reset Connection:**
-```bash
-# Kill existing server
-pkill -f powerbi-mcp
-# or on Windows: taskkill /F /IM node.exe
-
-# Restart fresh
-powerbi-mcp
-```
-
-**Clear Cache:**
-```bash
-# Remove node modules and reinstall
-rm -rf node_modules
-npm install
-```
-
-**Verify Power BI Port:**
-```powershell
-# Check if Power BI is listening
-netstat -an | findstr "8765"
-```
-
-### Debug Mode
-
-Run with maximum verbosity:
-
-```bash
-DEBUG=* powerbi-mcp --debug --log-level debug
-```
-
-### Known Limitations
-
-1. **Single Session:** Only connects to one Power BI Desktop instance
-2. **Local Only:** Cannot connect to Power BI Service (web) directly
-3. **Read-Heavy:** Write operations may have restrictions
-4. **Model Size:** Very large models (>1GB) may have performance issues
-
-### Getting Help
-
-- **GitHub Issues:** Report bugs and feature requests
-- **Power BI Community:** Ask questions in forums
-- **MCP Documentation:** [modelcontextprotocol.io](https://modelcontextprotocol.io)
+The repository has a dedicated
+[troubleshooting guide](https://github.com/microsoft/powerbi-modeling-mcp/blob/main/TROUBLESHOOTING.md)
+for startup failures and authentication setup.
 
 ---
 
-## Uninstallation
-
-### Remove Global Install
+## Uninstall
 
 ```bash
-npm uninstall -g @anthropic/powerbi-mcp
+# If installed globally
+npm uninstall -g @microsoft/powerbi-modeling-mcp
 ```
 
-### Remove Environment Variables
-
-**Windows:**
-```powershell
-[Environment]::SetEnvironmentVariable("POWERBI_DESKTOP_PATH", $null, "User")
-```
-
-### Clean Up Config Files
-
-```bash
-rm ~/.powerbi-mcp-config.json  # if created
-rm ./mcp-config.json           # if local
-```
+Then remove the server entry from your MCP configuration. Nothing else is
+required — the server holds no persistent state of its own.
 
 ---
 
-## Next Steps
+## Related
 
-- [VS Code Integration Guide](./VSCode_Integration.md)
-- [MCP Use Cases](./UseCases/README.md)
-- [MCP Prompt Templates](../../PromptLibrary/MCPPrompts.md)
-
----
-
-*Last Updated: December 2024*
+- [Server Guide](./ServerGuide.md) — hosted vs local, Fabric IQ, security
+- [VS Code Integration](./VSCode_Integration.md)
+- [Use Cases](./UseCases/README.md)
+- [Agent Skills](../../AgenticDevelopment/AgentSkills/README.md)
+- [Environment Setup](../../Documentation/Setup/EnvironmentSetup.md)
+- [Repository](https://github.com/microsoft/powerbi-modeling-mcp) ·
+  [npm package](https://www.npmjs.com/package/@microsoft/powerbi-modeling-mcp)

@@ -16,6 +16,10 @@
 # Ignore node_modules
 node_modules/
 
+# Ignore Python bytecode
+__pycache__/
+*.py[cod]
+
 # Ignore other system files
 Thumbs.db
 .DS_Store

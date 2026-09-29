@@ -1,3 +1,11 @@
+---
+title: Tabular Editor Resources
+tags: [automation, csharp]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Tabular Editor Resources
 
 > Best Practice Analyzer rules and C# scripts for Power BI model development
@@ -7,26 +15,37 @@
 | File | Description |
 |------|-------------|
 | [BestPracticeRules.json](./BestPracticeRules.json) | Custom BPA rules for model validation |
-| [GenerateDocumentation.cs](./GenerateDocumentation.cs) | Auto-generate model documentation |
-| [CreateTimeIntelligence.cs](./CreateTimeIntelligence.cs) | Generate time intelligence measures |
+
+C# scripts are embedded inline below. To save one as a reusable file, copy it
+out of this document:
+
+| Script | Description |
+|--------|-------------|
+| [Generate Time Intelligence](#script-generate-time-intelligence) | Generate YTD, PY, YoY, QTD, MTD measures |
+| [Generate Documentation](#script-generate-documentation) | Export model documentation to markdown |
+| [Hide Key Columns](#script-hide-key-columns) | Hide columns ending in ID, Key, or SK |
+| [Create Display Folders](#script-create-display-folders) | Assign measures to display folders by naming pattern |
 
 ## Best Practice Analyzer (BPA)
 
 ### Loading Custom Rules
 
 **Tabular Editor 2:**
+
 ```
 Tools → Manage BPA Rules → Import
 Select BestPracticeRules.json
 ```
 
 **Tabular Editor 3:**
+
 ```
 Preferences → Best Practice Analyzer → Add Custom Rules
 Point to BestPracticeRules.json
 ```
 
 ### Running BPA
+
 ```
 View → Best Practice Analyzer (Ctrl+B)
 Click "Run Analysis"
@@ -55,11 +74,13 @@ Click "Run Analysis"
 ### Using Scripts
 
 **Tabular Editor 2/3:**
+
 1. Open Advanced Scripting pane
 2. Paste script content
 3. Run (F5)
 
 **Command Line:**
+
 ```powershell
 tabular-editor Model.bim -S "ScriptFile.cs"
 ```
@@ -213,6 +234,7 @@ Info("Display folders assigned");
 ### Pre-Commit Hook
 
 Add to `.git/hooks/pre-commit`:
+
 ```bash
 #!/bin/sh
 tabular-editor Model.bim -A BestPracticeRules.json
