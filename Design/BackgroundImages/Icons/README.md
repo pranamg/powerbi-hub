@@ -1,3 +1,11 @@
+---
+title: Icons
+tags: [design, assets]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Icons
 
 > Icon assets for reports and dashboards.

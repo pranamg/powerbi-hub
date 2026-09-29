@@ -1,3 +1,11 @@
+---
+title: SQL
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # SQL
 
 > Connecting Power BI to SQL Server, Azure SQL, and Synapse.

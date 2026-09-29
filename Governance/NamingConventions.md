@@ -1,3 +1,11 @@
+---
+title: Power BI Naming Conventions
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI Naming Conventions
 
 > Standardized naming guidelines for Power BI artifacts
@@ -9,11 +17,13 @@ Consistent naming improves discoverability, maintainability, and collaboration. 
 ## Workspace Naming
 
 ### Pattern
+
 ```
 {BusinessArea} - {Purpose} [{Environment}]
 ```
 
 ### Examples
+
 | Workspace Name | Description |
 |---------------|-------------|
 | Sales Analytics - Reports | Production reports for sales |
@@ -22,6 +32,7 @@ Consistent naming improves discoverability, maintainability, and collaboration. 
 | HR - Headcount Tracking - TEST | Testing workspace |
 
 ### Rules
+
 - Use title case with spaces
 - Include environment suffix for non-production
 - Keep names under 50 characters
@@ -61,11 +72,12 @@ Consistent naming improves discoverability, maintainability, and collaboration. 
 | Percentages | {Metric} % | Margin %, Growth % |
 | Ratios | {Metric} Ratio | Conversion Ratio |
 | Rankings | {Entity} Rank | Product Rank, Customer Rank |
-| Internal/Helper | _{Metric} | _BaseSales, _TempCalc |
+| Internal/Helper | _{Metric} | _BaseSales,_TempCalc |
 
 ### Display Folders
 
 Standard folder structure:
+
 ```
 📁 Base Metrics
 📁 Time Intelligence
@@ -81,6 +93,7 @@ Standard folder structure:
 ## Report Naming
 
 ### Reports
+
 ```
 {Subject} - {Type} [{Version}]
 ```
@@ -92,6 +105,7 @@ Standard folder structure:
 | Finance - Monthly Review - v2 | Versioned report |
 
 ### Pages
+
 - Use descriptive names (not "Page 1")
 - Start with navigation/summary pages
 - Group related pages together
@@ -106,6 +120,7 @@ Standard folder structure:
 ## Parameters & Variables
 
 ### Parameters
+
 ```
 {Scope}_{Description}
 ```
@@ -118,6 +133,7 @@ Standard folder structure:
 | Filter_TopN | Number of items to show |
 
 ### DAX Variables
+
 ```
 VAR __{DescriptiveName}
 ```
@@ -131,6 +147,7 @@ VAR __{DescriptiveName}
 ## File Naming
 
 ### PBIX Files
+
 ```
 {Subject}_{Type}_{YYYYMMDD}.pbix
 ```
@@ -141,6 +158,7 @@ VAR __{DescriptiveName}
 | FinanceReporting_Model_PROD.pbix | Production model |
 
 ### TMDL Folders
+
 ```
 {ModelName}.Dataset/
 ├── model.tmdl
@@ -179,6 +197,7 @@ VAR __{DescriptiveName}
 | Desc | Description |
 
 ### Avoid
+
 - Single letters (except loop counters in DAX)
 - Organization-specific jargon without documentation
 - Inconsistent abbreviations (pick one and stick with it)

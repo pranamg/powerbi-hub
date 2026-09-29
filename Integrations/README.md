@@ -1,3 +1,11 @@
+---
+title: Integrations
+tags: [integration]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Integrations
 
 > Connections between Power BI and the wider Microsoft platform.

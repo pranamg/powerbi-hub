@@ -1,3 +1,11 @@
+---
+title: Direct Lake Setup Guide
+tags: [fabric, data-connections]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Direct Lake Setup Guide
 
 > **Purpose:** Configure and optimize Direct Lake semantic models in Microsoft Fabric
@@ -36,6 +44,7 @@ OneLake (Delta/Parquet)  →  VertiPaq (In-Memory)  →  Power BI Visual
 ### Step 1: Prepare Data in Lakehouse
 
 Ensure tables are in Delta format with V-Order:
+
 ```python
 # In Notebook
 df.write.format("delta") \
@@ -47,19 +56,22 @@ df.write.format("delta") \
 ### Step 2: Create Default Semantic Model
 
 Every Lakehouse/Warehouse automatically creates a default semantic model:
+
 1. Open Lakehouse/Warehouse in Fabric
-2. See "SQL analytics endpoint" 
+2. See "SQL analytics endpoint"
 3. Default model includes all tables
 
 ### Step 3: Create Custom Semantic Model
 
 **Option A: From Lakehouse**
+
 1. Open Lakehouse
 2. Click "New semantic model"
 3. Select tables to include
 4. Model opens in web modeling
 
 **Option B: From Power BI Desktop (March 2024+)**
+
 1. Get Data → OneLake data hub
 2. Select Lakehouse/Warehouse
 3. Choose Direct Lake mode
@@ -69,6 +81,7 @@ Every Lakehouse/Warehouse automatically creates a default semantic model:
 ### Step 4: Add Relationships
 
 In Web Modeling or Desktop:
+
 ```
 FactSales[DateKey] → DimDate[DateKey]
 FactSales[ProductKey] → DimProduct[ProductKey]
@@ -120,6 +133,7 @@ Sales vs LY =
 ### Data Preparation
 
 1. **Use V-Order optimization**
+
    ```python
    df.write.format("delta").option("vorder", "true").save("Tables/MyTable")
    ```
@@ -127,11 +141,13 @@ Sales vs LY =
 2. **Optimize file sizes**
    - Target: 128MB-1GB per file
    - Run OPTIMIZE regularly
+
    ```sql
    OPTIMIZE MyTable
    ```
 
 3. **Maintain statistics**
+
    ```sql
    ANALYZE TABLE MyTable COMPUTE STATISTICS
    ```
@@ -163,6 +179,7 @@ Automatic Framing:
 ```
 
 Force specific framing (advanced):
+
 ```dax
 // Pre-warm specific columns
 EVALUATE
@@ -187,11 +204,13 @@ INFO.STORAGETABLECOLUMNSEGMENTS()
 ### Fallback Detection
 
 Direct Lake may fall back to DirectQuery for:
+
 - Unsupported DAX patterns
 - Memory pressure
 - Large cardinality columns
 
 Check in Fabric Monitoring Hub or:
+
 ```dax
 EVALUATE
 INFO.METRICS()
@@ -210,6 +229,7 @@ INFO.METRICS()
 ### Automatic Refresh
 
 Direct Lake doesn't use traditional refresh:
+
 - Data reflects latest Delta version
 - ~1-5 second latency typically
 - No scheduled refresh needed
@@ -217,6 +237,7 @@ Direct Lake doesn't use traditional refresh:
 ### Manual Sync
 
 Force metadata sync:
+
 ```powershell
 # PowerShell
 Invoke-PowerBIRestMethod `
@@ -242,11 +263,13 @@ VACUUM FactSales RETAIN 168 HOURS;
 **Symptoms:** Slow queries, DirectQuery icon in visual
 
 **Causes:**
+
 - Complex DAX patterns
 - Very high cardinality columns
 - Memory limits reached
 
 **Solutions:**
+
 1. Simplify DAX
 2. Aggregate data in Lakehouse
 3. Increase capacity size
@@ -256,10 +279,12 @@ VACUUM FactSales RETAIN 168 HOURS;
 **Symptoms:** Data not updating
 
 **Causes:**
+
 - Delta transaction not committed
 - Streaming table delays
 
 **Solutions:**
+
 1. Check Delta table version
 2. Run manual sync
 3. Verify data pipeline completion
@@ -269,10 +294,12 @@ VACUUM FactSales RETAIN 168 HOURS;
 **Symptoms:** Tables not available in model
 
 **Causes:**
+
 - Table not in Delta format
 - Permission issues
 
 **Solutions:**
+
 1. Convert to Delta format
 2. Check workspace permissions
 

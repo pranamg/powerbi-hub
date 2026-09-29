@@ -1,3 +1,11 @@
+---
+title: Python Visual Templates
+tags: [visuals, development]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Python Visual Templates
 
 > **Purpose:** Python scripts for creating custom visualizations in Power BI
@@ -7,18 +15,22 @@
 ## Prerequisites
 
 ### Tenant Settings
+
 1. Go to Admin Portal > Tenant Settings
 2. Enable "Python visuals"
 3. Configure allowed packages (optional)
 
 ### Local Setup
+
 1. Install Python 3.7+ (Anaconda recommended)
 2. Install required packages:
+
 ```bash
 pip install pandas matplotlib seaborn plotly wordcloud
 ```
 
 ### Power BI Desktop
+
 1. File > Options > Python scripting
 2. Set Python home directory
 3. Restart Power BI Desktop

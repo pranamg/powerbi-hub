@@ -1,3 +1,11 @@
+---
+title: SQL
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # SQL
 
 > SQL-based extraction and transformation.

@@ -1,3 +1,11 @@
+---
+title: R
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # R
 
 > R-based data sources.
@@ -10,7 +18,6 @@
 - Use R where the transformation depends on a package that has no M
   equivalent; otherwise prefer Power Query.
 - A script in R cannot fold, so narrow the data in M first.
-
 
 ## General guidance
 

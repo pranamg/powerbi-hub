@@ -1,3 +1,11 @@
+---
+title: Admin
+tags: [automation, powershell, devops]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Admin
 
 > Tenant-wide Power BI administration scripts.

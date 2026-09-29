@@ -1,3 +1,11 @@
+---
+title: Excel
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Excel
 
 > Working with Excel workbooks as a data source.

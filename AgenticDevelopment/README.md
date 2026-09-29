@@ -1,3 +1,11 @@
+---
+title: Agentic Development for Power BI Semantic Models
+tags: [agentic, ai]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Agentic Development for Power BI Semantic Models
 
 > Use AI agents to augment and accelerate semantic model development

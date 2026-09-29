@@ -1,3 +1,11 @@
+---
+title: Background Images
+tags: [design, assets]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Background Images
 
 > Background imagery and icons grouped by resolution.

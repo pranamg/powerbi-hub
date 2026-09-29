@@ -1,3 +1,11 @@
+---
+title: Web
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Web
 
 > Web, OData, and REST-based sources.
@@ -14,7 +22,6 @@
   credentials in a gateway.
 - Handle rate limits and transient failures, since a refresh that fails on a
   timeout is a common source of stale data.
-
 
 ## General guidance
 

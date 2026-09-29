@@ -1,3 +1,11 @@
+---
+title: Workspace
+tags: [automation, powershell, devops]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Workspace
 
 > Workspace provisioning and access management scripts.

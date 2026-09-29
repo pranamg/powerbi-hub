@@ -1,3 +1,11 @@
+---
+title: Power Query Best Practices
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Power Query Best Practices
 
 > Practices for fast, maintainable M code.

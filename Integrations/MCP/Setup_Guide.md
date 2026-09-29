@@ -1,3 +1,11 @@
+---
+title: Power BI MCP Server - Detailed Setup Guide
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI MCP Server - Detailed Setup Guide
 
 > Complete step-by-step instructions for setting up the Power BI Model Context Protocol server.
@@ -41,11 +49,13 @@ code --version
 ```
 
 ### Windows Specific
+
 - Windows 10/11 with 64-bit
 - Administrator access for initial setup
 - Windows Terminal (recommended)
 
 ### macOS Specific
+
 - macOS 12+ (Monterey or later)
 - Power BI Desktop via Parallels or Windows VM
 - Homebrew for Node.js installation
@@ -146,6 +156,7 @@ Get-ChildItem -Path "C:\Program Files*" -Filter "PBIDesktop.exe" -Recurse -Error
 Set up environment variables for the MCP server:
 
 **Windows (PowerShell):**
+
 ```powershell
 # Set for current session
 $env:POWERBI_DESKTOP_PATH = "C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe"
@@ -155,11 +166,13 @@ $env:POWERBI_DESKTOP_PATH = "C:\Program Files\Microsoft Power BI Desktop\bin\PBI
 ```
 
 **Windows (Command Prompt):**
+
 ```cmd
 set POWERBI_DESKTOP_PATH=C:\Program Files\Microsoft Power BI Desktop\bin\PBIDesktop.exe
 ```
 
 **macOS/Linux (if using remote):**
+
 ```bash
 export POWERBI_DESKTOP_PATH="/path/to/PBIDesktop.exe"
 ```
@@ -169,6 +182,7 @@ export POWERBI_DESKTOP_PATH="/path/to/PBIDesktop.exe"
 Create a configuration file for persistent settings:
 
 **`mcp-config.json`:**
+
 ```json
 {
     "powerbi": {
@@ -227,6 +241,7 @@ powerbi-mcp --debug
 ```
 
 **Expected Output:**
+
 ```
 Power BI MCP Server v1.0.0
 Connecting to Power BI Desktop...
@@ -288,6 +303,7 @@ Support multiple open PBIX files:
 ```
 
 Switch models in conversation:
+
 ```
 "Switch to the Finance.pbix model"
 ```
@@ -301,6 +317,7 @@ powerbi-mcp --port 8080
 ```
 
 Or in config:
+
 ```json
 {
     "server": {
@@ -365,6 +382,7 @@ If behind a corporate proxy:
 ### Common Fixes
 
 **Reset Connection:**
+
 ```bash
 # Kill existing server
 pkill -f powerbi-mcp
@@ -375,6 +393,7 @@ powerbi-mcp
 ```
 
 **Clear Cache:**
+
 ```bash
 # Remove node modules and reinstall
 rm -rf node_modules
@@ -382,6 +401,7 @@ npm install
 ```
 
 **Verify Power BI Port:**
+
 ```powershell
 # Check if Power BI is listening
 netstat -an | findstr "8765"
@@ -421,6 +441,7 @@ npm uninstall -g @anthropic/powerbi-mcp
 ### Remove Environment Variables
 
 **Windows:**
+
 ```powershell
 [Environment]::SetEnvironmentVariable("POWERBI_DESKTOP_PATH", $null, "User")
 ```

@@ -1,3 +1,11 @@
+---
+title: PowerBI-Hub Implementation Plan
+tags: [meta]
+audience: [all]
+difficulty: reference
+last_verified: 2026-09-29
+---
+
 # PowerBI-Hub Implementation Plan
 
 > **Last Updated:** December 2024  
@@ -15,16 +23,19 @@ The repository has a well-organized folder structure with foundational content n
 ## Phase 1: Core Foundations (Week 1-2) ✅ COMPLETED
 
 ### 1.1 Date Tables
+
 - [x] Basic calendar date table
 - [x] Extended with fiscal year support
 - [x] Multi-calendar (US/UK fiscal, 4-4-5, ISO)
 
 ### 1.2 Essential DAX Measures
+
 - [x] Time Intelligence (YTD, QTD, MTD, YoY, Rolling)
 - [x] Rankings (Top N, Pareto, ABC, Percentiles)
 - [x] Conditional Formatting helpers
 
 ### 1.3 Power Query Functions
+
 - [x] Date table generator
 - [x] Error handler
 - [x] Dynamic data source switcher
@@ -32,10 +43,12 @@ The repository has a well-organized folder structure with foundational content n
 - [x] Text cleaning utilities
 
 ### 1.4 Design System Basics
+
 - [x] Corporate Light theme
 - [x] Corporate Dark theme
 
 ### 1.5 Knowledge Base
+
 - [x] References (Articles, Blogs, GitHub repos)
 - [x] Prompt Library (DAX, PQ, ETL, Visuals, General)
 - [x] Tips & Tricks (DAX, Power Query, Performance)
@@ -45,6 +58,7 @@ The repository has a well-organized folder structure with foundational content n
 ## Phase 2: Modern DAX Features (Week 3-4) 🆕
 
 ### 2.1 DAX Window Functions (NEW - 2024)
+
 Window functions enable row navigation and calculations over sorted/partitioned data.
 
 | Function | Purpose | Status |
@@ -58,6 +72,7 @@ Window functions enable row navigation and calculations over sorted/partitioned 
 **Location:** `Queries/DAX/Measures/WindowFunctions.dax`
 
 **Examples to Include:**
+
 - Year-over-year comparison using OFFSET
 - Running totals with WINDOW
 - Moving averages
@@ -65,6 +80,7 @@ Window functions enable row navigation and calculations over sorted/partitioned 
 - Ranking within groups
 
 ### 2.2 DAX User Defined Functions (NEW - September 2025)
+
 UDFs allow creating reusable, parameterized DAX logic.
 
 **Location:** `Queries/DAX/UserDefinedFunctions/`
@@ -78,6 +94,7 @@ UDFs allow creating reusable, parameterized DAX logic.
 | Business Logic | Pricing rules, Discount tiers | ⬜ To Add |
 
 **Key Concepts to Document:**
+
 - `DEFINE FUNCTION` syntax
 - VAL vs EXPR parameter modes
 - Type hints for parameters
@@ -89,6 +106,7 @@ UDFs allow creating reusable, parameterized DAX logic.
 ## Phase 3: Developer Tools & TMDL (Week 5-6) 🆕
 
 ### 3.1 TMDL (Tabular Model Definition Language)
+
 TMDL is the modern code-based format for semantic models.
 
 **Location:** `Scripts/TMDL/`
@@ -102,17 +120,20 @@ TMDL is the modern code-based format for semantic models.
 | Role Definitions | RLS role templates | ⬜ To Add |
 
 **Benefits to Document:**
+
 - Human-readable YAML-like syntax
 - Better source control (one file per object)
 - Team collaboration improvements
 - Properties not available in UI
 
 ### 3.2 TMDL View in Power BI Desktop
+
 Code editor for semantic models within Desktop.
 
 **Location:** `Documentation/UserGuides/TMDLView.md`
 
 **Topics to Cover:**
+
 - Enabling TMDL View (Preview features)
 - Navigating the code editor
 - Drag-and-drop scripting
@@ -121,11 +142,13 @@ Code editor for semantic models within Desktop.
 - Common workflows
 
 ### 3.3 DAX Query View
+
 Direct DAX query execution in Desktop.
 
 **Location:** `Documentation/UserGuides/DAXQueryView.md`
 
 **Topics to Cover:**
+
 - Creating and running DAX queries
 - Testing measures before adding to model
 - Performance testing with Server Timings
@@ -137,6 +160,7 @@ Direct DAX query execution in Desktop.
 ## Phase 4: AI Integration & MCP (Week 7-8) 🆕
 
 ### 4.1 Power BI MCP (Model Context Protocol) - November 2025
+
 Connect AI assistants (Claude, ChatGPT, etc.) to Power BI models.
 
 **Location:** `Integrations/MCP/`
@@ -150,6 +174,7 @@ Connect AI assistants (Claude, ChatGPT, etc.) to Power BI models.
 | Troubleshooting | Common issues & solutions | ⬜ To Add |
 
 **Key Topics:**
+
 - What is MCP (Model Context Protocol)
 - Installing Power BI MCP server
 - Connecting to PBIX files
@@ -158,11 +183,13 @@ Connect AI assistants (Claude, ChatGPT, etc.) to Power BI models.
 - Security considerations
 
 ### 4.2 Copilot Integration
+
 Power BI's native AI assistant.
 
 **Location:** `Documentation/UserGuides/Copilot.md`
 
 **Topics to Cover:**
+
 - Copilot capabilities in Power BI
 - Report generation with Copilot
 - DAX generation assistance
@@ -174,6 +201,7 @@ Power BI's native AI assistant.
 ## Phase 5: DevOps & Automation (Week 9-10)
 
 ### 5.1 Scripts Enhancement
+
 **Location:** `Scripts/`
 
 | Script Type | Purpose | Status |
@@ -185,6 +213,7 @@ Power BI's native AI assistant.
 | Python - REST API | Automation | ⬜ To Add |
 
 ### 5.2 Deployment Pipelines
+
 **Location:** `Deployment/Pipelines/`
 
 | Content | Purpose | Status |
@@ -195,6 +224,7 @@ Power BI's native AI assistant.
 | TMDL Deployment | Code-based deployments | ⬜ To Add |
 
 ### 5.3 Tabular Editor Integration
+
 **Location:** `Scripts/CSharp/TabularEditor/`
 
 | Content | Purpose | Status |
@@ -209,6 +239,7 @@ Power BI's native AI assistant.
 ## Phase 6: Governance & Security (Week 11-12)
 
 ### 6.1 Governance Framework
+
 **Location:** `Governance/`
 
 | Document | Purpose | Status |
@@ -220,6 +251,7 @@ Power BI's native AI assistant.
 | Change Management | Process documentation | ⬜ To Add |
 
 ### 6.2 Security Patterns
+
 **Location:** `Governance/Security/`
 
 | Pattern | Purpose | Status |
@@ -234,6 +266,7 @@ Power BI's native AI assistant.
 ## Phase 7: Advanced Features (Week 13-14)
 
 ### 7.1 Custom Visuals Development
+
 **Location:** `Visuals/CustomVisuals/`
 
 | Content | Purpose | Status |
@@ -244,6 +277,7 @@ Power BI's native AI assistant.
 | SVG Templates | Custom graphics | ⬜ To Add |
 
 ### 7.2 Advanced Data Modeling
+
 **Location:** `Data/DataModels/`
 
 | Pattern | Purpose | Status |
@@ -254,6 +288,7 @@ Power BI's native AI assistant.
 | Aggregations | Large dataset optimization | ⬜ To Add |
 
 ### 7.3 Microsoft Fabric Integration
+
 **Location:** `Integrations/Fabric/`
 
 | Content | Purpose | Status |

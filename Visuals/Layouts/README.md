@@ -1,3 +1,11 @@
+---
+title: Layouts
+tags: [visuals, design]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Layouts
 
 > Report and dashboard layout definitions.

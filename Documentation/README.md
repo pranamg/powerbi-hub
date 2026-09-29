@@ -1,6 +1,21 @@
+---
+title: Documentation
+tags: [documentation]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Documentation
 
 > Guides, references, and project documentation for PowerBI-Hub.
+
+## Navigation
+
+| Document | Description |
+|----------|-------------|
+| [Topic Index](./Topic_Index.md) | Every document, filterable by audience, tag, and difficulty (generated) |
+| [Learning Paths](./LearningPaths/) | Six sequenced reading paths by role, with known gaps named |
 
 ## Getting Started
 

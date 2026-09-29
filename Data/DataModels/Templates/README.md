@@ -1,3 +1,11 @@
+---
+title: Model Templates
+tags: [modeling, tmdl, reference]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Model Templates
 
 > Scaffolding to copy when starting a new semantic model.

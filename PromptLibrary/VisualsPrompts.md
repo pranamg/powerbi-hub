@@ -1,3 +1,11 @@
+---
+title: Visualization & Design Prompts
+tags: [prompts, visuals, ai]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Visualization & Design Prompts
 
 Use these prompts for creating effective Power BI visualizations and designs.
@@ -21,6 +29,7 @@ for showing [data description] to [audience type].
 ## DAX for Visuals
 
 ### Conditional Formatting
+
 ```
 Create DAX measures for conditional formatting:
 1. Background color based on [condition]
@@ -31,6 +40,7 @@ Return hex color codes.
 ```
 
 ### Dynamic Titles & Labels
+
 ```
 Write a DAX measure for a dynamic chart title that shows:
 "[Metric Name] by [Selected Dimension] - [Selected Date Range]"
@@ -170,6 +180,7 @@ Suggest which elements to:
 ## Tips for Visual Design Prompts
 
 Always include:
+
 1. Target audience and their technical level
 2. Key message or decision the visual should support
 3. Data structure (measures, dimensions)

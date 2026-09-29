@@ -1,3 +1,11 @@
+---
+title: R
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # R
 
 > R-based ETL.

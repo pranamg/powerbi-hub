@@ -1,3 +1,11 @@
+---
+title: Design Templates
+tags: [design]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Design Templates
 
 > Design template documents for reports and dashboards.

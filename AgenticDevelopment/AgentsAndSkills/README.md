@@ -1,3 +1,11 @@
+---
+title: Agents, Subagents & Skills
+tags: [agentic, ai, tooling]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Agents, Subagents & Skills
 
 > Specialized AI team members for semantic model development
@@ -34,6 +42,7 @@ Read and modify semantic model metadata.
 Based on current capabilities, Claude Code provides the best experience for agentic semantic model development:
 
 **Strengths:**
+
 - Lives in terminal (faster, more flexible)
 - Excellent tool discovery and usage
 - Good context window management visibility
@@ -41,6 +50,7 @@ Based on current capabilities, Claude Code provides the best experience for agen
 - Checkpoint support for reverting changes
 
 **Setup:**
+
 ```bash
 # Install Claude Code
 npm install -g @anthropic-ai/claude-code
@@ -57,18 +67,21 @@ claude mcp add powerbi-modeling-mcp \
 Skills are reusable capabilities that agents can invoke. In the context of semantic models:
 
 ### DAX Skills
+
 - Measure creation and optimization
 - Time intelligence patterns
 - Calculation group development
 - Format string generation
 
 ### Model Management Skills
+
 - Bulk property updates
 - Relationship management
 - Partition configuration
 - Deployment automation
 
 ### Documentation Skills
+
 - Description generation
 - Model documentation
 - Lineage documentation
@@ -100,6 +113,7 @@ Subagents are specialized agents that handle specific subtasks:
 Create instruction files that agents read at session start:
 
 ### AGENTS.md (Universal)
+
 ```markdown
 # Semantic Model Development Instructions
 
@@ -120,6 +134,7 @@ Create instruction files that agents read at session start:
 ```
 
 ### CLAUDE.md (Claude-specific)
+
 ```markdown
 # Claude Code Instructions
 

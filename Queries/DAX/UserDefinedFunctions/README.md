@@ -1,3 +1,11 @@
+---
+title: DAX User Defined Functions (UDFs)
+tags: [dax, advanced]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # DAX User Defined Functions (UDFs)
 
 Reusable parameterized DAX functions for Power BI semantic models.

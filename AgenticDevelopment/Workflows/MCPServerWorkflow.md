@@ -1,3 +1,11 @@
+---
+title: MCP Server Workflow
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # MCP Server Workflow
 
 > Using MCP servers for bulk operations and validated changes

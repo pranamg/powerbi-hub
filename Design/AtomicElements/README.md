@@ -1,3 +1,11 @@
+---
+title: Atomic Elements
+tags: [design, visuals]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Atomic Elements
 
 > Smallest reusable pieces of a report, formatted consistently.

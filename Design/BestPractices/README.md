@@ -1,3 +1,11 @@
+---
+title: Design Best Practices
+tags: [design]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Design Best Practices
 
 > Practices that keep reports usable as they grow.

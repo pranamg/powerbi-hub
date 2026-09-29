@@ -1,3 +1,11 @@
+---
+title: Dataset
+tags: [automation, powershell, devops]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Dataset
 
 > Dataset lifecycle automation.

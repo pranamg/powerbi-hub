@@ -1,3 +1,11 @@
+---
+title: Python Visuals
+tags: [visuals, python]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Python Visuals
 
 > Python-based custom visual scripts.

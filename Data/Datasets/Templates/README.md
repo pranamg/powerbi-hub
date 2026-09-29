@@ -1,3 +1,11 @@
+---
+title: Dataset Templates
+tags: [modeling, deployment]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Dataset Templates
 
 > Starting points for new datasets.

@@ -1,3 +1,11 @@
+---
+title: Macros
+tags: [automation, office]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Macros
 
 > Power Query and report macros.

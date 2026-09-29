@@ -1,3 +1,11 @@
+---
+title: Monitoring
+tags: [monitoring, operations]
+audience: [bi-admin]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Monitoring
 
 > Operational visibility into reports, refreshes, and capacity health.

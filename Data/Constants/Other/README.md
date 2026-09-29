@@ -1,3 +1,11 @@
+---
+title: Other Constants
+tags: [modeling, constants]
+audience: [model-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Other Constants
 
 > Shared definitions that do not fit the other constant folders.

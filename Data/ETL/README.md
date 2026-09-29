@@ -1,3 +1,11 @@
+---
+title: ETL
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # ETL
 
 > Extract, transform, and load patterns by tooling.

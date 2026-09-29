@@ -1,3 +1,11 @@
+---
+title: User Guides
+tags: [documentation]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # User Guides
 
 > Task-oriented walkthroughs of Power BI and related tooling.

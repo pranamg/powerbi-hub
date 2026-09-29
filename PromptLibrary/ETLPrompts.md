@@ -1,3 +1,11 @@
+---
+title: ETL & Data Pipeline Prompts
+tags: [prompts, power-query, ai]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # ETL & Data Pipeline Prompts
 
 Prompts for data extraction, transformation, loading, and pipeline design.
@@ -197,6 +205,7 @@ Include:
 ## Tips for ETL Prompts
 
 Include:
+
 1. Source system details (type, access method, credentials handling)
 2. Data volumes and growth rates
 3. Refresh frequency requirements

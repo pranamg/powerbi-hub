@@ -1,3 +1,11 @@
+---
+title: MCP Tools: Model Context Protocol for Semantic Models
+tags: [agentic, mcp, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # MCP Tools: Model Context Protocol for Semantic Models
 
 > Powerful integrations and servers for agentic development
@@ -41,6 +49,7 @@ The official MCP server from Microsoft for semantic model development.
 **GitHub:** [microsoft/powerbi-modeling-mcp](https://github.com/microsoft/powerbi-modeling-mcp)
 
 **Features:**
+
 - Connect to Power BI Desktop, published models, or local TMDL
 - Comprehensive tools for model manipulation
 - Built-in resources for DAX functions and patterns

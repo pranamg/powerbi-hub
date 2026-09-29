@@ -1,3 +1,11 @@
+---
+title: Visual Examples
+tags: [visuals]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Visual Examples
 
 > Reference visual configurations.

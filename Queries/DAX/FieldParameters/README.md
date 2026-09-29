@@ -1,3 +1,11 @@
+---
+title: Field Parameters
+tags: [dax, advanced, visuals]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Field Parameters
 
 > Dynamic dimension and measure selection in Power BI visuals
@@ -55,6 +63,7 @@ Analysis Dimension = {
 ```
 
 **Usage:**
+
 - Add "Analysis Dimension" to X-axis
 - Add a slicer for "Analysis Dimension"
 - Users can switch between groupings
@@ -139,16 +148,19 @@ Chart Title =
 ## Use Cases
 
 ### Executive Dashboard
+
 - Single visual with measure selector
 - Switch between Revenue, Profit, Units, Growth
 - Reduces dashboard clutter
 
 ### Regional Analysis
+
 - Same visual structure
 - Switch between regions dynamically
 - Compare without multiple charts
 
 ### Time Series Analysis
+
 - Dynamic time granularity
 - Year → Quarter → Month → Day
 - Single visual serves all needs
@@ -156,12 +168,14 @@ Chart Title =
 ## Best Practices
 
 ### Do's
+
 - Include clear, business-friendly names
 - Set appropriate sort order
 - Use with slicers for user selection
 - Document what each option shows
 
 ### Don'ts
+
 - Don't include too many options (< 10)
 - Don't mix incompatible data types
 - Don't forget default selection

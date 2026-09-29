@@ -1,3 +1,11 @@
+---
+title: DAX Best Practices
+tags: [dax, best-practices]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # DAX Best Practices
 
 > Practices for readable and fast DAX.

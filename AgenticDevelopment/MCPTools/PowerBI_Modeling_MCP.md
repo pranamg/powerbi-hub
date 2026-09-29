@@ -1,3 +1,11 @@
+---
+title: Power BI Modeling MCP Server
+tags: [agentic, mcp, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI Modeling MCP Server
 
 > Microsoft's official MCP server for semantic model development

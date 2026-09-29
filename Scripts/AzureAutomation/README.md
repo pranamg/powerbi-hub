@@ -1,3 +1,11 @@
+---
+title: Azure Automation
+tags: [automation, devops]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Azure Automation
 
 > Runbooks for Azure Automation.

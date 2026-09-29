@@ -1,3 +1,11 @@
+---
+title: Reports
+tags: [reports, design]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Reports
 
 > Report examples and reusable report templates.

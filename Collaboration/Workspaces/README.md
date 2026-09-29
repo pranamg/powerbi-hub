@@ -1,3 +1,11 @@
+---
+title: Workspaces
+tags: [collaboration, workspaces]
+audience: [bi-admin]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Workspaces
 
 > Workspace structure, roles, and lifecycle guidance.

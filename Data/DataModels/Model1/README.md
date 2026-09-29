@@ -1,3 +1,11 @@
+---
+title: Model 1 — Minimal Star Schema
+tags: [modeling, tmdl, reference]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Model 1 — Minimal Star Schema
 
 > A complete, readable star-schema model: one fact table, three dimensions, and

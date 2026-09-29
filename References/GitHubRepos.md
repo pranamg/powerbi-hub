@@ -1,3 +1,11 @@
+---
+title: Power BI GitHub Repositories
+tags: [references, tooling]
+audience: [developer]
+difficulty: reference
+last_verified: 2026-09-29
+---
+
 # Power BI GitHub Repositories
 
 Curated list of valuable GitHub repositories for Power BI development.

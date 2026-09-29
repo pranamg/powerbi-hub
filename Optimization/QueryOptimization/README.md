@@ -1,3 +1,11 @@
+---
+title: Query Optimization
+tags: [performance, optimization]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Query Optimization
 
 > Improving DAX and query performance.

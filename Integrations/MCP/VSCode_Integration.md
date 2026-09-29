@@ -1,3 +1,11 @@
+---
+title: VS Code Integration for Power BI MCP
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # VS Code Integration for Power BI MCP
 
 > Configure Visual Studio Code to use AI assistants with your Power BI semantic models via MCP.
@@ -342,11 +350,13 @@ Use snippets: Type prefix (e.g., `pbi-tables`) and press Tab.
 ### Extension Not Connecting
 
 **Check MCP Server Status:**
+
 1. Open Output panel (`Ctrl+Shift+U`)
 2. Select "Claude" or "MCP" from dropdown
 3. Look for connection errors
 
 **Verify Settings:**
+
 ```bash
 # In VS Code terminal, test manually
 npx @anthropic/powerbi-mcp --debug

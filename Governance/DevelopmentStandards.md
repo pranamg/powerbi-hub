@@ -1,3 +1,11 @@
+---
+title: Power BI Development Standards
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI Development Standards
 
 > Guidelines and best practices for Power BI development
@@ -26,6 +34,7 @@ These standards ensure consistency, quality, and maintainability across all Powe
 ```
 
 **Rules:**
+
 - Fact tables contain foreign keys and measures
 - Dimension tables contain descriptive attributes
 - One-to-many relationships from dimensions to facts
@@ -34,6 +43,7 @@ These standards ensure consistency, quality, and maintainability across all Powe
 ### Date Table Requirements
 
 Every model with date analysis must have:
+
 - [ ] Dedicated date dimension table
 - [ ] Continuous date range (no gaps)
 - [ ] Marked as "Date Table" in Power BI
@@ -78,16 +88,19 @@ Total Sales = SUM(Sales[Amount])-SUM(Sales[Returns])
 ### Measure Organization
 
 1. **Base Measures**: Simple aggregations
+
    ```dax
    Total Sales = SUM(Sales[Amount])
    ```
 
 2. **Derived Measures**: Build on base measures
+
    ```dax
    Sales YTD = TOTALYTD([Total Sales], 'Date'[Date])
    ```
 
 3. **Helper Measures**: Hidden, prefixed with underscore
+
    ```dax
    _BaseFilter = IF(HASONEVALUE(Dim[Column]), 1, 0)
    ```
@@ -127,6 +140,7 @@ Total Sales = SUM(Sales[Amount])-SUM(Sales[Returns])
 ### Error Handling
 
 Always wrap potentially failing operations:
+
 ```powerquery
 try Source{[Name="Products"]}[Data] otherwise null
 ```
@@ -255,23 +269,27 @@ EXCEPT(
 Before deployment, verify:
 
 ### Data Model
+
 - [ ] Star schema design
 - [ ] Date table marked
 - [ ] Relationships are single-direction
 - [ ] No bidirectional without justification
 
 ### DAX
+
 - [ ] Uses variables
 - [ ] Uses DIVIDE function
 - [ ] Measures documented
 - [ ] Display folders assigned
 
 ### Performance
+
 - [ ] No calculated columns where measures work
 - [ ] Query folding enabled
 - [ ] Visuals load quickly
 
 ### Security
+
 - [ ] RLS implemented if needed
 - [ ] No exposed credentials
 - [ ] Sensitive data classified

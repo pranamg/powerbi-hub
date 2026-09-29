@@ -1,3 +1,11 @@
+---
+title: TMDL View User Guide
+tags: [tmdl, modeling, tooling]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # TMDL View User Guide
 
 > **TMDL View** is a built-in code editor in Power BI Desktop for viewing and editing your semantic model as text-based TMDL (Tabular Model Definition Language).
@@ -15,9 +23,11 @@ TMDL View was introduced in Power BI Desktop and became Generally Available (GA)
 ## Enabling TMDL View
 
 ### For GA Version (September 2024+)
+
 TMDL View is enabled by default in Power BI Desktop versions from September 2024 onwards.
 
 ### For Earlier Versions
+
 1. Open **Power BI Desktop**
 2. Go to **File > Options and Settings > Options**
 3. Navigate to **Preview features**
@@ -27,15 +37,18 @@ TMDL View is enabled by default in Power BI Desktop versions from September 2024
 ## Accessing TMDL View
 
 ### Method 1: From the View Menu
+
 1. Open your .pbix file
 2. Click **View** in the ribbon
 3. Select **TMDL View**
 
 ### Method 2: From Model View
+
 1. Switch to **Model view** (data model diagram)
 2. Look for **TMDL View** button in the ribbon
 
 ### Method 3: Keyboard Shortcut
+
 - Press `Ctrl + Alt + T` to toggle TMDL View
 
 ## Interface Overview
@@ -58,6 +71,7 @@ TMDL View is enabled by default in Power BI Desktop versions from September 2024
 ```
 
 ### Explorer Panel
+
 - **Folder structure** mirroring TMDL organization
 - **Tables folder** - One file per table
 - **Roles folder** - Security roles
@@ -65,6 +79,7 @@ TMDL View is enabled by default in Power BI Desktop versions from September 2024
 - Click any file to open in editor
 
 ### Code Editor
+
 - Full-featured text editor
 - Syntax highlighting for TMDL
 - IntelliSense code completion
@@ -149,24 +164,29 @@ role RegionalSales
 ## Code Editor Features
 
 ### IntelliSense
+
 - Press `Ctrl+Space` for suggestions
 - Auto-completes keywords, table names, column names
 - Shows DAX function signatures
 
 ### Find and Replace
+
 - `Ctrl+F` - Find
 - `Ctrl+H` - Replace
 - Supports regex patterns
 
 ### Code Folding
+
 - Click `-` next to line numbers to collapse sections
 - Collapse table definitions for overview
 
 ### Multi-cursor Editing
+
 - `Alt+Click` to add cursors
 - Edit multiple lines simultaneously
 
 ### Go to Definition
+
 - `Ctrl+Click` on referenced objects
 - Jump to table/column definitions
 
@@ -189,6 +209,7 @@ When you make changes in TMDL View:
 4. Accept or reject changes
 
 ### Viewing Pending Changes
+
 1. Look for change indicators in Explorer (● symbol)
 2. Click to see diff view
 3. Red = removed, Green = added
@@ -196,11 +217,13 @@ When you make changes in TMDL View:
 ## Synchronization
 
 ### TMDL View ↔ Model View
+
 - Changes in TMDL View reflect in Model View
 - Changes in Model View reflect in TMDL View
 - Real-time synchronization
 
 ### Validation
+
 - Syntax errors shown with red underlines
 - Error messages in Problems panel
 - Must fix errors before closing TMDL View
@@ -208,23 +231,28 @@ When you make changes in TMDL View:
 ## Best Practices
 
 ### 1. Use for Bulk Edits
+
 TMDL View excels at:
+
 - Adding multiple measures at once
 - Copying measure patterns
 - Bulk property changes (format strings, display folders)
 
 ### 2. Leverage Find/Replace
+
 - Rename measures across entire model
 - Update format strings consistently
 - Change display folder organization
 
 ### 3. Document with Descriptions
+
 ```tmdl
 measure 'Revenue' = SUM(Sales[Amount])
     description: "Total revenue from all sales. Excludes returns."
 ```
 
 ### 4. Organize with Display Folders
+
 ```tmdl
 measure 'Sales YTD' = ...
     displayFolder: Time Intelligence\Year
@@ -234,6 +262,7 @@ measure 'Sales QTD' = ...
 ```
 
 ### 5. Copy from Templates
+
 - Keep a library of measure templates
 - Copy/paste from external TMDL files
 - Standardize patterns across projects
@@ -263,16 +292,19 @@ measure 'Sales QTD' = ...
 ## Troubleshooting
 
 ### Changes Not Applying
+
 - Check for validation errors (red underlines)
 - Save the file (`Ctrl+S`)
 - If errors persist, check DAX syntax
 
 ### IntelliSense Not Working
+
 - Ensure model is loaded completely
 - Try `Ctrl+Space` to trigger manually
 - Restart Power BI Desktop if persistent
 
 ### Performance Issues
+
 - Large models may take time to load
 - Consider splitting into smaller files
 - Close unused tabs
@@ -280,11 +312,13 @@ measure 'Sales QTD' = ...
 ## External Tools Integration
 
 TMDL View works well with:
+
 - **Tabular Editor** - Advanced model editing
 - **VS Code** - External TMDL editing
 - **Git** - Version control for TMDL folders
 
 ### Export for External Editing
+
 1. Save your .pbix file
 2. Use **pbi-tools** to extract TMDL
 3. Edit in VS Code or other editors

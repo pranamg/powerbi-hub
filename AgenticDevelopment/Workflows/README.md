@@ -1,3 +1,11 @@
+---
+title: Professional Workflows for Agentic Development
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Professional Workflows for Agentic Development
 
 > Enterprise-ready development patterns for AI-assisted semantic modeling

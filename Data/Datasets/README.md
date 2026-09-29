@@ -1,3 +1,11 @@
+---
+title: Datasets
+tags: [modeling, deployment]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Datasets
 
 > Dataset examples and starting templates.

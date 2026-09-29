@@ -1,3 +1,11 @@
+---
+title: Metrics
+tags: [monitoring, operations]
+audience: [bi-admin]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Metrics
 
 > KPIs and usage metrics for the Power BI estate.

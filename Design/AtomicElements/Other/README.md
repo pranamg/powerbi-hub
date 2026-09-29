@@ -1,3 +1,11 @@
+---
+title: Other
+tags: [design, visuals]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Other
 
 > Atomic elements without a dedicated folder.

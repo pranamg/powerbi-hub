@@ -1,3 +1,11 @@
+---
+title: DAX Query View User Guide
+tags: [dax, tooling]
+audience: [model-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # DAX Query View User Guide
 
 > **DAX Query View** is a built-in query editor in Power BI Desktop for writing, testing, and debugging DAX queries directly against your semantic model.
@@ -16,14 +24,17 @@ DAX Query View provides a dedicated space to:
 ## Accessing DAX Query View
 
 ### Method 1: From the View Menu
+
 1. Open your .pbix file in Power BI Desktop
 2. Click **View** in the ribbon
 3. Select **DAX query** (or **DAX Query View**)
 
 ### Method 2: Keyboard Shortcut
+
 - Press `Ctrl+Alt+D` to toggle DAX Query View
 
 ### Method 3: From the Left Navigation
+
 - Click the **DAX Query View** icon in the left sidebar
 - Icon looks like a document with code
 
@@ -224,6 +235,7 @@ ADDCOLUMNS(
 ### Adding UDFs to the Model
 
 After testing in DAX Query View:
+
 1. Validate the function works correctly
 2. Use TMDL View or Tabular Editor to add permanently
 3. Reference in measures: `[My UDF](parameter)`
@@ -363,12 +375,14 @@ Each EVALUATE produces a separate result tab.
 ## Exporting Results
 
 ### Copy to Clipboard
+
 1. Run query
 2. Select results (or `Ctrl+A` for all)
 3. `Ctrl+C` to copy
 4. Paste into Excel or other applications
 
 ### Export to CSV (via Copy)
+
 1. Copy results
 2. Paste into text editor
 3. Save as .csv
@@ -376,9 +390,11 @@ Each EVALUATE produces a separate result tab.
 ## Best Practices
 
 ### 1. Test Before Adding to Model
+
 Always validate measure logic in DAX Query View before adding permanently.
 
 ### 2. Use Variables for Debugging
+
 ```dax
 DEFINE
     MEASURE Sales[Debug] = 
@@ -391,6 +407,7 @@ EVALUATE ROW("Result", [Debug])
 ```
 
 ### 3. Start Simple, Add Complexity
+
 ```dax
 -- Step 1: Basic query
 EVALUATE SUMMARIZE(Sales, 'Date'[Year])
@@ -412,6 +429,7 @@ SUMMARIZECOLUMNS(
 ```
 
 ### 4. Comment Your Queries
+
 ```dax
 // Purpose: Test YoY calculation for fiscal year
 // Author: Data Team
@@ -437,17 +455,20 @@ DEFINE
 ## Troubleshooting
 
 ### Query Returns Error
+
 - Check for missing table/column references
 - Verify measure names are correct
 - Ensure proper use of CALCULATE context
 
 ### Slow Query Performance
+
 - Use SUMMARIZECOLUMNS instead of SUMMARIZE + ADDCOLUMNS
 - Avoid unnecessary columns in output
 - Filter early in the query
 - Check for expensive iterators
 
 ### IntelliSense Not Working
+
 - Wait for model to fully load
 - Press `Ctrl+Space` to trigger
 - Restart Power BI Desktop if persistent

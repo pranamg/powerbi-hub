@@ -1,3 +1,11 @@
+---
+title: Microsoft Fabric Integration Patterns
+tags: [fabric, data-connections]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Microsoft Fabric Integration Patterns
 
 > **Purpose:** Patterns and guides for integrating Power BI with Microsoft Fabric components

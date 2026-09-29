@@ -1,3 +1,11 @@
+---
+title: Buttons
+tags: [design, visuals]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Buttons
 
 > Navigation and action buttons.

@@ -1,3 +1,11 @@
+---
+title: Other
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Other
 
 > Sources without a dedicated folder.

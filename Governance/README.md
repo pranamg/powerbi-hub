@@ -1,3 +1,11 @@
+---
+title: Governance
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Governance
 
 > Policies, standards, and security guidance for governed Power BI estates.

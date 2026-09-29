@@ -1,3 +1,11 @@
+---
+title: Power Query
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Power Query
 
 > Custom M functions and query patterns.

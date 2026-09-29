@@ -1,3 +1,11 @@
+---
+title: Setup
+tags: [setup, tooling]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Setup
 
 > Installing Power BI and configuring a working environment.

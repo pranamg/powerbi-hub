@@ -1,3 +1,11 @@
+---
+title: Architecture Diagrams
+tags: [architecture, documentation]
+audience: [all]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Architecture Diagrams
 
 > Reference diagrams for solution architecture.

@@ -1,3 +1,11 @@
+---
+title: Tabular Editor CLI Reference
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Tabular Editor CLI Reference
 
 > Complete command-line options for semantic model automation

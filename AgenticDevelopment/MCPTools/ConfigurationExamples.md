@@ -1,3 +1,11 @@
+---
+title: MCP Configuration Examples
+tags: [agentic, mcp, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # MCP Configuration Examples
 
 > Ready-to-use configurations for different AI applications

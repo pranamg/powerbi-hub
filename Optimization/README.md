@@ -1,3 +1,11 @@
+---
+title: Optimization
+tags: [performance, optimization]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Optimization
 
 > Improving model and report performance.

@@ -1,3 +1,11 @@
+---
+title: Audits
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Audits
 
 > Audit checklists, cadence, and findings.

@@ -1,3 +1,11 @@
+---
+title: ETL Best Practices
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # ETL Best Practices
 
 > Practices that apply across every extraction and transformation tool.

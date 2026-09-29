@@ -1,3 +1,11 @@
+---
+title: Parquet
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Parquet
 
 > Columnar file format.
@@ -16,7 +24,6 @@ faster.
   name and silently produces nulls when columns differ.
 - Combine with **incremental refresh** so history is not re-read on every run.
 - Partition by date where the files are naturally divided that way.
-
 
 ## General guidance
 

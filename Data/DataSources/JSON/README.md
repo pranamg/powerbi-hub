@@ -1,3 +1,11 @@
+---
+title: JSON
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # JSON
 
 > JSON files and JSON web APIs.

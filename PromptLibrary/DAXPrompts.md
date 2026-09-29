@@ -1,3 +1,11 @@
+---
+title: DAX Prompts for AI Assistance
+tags: [prompts, dax, ai]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # DAX Prompts for AI Assistance
 
 Use these prompts with AI assistants (ChatGPT, Copilot, Claude) to help with DAX development.
@@ -5,6 +13,7 @@ Use these prompts with AI assistants (ChatGPT, Copilot, Claude) to help with DAX
 ## Measure Creation
 
 ### Time Intelligence
+
 ```
 Create a DAX measure for [YTD/QTD/MTD] calculation for [measure name] 
 using a date table called [DateTable] with date column [Date].
@@ -23,6 +32,7 @@ with any date selection in the filter context.
 ```
 
 ### Rankings & Top N
+
 ```
 Create a dynamic Top N measure that:
 1. Ranks [Products] by [Sales]
@@ -37,6 +47,7 @@ and classifies items as "Vital Few" or "Trivial Many".
 ```
 
 ### Conditional Logic
+
 ```
 Create a DAX measure with the following business logic:
 - If [Status] = "Active" AND [Amount] > 1000, return "High Priority"
@@ -48,6 +59,7 @@ Include error handling for nulls.
 ## Debugging & Optimization
 
 ### Debugging
+
 ```
 My DAX measure returns BLANK when I expect a value:
 [paste your measure]
@@ -62,6 +74,7 @@ How does filter context affect this and what's the fix?
 ```
 
 ### Performance
+
 ```
 Optimize this DAX measure for better performance.
 It currently takes [X] seconds to render:
@@ -96,6 +109,7 @@ What's the correct DAX pattern for calculating [metric]?
 ## Advanced Patterns
 
 ### Row-Level Security
+
 ```
 Create a DAX expression for row-level security that:
 - Filters [SalesTable] based on user's region
@@ -104,6 +118,7 @@ Create a DAX expression for row-level security that:
 ```
 
 ### Calculation Groups
+
 ```
 Design a calculation group for time intelligence that includes:
 - Current Period
@@ -118,6 +133,7 @@ Show the TMSL/Tabular Editor code.
 > Use these with AI assistants connected to Power BI via MCP Server
 
 ### Model Exploration
+
 ```
 Using the connected Power BI model:
 1. List all tables and their row counts
@@ -135,6 +151,7 @@ Analyze the [TableName] table:
 ```
 
 ### Query Execution
+
 ```
 Execute this DAX query against the connected model:
 EVALUATE
@@ -151,6 +168,7 @@ Show me the DAX you generate and the results.
 ```
 
 ### Measure Development with MCP
+
 ```
 Using the connected model, create a measure for [requirement].
 1. First, show me the relevant tables and columns
@@ -169,6 +187,7 @@ Then create the measure.
 ```
 
 ### Documentation Generation
+
 ```
 Generate documentation for all measures in [TableName]:
 - Measure name and display folder
@@ -187,6 +206,7 @@ Create a data dictionary for this model:
 ```
 
 ### Performance Analysis
+
 ```
 Analyze the [MeasureName] measure:
 1. Show its DAX expression
@@ -196,6 +216,7 @@ Analyze the [MeasureName] measure:
 ```
 
 ### Data Validation
+
 ```
 Validate data quality in the connected model:
 1. Check for null values in key columns
@@ -207,6 +228,7 @@ Validate data quality in the connected model:
 ## Context Tips
 
 When asking about DAX, always provide:
+
 1. Table names and relevant column names
 2. Existing relationships (one-to-many direction)
 3. Filter context (what slicers/filters are applied)
@@ -214,7 +236,9 @@ When asking about DAX, always provide:
 5. Sample data if possible
 
 ### With MCP Connected
+
 When your AI assistant has MCP access:
+
 - Reference columns exactly as they appear in the model
 - Ask the AI to verify assumptions by querying metadata
 - Request test queries to validate measure logic

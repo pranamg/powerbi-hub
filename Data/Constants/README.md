@@ -1,3 +1,11 @@
+---
+title: Constants
+tags: [modeling, constants]
+audience: [model-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Constants
 
 > Reusable calculated tables and definitions shared across models.

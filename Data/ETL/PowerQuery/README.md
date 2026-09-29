@@ -1,3 +1,11 @@
+---
+title: PowerQuery
+tags: [power-query, etl]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # PowerQuery
 
 > Power Query / M transformation patterns.

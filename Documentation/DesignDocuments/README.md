@@ -1,3 +1,11 @@
+---
+title: Design Documents
+tags: [architecture, documentation]
+audience: [all]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Design Documents
 
 > Design decisions and specifications.

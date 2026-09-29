@@ -1,3 +1,11 @@
+---
+title: Design Guidelines
+tags: [design]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Design Guidelines
 
 > House standards for report and dashboard design.

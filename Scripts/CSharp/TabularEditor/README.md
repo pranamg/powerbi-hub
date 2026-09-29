@@ -1,3 +1,11 @@
+---
+title: Tabular Editor Resources
+tags: [automation, csharp]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Tabular Editor Resources
 
 > Best Practice Analyzer rules and C# scripts for Power BI model development
@@ -23,18 +31,21 @@ out of this document:
 ### Loading Custom Rules
 
 **Tabular Editor 2:**
+
 ```
 Tools → Manage BPA Rules → Import
 Select BestPracticeRules.json
 ```
 
 **Tabular Editor 3:**
+
 ```
 Preferences → Best Practice Analyzer → Add Custom Rules
 Point to BestPracticeRules.json
 ```
 
 ### Running BPA
+
 ```
 View → Best Practice Analyzer (Ctrl+B)
 Click "Run Analysis"
@@ -63,11 +74,13 @@ Click "Run Analysis"
 ### Using Scripts
 
 **Tabular Editor 2/3:**
+
 1. Open Advanced Scripting pane
 2. Paste script content
 3. Run (F5)
 
 **Command Line:**
+
 ```powershell
 tabular-editor Model.bim -S "ScriptFile.cs"
 ```
@@ -221,6 +234,7 @@ Info("Display folders assigned");
 ### Pre-Commit Hook
 
 Add to `.git/hooks/pre-commit`:
+
 ```bash
 #!/bin/sh
 tabular-editor Model.bim -A BestPracticeRules.json

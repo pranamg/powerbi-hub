@@ -1,3 +1,11 @@
+---
+title: Report Templates
+tags: [reports, design]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Report Templates
 
 > Starting points for new reports.

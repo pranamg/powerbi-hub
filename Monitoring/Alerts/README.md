@@ -1,3 +1,11 @@
+---
+title: Alerts
+tags: [monitoring, operations]
+audience: [bi-admin]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Alerts
 
 > Alert definitions and routing.

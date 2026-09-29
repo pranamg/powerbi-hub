@@ -1,3 +1,11 @@
+---
+title: Issue Templates
+tags: [documentation]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Issue Templates
 
 > Templates for reporting bugs and proposing features.

@@ -1,3 +1,11 @@
+---
+title: Coding Agents for Semantic Model Development
+tags: [agentic, ai, tooling]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Coding Agents for Semantic Model Development
 
 > Deep dive into Claude Code, GitHub Copilot, and other coding agents
@@ -105,11 +113,13 @@ GitHub Copilot's agent mode works within VS Code and can modify files, run comma
 ### Strengths & Limitations
 
 **Strengths:**
+
 - Integrated in VS Code (familiar UI)
 - Good for code-heavy tasks
 - Inline suggestions while editing
 
 **Limitations:**
+
 - Heavier UI overhead
 - Less visibility into context usage
 - MCP server support still maturing

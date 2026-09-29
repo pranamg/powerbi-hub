@@ -1,3 +1,11 @@
+---
+title: OneLake Integration
+tags: [fabric, data-connections]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # OneLake Integration
 
 > **Purpose:** Patterns for integrating Power BI with OneLake unified storage
@@ -50,6 +58,7 @@ OneLake (Tenant Level)
 ### What are Shortcuts?
 
 Shortcuts are pointers to data that allow accessing data without copying:
+
 - **Internal shortcuts:** Point to other OneLake locations
 - **External shortcuts:** Point to ADLS Gen2, S3, GCS
 
@@ -206,6 +215,7 @@ print(response.json())
 ### OneLake File Explorer
 
 Desktop application for browsing OneLake:
+
 1. Download from Microsoft Store
 2. Sign in with Microsoft account
 3. Browse workspaces and items
@@ -235,6 +245,7 @@ Desktop application for browsing OneLake:
 ### Item-Level Permissions
 
 Can be configured per Lakehouse/Warehouse:
+
 - Read
 - ReadAll (bypass RLS)
 - Write
@@ -258,6 +269,7 @@ Can be configured per Lakehouse/Warehouse:
    - Lakehouses: `<Domain>-Data-<Purpose>`
 
 2. **Folder structure**
+
    ```
    Files/
    ├── Landing/
@@ -285,16 +297,19 @@ Can be configured per Lakehouse/Warehouse:
 ### Common Issues
 
 **"Shortcut not found"**
+
 - Check source still exists
 - Verify permissions on source
 - Refresh metadata
 
 **"Access denied"**
+
 - Check workspace role
 - Verify item permissions
 - For external, check credential validity
 
 **"Data not current"**
+
 - Shortcuts are metadata only
 - Check source data freshness
 - Run Delta OPTIMIZE on source

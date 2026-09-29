@@ -1,3 +1,11 @@
+---
+title: Direct Metadata Modification Workflow
+tags: [agentic, automation, tooling]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Direct Metadata Modification Workflow
 
 > Working with TMDL files directly using coding agents
@@ -195,6 +203,7 @@ LLMs have less exposure to TMDL compared to TMSL:
 ### 1. Use the TMDL Extension
 
 Install in VS Code for:
+
 - Syntax highlighting
 - Basic validation
 - Error indicators

@@ -1,3 +1,11 @@
+---
+title: Dataflows
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Dataflows
 
 > Power BI dataflows as an upstream source.
@@ -18,7 +26,6 @@ is not warranted.
 - Enable **incremental refresh** on large tables.
 - Keep the dataflow as the place transformation happens. Reports should apply
   only presentation logic.
-
 
 ## General guidance
 

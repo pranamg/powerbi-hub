@@ -1,3 +1,11 @@
+---
+title: MSAccess
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # MSAccess
 
 > Microsoft Access database sources.
@@ -15,7 +23,6 @@ target architecture.
   rather than raw tables, and copy the file to a controlled location before
   import so a local edit does not affect refresh.
 - Import rather than DirectQuery; live querying of an Access file is fragile.
-
 
 ## General guidance
 

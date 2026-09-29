@@ -1,3 +1,11 @@
+---
+title: Workflows
+tags: [documentation]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Workflows
 
 > Continuous integration definitions.

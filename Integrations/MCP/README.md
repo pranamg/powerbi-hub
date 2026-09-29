@@ -1,3 +1,11 @@
+---
+title: Power BI MCP (Model Context Protocol)
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI MCP (Model Context Protocol)
 
 Connect AI assistants to your Power BI semantic models.

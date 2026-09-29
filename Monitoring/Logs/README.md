@@ -1,3 +1,11 @@
+---
+title: Logs
+tags: [monitoring, operations]
+audience: [bi-admin]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Logs
 
 > Log collection and analysis.

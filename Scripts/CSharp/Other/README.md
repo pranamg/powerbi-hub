@@ -1,3 +1,11 @@
+---
+title: Other
+tags: [automation, csharp]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Other
 
 > C# scripts without a dedicated folder.

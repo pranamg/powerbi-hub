@@ -1,3 +1,11 @@
+---
+title: Pull Request
+tags: [documentation]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Pull Request
 
 ## Description
@@ -17,7 +25,7 @@ Fixes # (issue)
 
 Please describe the tests that you ran to verify your changes.
 
-## Checklist:
+## Checklist
 
 - [ ] My code follows the code style of this project.
 - [ ] I have updated the documentation accordingly.

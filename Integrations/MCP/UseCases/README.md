@@ -1,3 +1,11 @@
+---
+title: Power BI MCP Use Cases
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI MCP Use Cases
 
 > Practical examples of using the Power BI MCP Server with AI assistants
@@ -19,6 +27,7 @@ The Power BI MCP Server enables AI assistants to directly interact with your Pow
 ## Quick Start Examples
 
 ### 1. Simple Model Query
+
 ```
 User: "What are the total sales by region for Q4 2024?"
 
@@ -36,6 +45,7 @@ SUMMARIZECOLUMNS(
 ```
 
 ### 2. Measure Validation
+
 ```
 User: "Check if my YTD Sales measure is calculating correctly"
 
@@ -47,6 +57,7 @@ AI via MCP:
 ```
 
 ### 3. Documentation Request
+
 ```
 User: "Document all measures in the Sales table"
 

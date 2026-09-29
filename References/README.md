@@ -1,3 +1,11 @@
+---
+title: References
+tags: [references]
+audience: [all]
+difficulty: reference
+last_verified: 2026-09-29
+---
+
 # References
 
 > Curated external resources for learning and staying current.

@@ -1,3 +1,11 @@
+---
+title: Hooks: Automated Triggers and Quality Gates
+tags: [agentic, ci-cd, automation]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Hooks: Automated Triggers and Quality Gates
 
 > Integrate validation and automation into your agentic development workflow

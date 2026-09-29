@@ -1,3 +1,11 @@
+---
+title: Compliance
+tags: [governance, security]
+audience: [bi-admin]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Compliance
 
 > Compliance requirements and the evidence that supports them.

@@ -1,3 +1,11 @@
+---
+title: ColorTable
+tags: [visuals, design]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # ColorTable
 
 > Named color constants for consistent formatting.

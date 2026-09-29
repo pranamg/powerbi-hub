@@ -1,3 +1,11 @@
+---
+title: Contributing to PowerBI-Hub
+tags: [contributing, meta]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Contributing to PowerBI-Hub
 
 First off, thank you for considering contributing to the **PowerBI-Hub**! Your contributions help make this project more robust, comprehensive, and valuable to the Power BI community.
@@ -6,18 +14,17 @@ First off, thank you for considering contributing to the **PowerBI-Hub**! Your c
 
 - [Code of Conduct](#code-of-conduct)
 - [How to Contribute](#how-to-contribute)
-  - [Reporting Bugs](#reporting-bugs)
-  - [Suggesting Enhancements](#suggesting-enhancements)
-  - [Your First Code Contribution](#your-first-code-contribution)
-  - [Making Changes](#making-changes)
-  - [Submitting a Pull Request](#submitting-a-pull-request)
+  - [1. Reporting Bugs](#1-reporting-bugs)
+  - [2. Suggesting Enhancements](#2-suggesting-enhancements)
+  - [3. Your First Code Contribution](#3-your-first-code-contribution)
+  - [4. Making Changes](#4-making-changes)
+  - [5. Submitting a Pull Request](#5-submitting-a-pull-request)
 - [Style Guides](#style-guides)
   - [Markdown Style Guide](#markdown-style-guide)
   - [Power BI Best Practices](#power-bi-best-practices)
 - [Commit Guidelines](#commit-guidelines)
 - [License](#license)
 - [Contribution Guidelines](#contribution-guidelines)
-
 
 ---
 
@@ -59,18 +66,22 @@ If you’re new to contributing, consider starting with the following:
    - Click the **Fork** button at the top-right of the repository page.
 
 2. **Clone Your Fork:**
+
    ```bash
    git clone https://github.com/pranamg/PowerBI-Hub.git
 
 3. **Create a New Branch:**
+
     ```bash
     git checkout -b feature/your-feature-name
 
 4. **Make Your Changes:**
-    - Implement your feature, fix bugs, or improve documentation.
+
+   - Implement your feature, fix bugs, or improve documentation.
 
 5. **Commit Your Changes:**
-    ```bash    
+
+    ```bash
     git add .git commit -m "Add [feature/fix]: Brief description"
 
     - **Example:** `git commit -m "Add DAX measures for sales analysis"`
@@ -99,7 +110,7 @@ If you’re new to contributing, consider starting with the following:
 
     - Be open to feedback and make necessary revisions.
 
-* * *
+---
 
 ## Style Guides
 
@@ -118,7 +129,7 @@ If you’re new to contributing, consider starting with the following:
 - **Documentation:** Provide clear documentation for any new scripts, measures, or templates added.
 - **Optimization:** Ensure that any new DAX measures or Power Query functions are optimized for performance.
 
-* * *
+---
 
 ## Commit Guidelines
 
@@ -133,20 +144,20 @@ Adhering to consistent commit messages improves the readability and traceability
 
 - **Types:**
 
-    - `feat`: A new feature
-    - `fix`: A bug fix
-    - `docs`: Documentation changes
-    - `style`: Code style changes (formatting, missing semi-colons, etc.)
-    - `refactor`: Code changes that neither fix a bug nor add a feature
-    - `test`: Adding or modifying tests
-    - `chore`: Maintenance tasks (build process, dependencies, etc.)
+  - `feat`: A new feature
+  - `fix`: A bug fix
+  - `docs`: Documentation changes
+  - `style`: Code style changes (formatting, missing semi-colons, etc.)
+  - `refactor`: Code changes that neither fix a bug nor add a feature
+  - `test`: Adding or modifying tests
+  - `chore`: Maintenance tasks (build process, dependencies, etc.)
 - **Examples:**
 
-    - `feat: Add custom DAX measures for sales analysis`
-    - `fix: Correct data source path in Power Query script`
-    - `docs: Update README with new folder structure`
+  - `feat: Add custom DAX measures for sales analysis`
+  - `fix: Correct data source path in Power Query script`
+  - `docs: Update README with new folder structure`
 
-* * *
+---
 
 ## License
 
@@ -164,7 +175,7 @@ def example_function():
     pass
 ```
 
-* * *
+---
 
 ## Additional Resources
 

@@ -1,3 +1,11 @@
+---
+title: PowerBI-Hub Implementation Checklist
+tags: [meta, onboarding]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # PowerBI-Hub Implementation Checklist
 
 > **Purpose:** Track implementation progress across all phases  
@@ -22,18 +30,21 @@
 ## Phase 1: Core Foundations ✅
 
 ### 1.1 Date Tables
+
 - [x] `DateTable_Basic.dax` - Standard calendar
 - [x] `DateTable_Extended.dax` - Fiscal year support
 - [x] `DateTable_MultiCalendar.dax` - Multiple calendar systems
 - [x] README documentation
 
 ### 1.2 DAX Measures
+
 - [x] `TimeIntelligence.dax` - YTD, QTD, MTD, YoY, Rolling
 - [x] `Rankings.dax` - Top N, Pareto, ABC, Percentiles
 - [x] `ConditionalFormatting.dax` - RAG, Icons, Colors
 - [x] README documentation
 
 ### 1.3 Power Query Functions
+
 - [x] `fnDateTableGenerator.m`
 - [x] `fnErrorHandler.m`
 - [x] `fnDynamicDataSource.m`
@@ -42,16 +53,19 @@
 - [x] README documentation
 
 ### 1.4 Design System
+
 - [x] `Theme_Corporate_Light.json`
 - [x] `Theme_Corporate_Dark.json`
 - [x] README documentation
 
 ### 1.5 References
+
 - [x] `Articles.md` - Curated article links
 - [x] `BlogPosts.md` - Blog recommendations
 - [x] `GitHubRepos.md` - Useful repositories
 
 ### 1.6 Prompt Library
+
 - [x] `DAXPrompts.md`
 - [x] `PowerQueryPrompts.md`
 - [x] `VisualsPrompts.md`
@@ -59,6 +73,7 @@
 - [x] `GeneralPrompts.md`
 
 ### 1.7 Tips & Tricks
+
 - [x] `DAX.md` - DAX best practices
 - [x] `PowerQuery.md` - M language tips
 - [x] `Performance.md` - Optimization guide
@@ -68,6 +83,7 @@
 ## Phase 2: Modern DAX Features ✅
 
 ### 2.1 Window Functions
+
 - [x] Create `Queries/DAX/Measures/WindowFunctions.dax`
 - [x] INDEX examples
 - [x] OFFSET examples
@@ -81,6 +97,7 @@
 - [x] Update README with window functions
 
 ### 2.2 User Defined Functions (UDFs)
+
 - [x] Create `Queries/DAX/UserDefinedFunctions/` folder
 - [x] `UDF_Examples.dax` - All categories combined
 - [x] Financial functions (Tax, interest, margin)
@@ -93,6 +110,7 @@
 - [x] Create README for UDFs folder
 
 ### 2.3 Window Functions Tips & Tricks
+
 - [x] Update `TipsAndTricks/DAX.md` with window functions section
 - [x] Add common pitfalls
 - [x] Performance considerations
@@ -102,6 +120,7 @@
 ## Phase 3: Developer Tools & TMDL ✅
 
 ### 3.1 TMDL Scripts
+
 - [x] Create `Scripts/TMDL/` folder structure
 - [x] TMDL syntax reference guide (README.md)
 - [x] Table definition templates (Table_Template.tmdl)
@@ -111,6 +130,7 @@
 - [x] Date table template (DateTable_Template.tmdl)
 
 ### 3.2 TMDL View Guide
+
 - [x] Create `Documentation/UserGuides/TMDLView.md`
 - [x] Enabling TMDL View
 - [x] Code editor features
@@ -120,6 +140,7 @@
 - [x] Common workflows
 
 ### 3.3 DAX Query View Guide
+
 - [x] Create `Documentation/UserGuides/DAXQueryView.md`
 - [x] Creating DAX queries
 - [x] EVALUATE statements
@@ -129,6 +150,7 @@
 - [x] Creating UDFs in Query View
 
 ### 3.4 Developer Workflow Integration
+
 - [x] VS Code + TMDL workflow (included in TMDL README)
 - [x] Git integration with TMDL (included in TMDL README)
 - [x] Team collaboration patterns (TeamCollaboration.md)
@@ -138,6 +160,7 @@
 ## Phase 4: AI Integration & MCP ✅
 
 ### 4.1 Power BI MCP Setup
+
 - [x] Create `Integrations/MCP/` folder
 - [x] `README.md` - MCP overview with quick start
 - [x] `Setup_Guide.md` - Detailed installation steps
@@ -145,6 +168,7 @@
 - [x] Connection troubleshooting guide (included in Setup_Guide.md)
 
 ### 4.2 MCP Use Cases
+
 - [x] `UseCases/` subfolder
 - [x] Querying semantic models via AI
 - [x] Measure creation assistance
@@ -153,6 +177,7 @@
 - [x] Report analysis
 
 ### 4.3 MCP Prompt Templates
+
 - [x] Add MCP-specific prompts to Prompt Library
 - [x] Model exploration prompts
 - [x] Measure optimization prompts
@@ -160,6 +185,7 @@
 - [x] Created dedicated MCPPrompts.md
 
 ### 4.4 Copilot Documentation
+
 - [x] Create `Documentation/UserGuides/Copilot.md`
 - [x] Copilot capabilities overview
 - [x] Report generation
@@ -172,6 +198,7 @@
 ## Phase 5: DevOps & Automation ✅
 
 ### 5.1 PowerShell Scripts
+
 - [x] `Scripts/PowerShell/Workspace/` - Workspace management
 - [x] `Scripts/PowerShell/Dataset/` - Dataset operations
 - [x] `Scripts/PowerShell/Admin/` - Admin operations
@@ -179,6 +206,7 @@
 - [x] `Scripts/PowerShell/Gateway/` - Gateway management (3 scripts + README)
 
 ### 5.2 Deployment Pipelines
+
 - [x] Azure DevOps YAML templates (azure-pipelines.yml)
 - [x] GitHub Actions workflows (github-actions.yml)
 - [x] Pipeline README documentation
@@ -186,12 +214,14 @@
 - [x] Environment configuration files (dev.json, test.json, prod.json, schema)
 
 ### 5.3 Tabular Editor
+
 - [x] Best Practice Analyzer custom rules (BestPracticeRules.json)
 - [x] C# script examples in README
 - [x] Documentation generator script pattern
 - [x] README documentation
 
 ### 5.4 Python Automation
+
 - [x] REST API Jupyter notebook (PowerBI_REST_API.ipynb)
 - [x] Bulk operations examples in notebook
 - [x] README documentation
@@ -201,6 +231,7 @@
 ## Phase 6: Governance & Security ✅
 
 ### 6.1 Governance Documents
+
 - [x] Naming conventions document (NamingConventions.md)
 - [x] Development standards (DevelopmentStandards.md)
 - [x] Data classification policy (DataClassification.md)
@@ -208,12 +239,14 @@
 - [x] Audit procedures (AuditProcedures.md)
 
 ### 6.2 Security Templates
+
 - [x] RLS DAX patterns (RLSPatterns.md)
 - [x] OLS configuration templates (OLSConfiguration.md)
 - [x] Dynamic security patterns (in RLSPatterns.md + OLSConfiguration.md)
 - [x] Service principal setup guide (ServicePrincipalSetup.md)
 
 ### 6.3 Compliance
+
 - [x] Audit checklist (in AuditProcedures.md)
 - [x] Compliance review process (in AuditProcedures.md)
 - [x] Data lineage documentation (in DataClassification.md)
@@ -224,30 +257,35 @@
 ## Phase 7: Advanced Features ✅
 
 ### 7.1 Calculation Groups
+
 - [x] Time intelligence calculation group (TimeIntelligence.dax)
 - [x] README documentation
 - [x] Currency conversion group (CurrencyConversion.dax)
 - [x] Comparison calculation group (Comparison.dax)
 
 ### 7.2 Field Parameters
+
 - [x] README documentation with examples
 - [x] Dynamic dimension examples
 - [x] Measure switching examples
 - [x] Combined patterns templates (CombinedPatterns.dax)
 
 ### 7.3 Custom Visuals
+
 - [x] Deneb/Vega-Lite examples (3 templates: BulletChart, Waterfall, SlopeChart)
 - [x] Python visual templates (Seaborn_Heatmap, WordCloud)
 - [x] R visual templates (ggplot_Violin)
 - [x] SVG custom graphics (RAG_Icons, Progress_Ring)
 
 ### 7.4 Microsoft Fabric
+
 - [x] Lakehouse patterns (Lakehouse.md)
 - [x] Dataflow Gen2 templates (DataflowGen2.md)
 - [x] Direct Lake setup guide (DirectLake.md)
 - [x] OneLake integration (OneLake.md)
 
 ### 7.5 Composite Models
+
 - [x] DirectQuery + Import patterns (CompositeModels.md)
 - [x] Aggregation setup guide (in CompositeModels.md)
 - [x] Performance optimization (in CompositeModels.md)
@@ -257,16 +295,19 @@
 ## Quick Wins Checklist
 
 ### Immediate Actions (This Week)
+
 - [x] Add Window Functions examples
 - [x] Create first UDF examples
 - [x] Document TMDL View basics
 
 ### Short-term (This Month)
+
 - [x] Complete Phase 2 (Modern DAX)
 - [x] Start Phase 3 (Developer Tools)
 - [x] Set up MCP folder structure
 
 ### Medium-term (This Quarter)
+
 - [x] Complete Phases 2-3
 - [x] Start Phase 4 (AI Integration)
 - [x] Begin DevOps automation (Phase 5)
@@ -300,9 +341,11 @@
 ## Notes & Blockers
 
 ### Current Blockers
+
 *None*
 
 ### Notes
+
 - DAX UDFs require September 2025 version of Power BI Desktop
 - TMDL View is now GA as of September 2025
 - Power BI MCP released November 2025

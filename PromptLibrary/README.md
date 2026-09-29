@@ -1,3 +1,11 @@
+---
+title: Prompt Library
+tags: [prompts, ai]
+audience: [all]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Prompt Library
 
 > Reusable AI prompts for Power BI development tasks.

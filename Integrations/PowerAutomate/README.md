@@ -1,3 +1,11 @@
+---
+title: Power Automate
+tags: [integration]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Power Automate
 
 > Automating Power BI with flows.

@@ -1,3 +1,11 @@
+---
+title: XML
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # XML
 
 > XML file sources.
@@ -13,7 +21,6 @@
 
 XML sources are relatively rare in analytics. If the system can also emit CSV
 or JSON, prefer that.
-
 
 ## General guidance
 

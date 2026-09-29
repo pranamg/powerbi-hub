@@ -1,3 +1,11 @@
+---
+title: Dashboard Examples
+tags: [dashboards, design]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Dashboard Examples
 
 > Reference dashboard implementations.

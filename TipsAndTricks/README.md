@@ -1,3 +1,11 @@
+---
+title: Tips & Tricks
+tags: [tips]
+audience: [all]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Tips & Tricks
 
 > Short, practical techniques for common Power BI tasks.

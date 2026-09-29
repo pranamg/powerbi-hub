@@ -1,3 +1,11 @@
+---
+title: Azure Services
+tags: [integration]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Azure Services
 
 > Connecting Power BI to other Azure services.

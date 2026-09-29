@@ -1,3 +1,11 @@
+---
+title: Power BI Python Automation
+tags: [automation, python, rest-api]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Power BI Python Automation
 
 > Jupyter notebooks and Python scripts for Power BI automation
@@ -19,6 +27,7 @@ pip install msal requests pandas jupyter
 ### Authentication Setup
 
 Create a `.env` file (add to .gitignore):
+
 ```bash
 PBI_TENANT_ID=your-tenant-id
 PBI_APP_ID=your-app-id
@@ -26,6 +35,7 @@ PBI_CLIENT_SECRET=your-client-secret
 ```
 
 Load in Python:
+
 ```python
 from dotenv import load_dotenv
 load_dotenv()
@@ -80,6 +90,7 @@ token = app.acquire_token_for_client(
 ## Common Tasks
 
 ### Bulk Refresh All Datasets
+
 ```python
 for workspace in client.get_workspaces():
     for dataset in client.get_datasets(workspace['id']):
@@ -88,6 +99,7 @@ for workspace in client.get_workspaces():
 ```
 
 ### Export Inventory to Excel
+
 ```python
 import pandas as pd
 

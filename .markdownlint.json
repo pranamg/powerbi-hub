@@ -1,0 +1,37 @@
+{
+  "//": "Markdown lint rules. Read before adding a rule: super-linter runs this across every Markdown file, so a newly enabled rule fails CI on pre-existing content. Enable a rule only alongside a cleanup pass over the files it flags.",
+
+  "default": true,
+
+  "//_frontmatter": "MD025 is disabled because markdownlint counts the YAML frontmatter block as a title, so every file in this repo reports a false 'multiple H1'. The hub requires exactly one H1, and check_frontmatter.py enforces that the H1 follows the frontmatter.",
+  "MD025": false,
+
+  "//_line_length": "Prose is hard-wrapped by hand. Enforcing a column limit would fight the existing writing style and produce diff noise on every wrapped sentence.",
+  "MD013": false,
+
+  "//_tables": "MD060 is disabled because the hub uses compact table pipes (|-----|-----|) throughout for density. This is a deliberate style choice, not an oversight.",
+  "MD060": false,
+
+  "//_code_fences": "MD040 is disabled because many fences are illustrative output (console, file trees, raw DAX results) where a language identifier adds nothing. Fences that are actually runnable should still carry a language.",
+  "MD040": false,
+
+  "//_bare_urls": "MD034 is disabled because governance and access-control docs contain illustrative bare email addresses in tables. Autofixing them to <angle-bracket> autolinks changes the visible cell text, which is worse than the lint finding in a reference table.",
+  "MD034": false,
+
+  "//_emphasis_headings": "MD036 is disabled because several documents use bold text as a visual label inside longer sections.",
+  "MD036": false,
+
+  "//_html": "MD033 is disabled because some documents embed HTML anchors for cross-referencing.",
+  "MD033": false,
+
+  "//_first_line_h1": "MD041 is disabled because documents begin with frontmatter before their H1, which this rule does not model.",
+  "MD041": false,
+
+  "//_code_block_style": "MD046 is disabled because documents use both fenced and indented styles for short inline code blocks.",
+  "MD046": false,
+
+  "//_duplicate_headings": "Sibling-only: repeated '## Examples' under different parents is fine and common here.",
+  "MD024": {
+    "siblings_only": true
+  }
+}

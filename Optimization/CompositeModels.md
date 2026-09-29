@@ -1,3 +1,11 @@
+---
+title: Composite Model Patterns
+tags: [performance, optimization]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Composite Model Patterns
 
 > **Purpose:** Patterns for combining Import and DirectQuery modes in Power BI composite models
@@ -7,6 +15,7 @@
 ## Overview
 
 Composite models allow combining multiple storage modes in a single semantic model:
+
 - **Import** - Data loaded into memory
 - **DirectQuery** - Queries sent to source
 - **Dual** - Both Import and DirectQuery
@@ -40,11 +49,13 @@ Most common pattern for enterprise models.
 ```
 
 **Benefits:**
+
 - Fast dimension filtering
 - Good slicer performance
 - Real-time fact data
 
 **Implementation:**
+
 ```
 1. Import dimension tables first
 2. Add DirectQuery connection to fact table
@@ -92,6 +103,7 @@ Recent data via DirectQuery, historical via Import.
 ```
 
 **DAX Pattern:**
+
 ```dax
 Total Sales = 
     CALCULATE(
@@ -127,6 +139,7 @@ Combine different data sources.
 ### Step 1: Create Aggregation Table
 
 In source database or via Power Query:
+
 ```sql
 -- Create aggregation in source
 CREATE TABLE Sales_Agg AS
@@ -177,6 +190,7 @@ GROUP BY
 ### Step 5: Verify Aggregation Hits
 
 Use Performance Analyzer:
+
 1. View > Performance Analyzer
 2. Start recording
 3. Run queries
@@ -205,6 +219,7 @@ When connecting Import to DirectQuery:
 ### Limited Relationships
 
 Some relationships have limitations:
+
 - Many-to-many between storage modes
 - Calculated tables to DirectQuery
 
@@ -225,6 +240,7 @@ Some relationships have limitations:
 ### Query Optimization
 
 1. **Filter early**
+
    ```dax
    // Good - filter before aggregation
    CALCULATE(
@@ -234,6 +250,7 @@ Some relationships have limitations:
    ```
 
 2. **Use aggregation-friendly patterns**
+
    ```dax
    // Aggregation-compatible
    Total Sales = SUM(FactSales[Amount])
@@ -250,6 +267,7 @@ Some relationships have limitations:
 ### Dual Mode Strategy
 
 Use Dual for tables needed by both Import and DirectQuery:
+
 ```
 DimDate (Dual)
 ├── Connects to FactSales_Detail (DirectQuery)
@@ -269,6 +287,7 @@ DimDate (Dual)
 ### Issue: Aggregation Not Used
 
 **Causes:**
+
 - Unsupported DAX pattern
 - Missing dimension mapping
 - Filter on unmapped column
@@ -280,6 +299,7 @@ DimDate (Dual)
 **Cause:** Cross-source relationship limitations
 
 **Solution:**
+
 - Use Dual mode for bridge tables
 - Ensure referential integrity
 - Check cardinality settings
@@ -289,6 +309,7 @@ DimDate (Dual)
 **Cause:** Data not synchronized between modes
 
 **Solution:**
+
 - Align refresh schedules
 - Use same data source where possible
 - Document data latency expectations
@@ -310,6 +331,7 @@ DimDate (Dual)
 ### Query Diagnostics
 
 In Power Query:
+
 1. Tools > Start Diagnostics
 2. Refresh
 3. Stop Diagnostics
@@ -318,6 +340,7 @@ In Power Query:
 ### DAX Studio
 
 For detailed analysis:
+
 ```dax
 // Check storage engine queries
 -- View Server Timings

@@ -1,3 +1,11 @@
+---
+title: Performance Tuning
+tags: [performance, optimization]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Performance Tuning
 
 > End-to-end performance practice for models and reports.

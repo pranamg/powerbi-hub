@@ -1,3 +1,11 @@
+---
+title: Memory Optimization
+tags: [performance, optimization]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Memory Optimization
 
 > Reducing the memory footprint of a model.

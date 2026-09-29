@@ -1,3 +1,11 @@
+---
+title: DAX Tips & Tricks
+tags: [tips]
+audience: [all]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # DAX Tips & Tricks
 
 Essential DAX patterns, common pitfalls, and optimization techniques.
@@ -55,6 +63,7 @@ CALCULATETABLE(
 ## Common Pitfalls
 
 ### Pitfall 1: Blank vs Zero
+
 ```dax
 // Returns BLANK if no sales (might cause visual issues)
 Total Sales = SUM(Sales[Amount])
@@ -68,6 +77,7 @@ IF(ISBLANK(SUM(Sales[Amount])), 0, SUM(Sales[Amount]))
 ```
 
 ### Pitfall 2: Context Transition
+
 ```dax
 // This WON'T filter correctly inside SUMX
 Wrong = SUMX(Products, Sales[Amount])
@@ -77,6 +87,7 @@ Correct = SUMX(Products, [Sales Amount])  // Measure, not column
 ```
 
 ### Pitfall 3: DISTINCTCOUNT vs COUNTROWS
+
 ```dax
 // DISTINCTCOUNT - counts unique values in a column
 Unique Customers = DISTINCTCOUNT(Sales[CustomerID])
@@ -89,6 +100,7 @@ Unique Customers = COUNTROWS(DISTINCT(Sales[CustomerID]))
 ## Performance Tips
 
 ### 1. Move filters to CALCULATE arguments
+
 ```dax
 // SLOWER
 Sales High Value = 
@@ -106,6 +118,7 @@ CALCULATE(
 ```
 
 ### 2. Avoid nested iterators
+
 ```dax
 // SLOW - O(n^2) complexity
 Bad Pattern = 
@@ -122,6 +135,7 @@ SUMX(
 ```
 
 ### 3. Use SUMMARIZE carefully
+
 ```dax
 // SUMMARIZE should only be used for grouping
 // Use ADDCOLUMNS + SUMMARIZE for adding columns
@@ -135,6 +149,7 @@ ADDCOLUMNS(
 ## Useful Patterns
 
 ### Running Total
+
 ```dax
 Running Total = 
 CALCULATE(
@@ -147,6 +162,7 @@ CALCULATE(
 ```
 
 ### Percentage of Parent
+
 ```dax
 % of Category = 
 DIVIDE(
@@ -156,6 +172,7 @@ DIVIDE(
 ```
 
 ### New vs Returning Customers
+
 ```dax
 New Customers = 
 VAR CurrentDate = MAX('Date'[Date])
@@ -169,6 +186,7 @@ COUNTROWS(
 ```
 
 ### Dynamic Measure Selection
+
 ```dax
 Selected Measure = 
 SWITCH(
@@ -282,6 +300,7 @@ ROWNUMBER(
 ### Window Function Pitfalls
 
 **Pitfall 1: Missing ALLSELECTED**
+
 ```dax
 // WRONG - No table context
 Bad = OFFSET(-1, 'Date'[Month], ORDERBY('Date'[Month]))
@@ -291,6 +310,7 @@ Good = OFFSET(-1, ALLSELECTED('Date'[Month]), ORDERBY('Date'[Month]))
 ```
 
 **Pitfall 2: Non-deterministic ROWNUMBER**
+
 ```dax
 // BAD - Ties produce unpredictable results
 Unstable = ROWNUMBER(Products, ORDERBY([Sales]))
@@ -300,6 +320,7 @@ Stable = ROWNUMBER(Products, ORDERBY([Sales], DESC, Products[ProductID], ASC))
 ```
 
 **Pitfall 3: Mixing window functions with context**
+
 ```dax
 // Window functions evaluate in the current filter context
 // Be careful with CALCULATE modifiers

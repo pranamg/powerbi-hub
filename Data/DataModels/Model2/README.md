@@ -1,3 +1,11 @@
+---
+title: Model 2 — Multi-Fact Model with Role-Playing Dates
+tags: [modeling, tmdl, reference]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Model 2 — Multi-Fact Model with Role-Playing Dates
 
 > Extends [Model 1](../Model1/) with the three things that make a real model

@@ -1,3 +1,11 @@
+---
+title: Data
+tags: [data, modeling]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Data
 
 > Data sources, models, ETL logic, datasets, and shared constants.

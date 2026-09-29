@@ -1,3 +1,11 @@
+---
+title: Data Exploration Workflows
+tags: [mcp, agentic, ai]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Data Exploration Workflows
 
 > Interactive data analysis and discovery using AI assistants with MCP
@@ -13,6 +21,7 @@ Data exploration is one of the most powerful use cases for MCP. AI assistants ca
 **Starting Point:** You have access to a model but don't know its structure.
 
 **Conversation:**
+
 ```
 User: "I'm new to this model. Give me an overview of what data is available."
 
@@ -41,18 +50,21 @@ The primary analysis grain is daily sales by product, customer, and store."
 **Scenario:** Finding trends and anomalies in data.
 
 **Prompt:**
+
 ```
 "Analyze sales patterns and identify any unusual trends or anomalies 
 in the last 6 months"
 ```
 
 **AI Exploration Steps:**
+
 1. Query monthly sales trend
 2. Calculate month-over-month changes
 3. Identify statistical outliers
 4. Investigate anomalies by dimension
 
 **Queries Executed:**
+
 ```dax
 -- Monthly trend
 EVALUATE
@@ -79,6 +91,7 @@ FILTER(
 ```
 
 **AI Response:**
+
 ```
 Anomalies Detected:
 1. November 2024 - Sales 47% above average (Black Friday effect)
@@ -92,12 +105,14 @@ possible data quality issue or promotional event.
 ### Workflow 3: Segment Analysis
 
 **Prompt:**
+
 ```
 "Help me understand our customer segments. 
 Who are our best customers and what do they buy?"
 ```
 
 **AI Analysis:**
+
 ```dax
 -- Customer value distribution
 EVALUATE
@@ -130,6 +145,7 @@ SUMMARIZECOLUMNS(
 ```
 
 **AI Response:**
+
 ```markdown
 ## Customer Segment Analysis
 
@@ -148,11 +164,13 @@ SUMMARIZECOLUMNS(
 ### Workflow 4: Root Cause Analysis
 
 **Prompt:**
+
 ```
 "Sales are down 15% this quarter. Help me understand why."
 ```
 
 **AI Investigation:**
+
 ```dax
 -- Compare quarters by dimension
 EVALUATE
@@ -176,6 +194,7 @@ FILTER 'Product'[Category] = "Electronics"
 ```
 
 **AI Response:**
+
 ```markdown
 ## Root Cause Analysis: Q4 Sales Decline
 
@@ -198,12 +217,14 @@ FILTER 'Product'[Category] = "Electronics"
 ### Workflow 5: Correlation Discovery
 
 **Prompt:**
+
 ```
 "Are there any interesting correlations between product categories?
 What products are frequently bought together?"
 ```
 
 **AI Analysis:**
+
 ```dax
 -- Market basket analysis
 EVALUATE
@@ -222,6 +243,7 @@ CROSSJOIN(
 ```
 
 **AI Response:**
+
 ```markdown
 ## Product Correlation Analysis
 
@@ -243,12 +265,14 @@ Create bundle offers:
 ### Guided Exploration
 
 **Prompt:**
+
 ```
 "Let's explore this data together. Start by showing me 
 the most important KPIs and I'll tell you what to drill into."
 ```
 
 **AI shows summary, then:**
+
 ```
 User: "That profit margin looks low. Break it down."
 AI: [Queries profit by category]
@@ -266,11 +290,13 @@ AI: [Filters to Apparel, shows by store]
 ### Hypothesis Testing
 
 **Prompt:**
+
 ```
 "I think our promotions aren't working. Can you test this hypothesis?"
 ```
 
 **AI generates test:**
+
 ```dax
 -- Compare promotional vs non-promotional sales
 EVALUATE
@@ -287,6 +313,7 @@ ROW(
 ```
 
 **AI Conclusion:**
+
 ```
 Hypothesis: "Promotions aren't working"
 Finding: PARTIALLY SUPPORTED
@@ -302,21 +329,25 @@ current 25% average discount is too aggressive.
 ## Best Practices
 
 ### 1. Start Broad, Then Narrow
+
 ```
 "Show me the big picture" → "Drill into region X" → "Why is store Y different?"
 ```
 
 ### 2. Ask for Comparisons
+
 ```
 "How does this compare to last year/budget/benchmark?"
 ```
 
 ### 3. Request Visualizations
+
 ```
 "What's the best way to visualize this trend?"
 ```
 
 ### 4. Save Interesting Queries
+
 ```
 "Save this query for our weekly analysis"
 ```

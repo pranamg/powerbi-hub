@@ -1,3 +1,11 @@
+---
+title: Dashboards
+tags: [dashboards, design]
+audience: [report-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Dashboards
 
 > Dashboard examples and reusable dashboard templates.

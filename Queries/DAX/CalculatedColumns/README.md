@@ -1,3 +1,11 @@
+---
+title: Calculated Columns
+tags: [dax, modeling]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Calculated Columns
 
 > Calculated column patterns.

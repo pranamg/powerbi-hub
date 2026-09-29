@@ -1,3 +1,11 @@
+---
+title: Data Models
+tags: [modeling, tmdl, reference]
+audience: [model-author]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Data Models
 
 > Starter and example semantic model structures.

@@ -1,3 +1,11 @@
+---
+title: Dataset Examples
+tags: [modeling, deployment]
+audience: [model-author]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Dataset Examples
 
 > Reference dataset implementations.

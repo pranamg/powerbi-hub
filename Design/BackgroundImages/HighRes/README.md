@@ -1,3 +1,11 @@
+---
+title: High Resolution
+tags: [design, assets]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # High Resolution
 
 > High-resolution background images.

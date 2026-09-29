@@ -1,3 +1,11 @@
+---
+title: R Visuals
+tags: [visuals, r]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # R Visuals
 
 > R-based custom visual scripts.

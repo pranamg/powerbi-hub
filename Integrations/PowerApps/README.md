@@ -1,3 +1,11 @@
+---
+title: Power Apps
+tags: [integration]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Power Apps
 
 > Embedding Power BI content in Power Apps.

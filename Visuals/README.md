@@ -1,3 +1,11 @@
+---
+title: Visuals
+tags: [visuals]
+audience: [report-author]
+difficulty: beginner
+last_verified: 2026-09-29
+---
+
 # Visuals
 
 > Custom visuals, visual code, and layout assets.

@@ -1,3 +1,11 @@
+---
+title: Python
+tags: [data-connections, power-query]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Python
 
 > Python-based data sources.
@@ -14,7 +22,6 @@
   runs. Changing dtypes silently between refreshes causes downstream errors.
 - Remember that a Python step **does not fold**, so source filtering and
   projection must happen in M before it.
-
 
 ## General guidance
 

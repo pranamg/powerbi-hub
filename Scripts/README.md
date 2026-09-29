@@ -1,3 +1,11 @@
+---
+title: Scripts
+tags: [automation, scripts]
+audience: [developer]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Scripts
 
 > Automation scripts across PowerShell, C#, TMDL, Python, and Jupyter.

@@ -1,3 +1,11 @@
+---
+title: Comments
+tags: [collaboration, workspaces]
+audience: [bi-admin]
+difficulty: intermediate
+last_verified: 2026-09-29
+---
+
 # Comments
 
 > Using report and dataset comments for review feedback.

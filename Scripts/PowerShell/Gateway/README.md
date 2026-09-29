@@ -1,3 +1,11 @@
+---
+title: Gateway Management Scripts
+tags: [automation, powershell, devops]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Gateway Management Scripts
 
 PowerShell scripts for managing Power BI on-premises data gateways.
@@ -30,6 +38,7 @@ Retrieve gateway cluster status, member health, and data source information.
 ```
 
 **Output includes:**
+
 - Cluster name and type
 - Gateway version
 - Member count and online status
@@ -79,6 +88,7 @@ $webConn = @{ url = "https://api.example.com/data" }
 ```
 
 **Supported Data Source Types:**
+
 | Type | Connection Details |
 |------|-------------------|
 | Sql | server, database |
@@ -110,6 +120,7 @@ $newPassword = Read-Host -AsSecureString "New password"
 ```
 
 **Credential Types:**
+
 - `Basic` - Username/password
 - `Windows` - Windows authentication
 - `Key` - API key authentication
@@ -117,6 +128,7 @@ $newPassword = Read-Host -AsSecureString "New password"
 - `OAuth2` - Must be configured in portal
 
 **Privacy Levels:**
+
 - `None` - No privacy level
 - `Private` - Private data
 - `Organizational` - Organization-wide access
@@ -190,16 +202,19 @@ $gateway.DataSources | Where-Object { $_.DataSourceType -eq "Sql" } | ForEach-Ob
 ### Common Errors
 
 **"Gateway not found"**
+
 - Verify you have admin access to the gateway
 - Check the gateway ID is correct
 - Ensure gateway is registered in your tenant
 
 **"Unauthorized"**
+
 - Re-authenticate: `Connect-PowerBIServiceAccount`
 - Verify you're a gateway admin
 - Check tenant settings allow gateway management
 
 **"Invalid credentials"**
+
 - Verify credential type matches data source requirements
 - Test credentials manually first
 - Check password doesn't contain special characters that need escaping
@@ -207,6 +222,7 @@ $gateway.DataSources | Where-Object { $_.DataSourceType -eq "Sql" } | ForEach-Ob
 ### Gateway Permissions
 
 To manage gateways, you need one of:
+
 - Gateway admin role (assigned in Power BI portal)
 - Power BI Service administrator role
 - Owner of the gateway cluster

@@ -1,3 +1,11 @@
+---
+title: Lakehouse Integration Patterns
+tags: [fabric, data-connections]
+audience: [developer]
+difficulty: advanced
+last_verified: 2026-09-29
+---
+
 # Lakehouse Integration Patterns
 
 > **Purpose:** Best practices for integrating Power BI with Fabric Lakehouse
@@ -31,6 +39,7 @@ Bronze (Raw)          Silver (Cleansed)       Gold (Curated)
 ```
 
 **Implementation:**
+
 ```python
 # Bronze to Silver (Notebook)
 df_bronze = spark.read.parquet("Files/Bronze/sales/*.parquet")
