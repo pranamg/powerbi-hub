@@ -77,21 +77,22 @@ One deployment, two options:
 Community MCP servers exist, but treat them as a supply-chain decision rather
 than an install-and-forget.
 
-| Server | Author | Focus |
-|---|---|---|
-| [powerbi-modeling-mcp](https://github.com/microsoft/powerbi-modeling-mcp) | Microsoft | The official authoring server |
-| [superbi-mcp](https://github.com/cyphonica/superbi-mcp) | cyphonica | Local authoring across semantic model, report, and Power Query by editing PBIX/PBIP/PBIR files |
-| [powerbi-report-mcp](https://github.com/jonathan-pap/powerbi-report-mcp) | jonathan-pap | Report authoring against PBIR |
-| [pbi-search](https://github.com/data-goblin/pbi-search) | Data Goblins | Documentation search, used by the Data Goblins plugins |
+| Server | Focus |
+|---|---|
+| [powerbi-modeling-mcp](https://github.com/microsoft/powerbi-modeling-mcp) | Microsoft's official authoring server (the reference implementation) |
+| [powerbi-report-mcp](https://github.com/jonathan-pap/powerbi-report-mcp) | Report authoring against PBIR |
+| [pbi-search](https://github.com/data-goblin/pbi-search) | Documentation search; used by the Data Goblins plugins |
 
 Before installing a community server, check that it publishes source, states its
 licence, and says what it does with your model metadata. A server runs with your
 credentials and can transmit what it reads to whatever LLM your client is
 configured with.
 
-> An earlier revision of this page listed "PowerBI-Desktop-MCP" and
-> "semantic-model-mcp". Neither could be verified as existing, so they are
-> removed rather than carried forward.
+> **This list is deliberately short.** Earlier revisions of this page listed
+> "PowerBI-Desktop-MCP", "semantic-model-mcp", and "superbi-mcp"; none could be
+> verified as existing and all three are removed. Every entry above is checked
+> by the scheduled external link check, so a repo that disappears is caught
+> rather than left to rot.
 
 ---
 
