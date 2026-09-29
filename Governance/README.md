@@ -14,6 +14,7 @@ last_verified: 2026-09-29
 
 | File | Description |
 |------|-------------|
+| [TenantSettings.md](./TenantSettings.md) | **Which tenant settings exist, what they block, and which ones cause surprising failures** |
 | [NamingConventions.md](./NamingConventions.md) | Naming standards for reports, measures, and columns |
 | [DevelopmentStandards.md](./DevelopmentStandards.md) | Engineering standards for Power BI development |
 | [DataClassification.md](./DataClassification.md) | Data classification policy |
