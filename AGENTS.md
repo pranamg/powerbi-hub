@@ -19,9 +19,8 @@ Top-level folders, in rough order of importance:
 ├── Queries/            → DAX measures, calculated columns, Power Query functions
 ├── Visuals/            → Custom visuals, R/Python visuals, layouts
 ├── Design/             → Themes, guidelines, templates, atomic elements, background images
-├── Templates/          → Report and dashboard templates
-├── Reports/            → Example reports
-├── Dashboards/         → Example dashboards
+├── Reports/            → Example reports and report templates
+├── Dashboards/         → Example dashboards and dashboard templates
 ├── Deployment/         → Pipelines (GitHub Actions, Azure Pipelines), environments, configurations
 ├── Integrations/       → Fabric, Power Apps, Power Automate, Azure services, MCP
 ├── Monitoring/         → Alerts, logs, metrics

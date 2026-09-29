@@ -5,8 +5,9 @@
 ## What these cover
 
 Layout, theming, and visual conventions — the *look* of a report — as distinct
-from [Templates/](../../Templates/), which cover reusable report and dashboard
-structures.
+from [report](../../Reports/Templates/) and
+[dashboard](../../Dashboards/Templates/) templates, which cover reusable
+report and dashboard structures.
 
 ## Using a template
 

@@ -336,5 +336,5 @@ For hiding entire tables/columns (Premium only):
 ## Related Resources
 
 - [Development Standards](./DevelopmentStandards.md)
-- [Security Templates](../Templates/)
+- [Security Templates](../Scripts/TMDL/RLS_Template.tmdl)
 - [Microsoft RLS Documentation](https://learn.microsoft.com/power-bi/admin/service-admin-rls)
