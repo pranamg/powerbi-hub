@@ -50,5 +50,5 @@ Edit the JSON to customize:
 
 ## Resources
 
-- [Microsoft Theme Documentation](https://docs.microsoft.com/power-bi/create-reports/desktop-report-themes)
+- [Microsoft Theme Documentation](https://learn.microsoft.com/en-us/power-bi/create-reports/desktop-report-themes)
 - [Theme Generator Tools](https://powerbi.tips/tools/report-theme-generator-v3/)

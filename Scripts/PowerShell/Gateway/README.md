@@ -229,6 +229,6 @@ To manage gateways, you need one of:
 
 ## Related Resources
 
-- [Power BI Gateway Documentation](https://docs.microsoft.com/power-bi/connect-data/service-gateway-onprem)
-- [Gateway REST API Reference](https://docs.microsoft.com/rest/api/power-bi/gateways)
-- [MicrosoftPowerBIMgmt Module](https://docs.microsoft.com/powershell/power-bi/overview)
+- [Power BI Gateway Documentation](https://learn.microsoft.com/en-us/power-bi/connect-data/service-gateway-onprem)
+- [Gateway REST API Reference](https://learn.microsoft.com/en-us/rest/api/power-bi/gateways)
+- [MicrosoftPowerBIMgmt Module](https://learn.microsoft.com/en-us/powershell/power-bi/overview)

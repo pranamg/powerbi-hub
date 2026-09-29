@@ -180,7 +180,7 @@ def example_function():
 ## Additional Resources
 
 - **[GitHub Flow](https://guides.github.com/introduction/flow/):** Learn about GitHub's workflow.
-- **[Power BI Documentation](https://docs.microsoft.com/power-bi/):** Official Power BI documentation.
+- **[Power BI Documentation](https://learn.microsoft.com/en-us/power-bi/):** Official Power BI documentation.
 - **[GitHub Docs: Creating a Pull Request](https://docs.github.com/pull-requests):** Detailed guide on pull requests.
 
 Thank you for contributing to PowerBI-Hub! Your efforts are greatly appreciated and help improve the Power BI ecosystem for everyone.
